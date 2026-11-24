@@ -8,18 +8,21 @@ import {
 } from "lucide-react";
 
 // ---------- constants ----------
-const NAVY = "#1B2A4A";
-const NAVY_SOFT = "#2E4269";
-const NAVY_DEEP = "#0F1930";
-const MIST = "#8C99BC";
-const GOLD = "#B8860F";
-const GOLD_SOFT = "#D9A93A";
-const PAPER = "#FAF7F0";
-const PAPER_LINE = "#E7E0D0";
-const INK = "#26241C";
-const SLATE = "#6B6656";
-const GREEN = "#3D6B4F";
-const RUST = "#A8452F";
+const NAVY = "#1A1F2B";
+const NAVY_SOFT = "#3366FF";
+const NAVY_DEEP = "#FFFFFF";
+const MIST = "#5B6475";
+const GOLD = "#0F936C";
+const GOLD_SOFT = "#12A87B";
+const PAPER = "#FAFBFC";
+const PAPER_LINE = "#E4E7EC";
+const INK = "#1A1F2B";
+const SLATE = "#5B6475";
+const GREEN = "#12A87B";
+const RUST = "#E0524F";
+// Amber marks "average" and warnings, kept separate from the mint brand colour.
+const AMBER = "#E8A33D";
+const AMBER_DEEP = "#B97A12";
 
 const COMPLETE_THRESHOLD = 99.5;
 
@@ -236,7 +239,7 @@ function StatCard({ icon: Icon, label, value, sub, accent }) {
 
 function barColor(v) {
   if (v >= 70) return GREEN;
-  if (v >= 40) return GOLD_SOFT;
+  if (v >= 40) return AMBER;
   return RUST;
 }
 
@@ -296,9 +299,9 @@ function BarRows({ rows, labelWidth = 200, flagThreshold }) {
               {r.label}
             </div>
             <div style={{
-              flex: 1, background: "#F1ECE0", borderRadius: 3, height: 18, position: "relative",
+              flex: 1, background: "#F1F3F6", borderRadius: 3, height: 18, position: "relative",
               overflow: "hidden",
-              backgroundImage: "linear-gradient(to right, transparent 24.6%, #E0DACB 24.6%, #E0DACB 25.2%, transparent 25.2%, transparent 49.6%, #E0DACB 49.6%, #E0DACB 50.2%, transparent 50.2%, transparent 74.6%, #E0DACB 74.6%, #E0DACB 75.2%, transparent 75.2%)",
+              backgroundImage: "linear-gradient(to right, transparent 24.6%, #E4E7EC 24.6%, #E4E7EC 25.2%, transparent 25.2%, transparent 49.6%, #E4E7EC 49.6%, #E4E7EC 50.2%, transparent 50.2%, transparent 74.6%, #E4E7EC 74.6%, #E4E7EC 75.2%, transparent 75.2%)",
               outline: flagged ? `1.5px solid ${RUST}` : "none",
               outlineOffset: 1,
             }}>
@@ -312,7 +315,7 @@ function BarRows({ rows, labelWidth = 200, flagThreshold }) {
                 {flagged && (
                   <span style={{
                     display: "inline-flex", alignItems: "center", gap: 3,
-                    background: "rgba(168,69,47,0.1)", border: `1px solid ${RUST}`, color: RUST,
+                    background: "rgba(224,82,79,0.1)", border: `1px solid ${RUST}`, color: RUST,
                     fontSize: 10.5, fontWeight: 600, padding: "2px 7px", borderRadius: 20,
                     whiteSpace: "nowrap",
                   }}>
@@ -346,7 +349,7 @@ function CountBars({ rows, labelWidth = 150 }) {
             <div style={{ fontWeight: 600 }}>{r.label}</div>
             {r.sub && <div style={{ fontSize: 10.5, color: SLATE }}>{r.sub}</div>}
           </div>
-          <div style={{ flex: 1, background: "#F1ECE0", borderRadius: 3, height: 24, overflow: "hidden" }}>
+          <div style={{ flex: 1, background: "#F1F3F6", borderRadius: 3, height: 24, overflow: "hidden" }}>
             <div style={{
               height: "100%", borderRadius: 3, background: r.color,
               width: r.value > 0 ? `${Math.max(1.5, (r.value / max) * 100)}%` : 0,
@@ -385,7 +388,7 @@ function StackedBandRows({ rows, bands, labelWidth = 130 }) {
           }}>
             {r.label}
           </div>
-          <div style={{ flex: 1, display: "flex", height: 26, borderRadius: 3, overflow: "hidden", background: "#F1ECE0" }}>
+          <div style={{ flex: 1, display: "flex", height: 26, borderRadius: 3, overflow: "hidden", background: "#F1F3F6" }}>
             {r.total > 0 && bands.map((b) => {
               const n = r.counts[b.key] || 0;
               if (!n) return null;
@@ -698,7 +701,7 @@ export default function CourseInsightsApp() {
     const categoryDefs = [
       { key: "excellent", title: "Excellent", range: `${b3}% and above`, color: GREEN, test: (avg) => avg >= b3 },
       { key: "good", title: "Good", range: `${b2}%–${(b3 - 0.1).toFixed(1)}%`, color: NAVY_SOFT, test: (avg) => avg >= b2 && avg < b3 },
-      { key: "average", title: "Average", range: `${b1}%–${(b2 - 0.1).toFixed(1)}%`, color: GOLD, test: (avg) => avg >= b1 && avg < b2 },
+      { key: "average", title: "Average", range: `${b1}%–${(b2 - 0.1).toFixed(1)}%`, color: AMBER, test: (avg) => avg >= b1 && avg < b2 },
       { key: "atRisk", title: "At Risk", range: `below ${b1}%`, color: RUST, test: (avg) => avg < b1 },
     ];
     // Students with avg === null have zero enabled courses in this dataset
@@ -971,7 +974,7 @@ export default function CourseInsightsApp() {
       `}</style>
 
       {/* ---------- Upload / control zone (no-print) ---------- */}
-      <div className="no-print" style={{ background: `linear-gradient(180deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }}>
+      <div className="no-print" style={{ background: "#FFFFFF", borderBottom: `1px solid ${PAPER_LINE}` }}>
         <div style={{ height: 3, background: `linear-gradient(90deg, transparent, ${GOLD_SOFT}, transparent)` }} />
         <div style={{ padding: "34px 32px 26px" }}>
           <div style={{ maxWidth: 1080, margin: "0 auto" }}>
@@ -983,12 +986,12 @@ export default function CourseInsightsApp() {
                   <div style={{
                     width: 46, height: 46, borderRadius: "50%", border: `1.5px solid ${GOLD_SOFT}`,
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                    background: "rgba(217,169,58,0.06)",
+                    background: "rgba(18,168,123,0.06)",
                   }}>
                     <GraduationCap size={20} color={GOLD_SOFT} />
                   </div>
                   <div>
-                    <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 25, fontWeight: 700, color: "#fff", lineHeight: 1.15 }}>
+                    <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 25, fontWeight: 700, color: INK, lineHeight: 1.15 }}>
                       Course Progress Insights
                     </div>
                     <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", fontSize: 13.5, color: GOLD_SOFT, marginTop: 3 }}>
@@ -1010,18 +1013,18 @@ export default function CourseInsightsApp() {
                   onDrop={onDrop}
                   onClick={() => inputRef.current?.click()}
                   style={{
-                    position: "relative", border: `1px solid ${dragOver ? GOLD_SOFT : "rgba(217,169,58,0.22)"}`,
+                    position: "relative", border: `1px solid ${dragOver ? GOLD_SOFT : "rgba(18,168,123,0.22)"}`,
                     borderRadius: 3, padding: "28px 22px", textAlign: "center", cursor: "pointer",
-                    background: dragOver ? "rgba(217,169,58,0.08)" : "rgba(255,255,255,0.02)",
+                    background: dragOver ? "rgba(18,168,123,0.08)" : "#F5F7F9",
                     transition: "all 0.15s", flex: "1 1 auto", boxSizing: "border-box",
                   }}
                 >
-                  <CornerBracket position="tl" color={dragOver ? GOLD_SOFT : "rgba(217,169,58,0.4)"} />
-                  <CornerBracket position="tr" color={dragOver ? GOLD_SOFT : "rgba(217,169,58,0.4)"} />
-                  <CornerBracket position="bl" color={dragOver ? GOLD_SOFT : "rgba(217,169,58,0.4)"} />
-                  <CornerBracket position="br" color={dragOver ? GOLD_SOFT : "rgba(217,169,58,0.4)"} />
+                  <CornerBracket position="tl" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
+                  <CornerBracket position="tr" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
+                  <CornerBracket position="bl" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
+                  <CornerBracket position="br" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
                   <UploadCloud size={24} color={GOLD_SOFT} style={{ marginBottom: 8 }} />
-                  <div style={{ color: "#fff", fontSize: 14, fontWeight: 500 }}>
+                  <div style={{ color: INK, fontSize: 14, fontWeight: 500 }}>
                     {busy ? "Reading files…" : "Drop .xlsx files here, or click to browse"}
                   </div>
                   <div style={{ color: MIST, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>
@@ -1046,15 +1049,15 @@ export default function CourseInsightsApp() {
                   onDrop={onPasswordDrop}
                   onClick={() => passwordInputRef.current?.click()}
                   style={{
-                    marginTop: 10, border: `1px dashed ${passwordDragOver ? GOLD_SOFT : "rgba(217,169,58,0.3)"}`,
+                    marginTop: 10, border: `1px dashed ${passwordDragOver ? GOLD_SOFT : "rgba(18,168,123,0.3)"}`,
                     borderRadius: 3, padding: "12px 14px", cursor: "pointer",
-                    background: passwordDragOver ? "rgba(217,169,58,0.08)" : "rgba(255,255,255,0.02)",
+                    background: passwordDragOver ? "rgba(18,168,123,0.08)" : "#F5F7F9",
                     display: "flex", alignItems: "center", gap: 10, transition: "all 0.15s",
                   }}
                 >
                   <KeyRound size={15} color={GOLD_SOFT} style={{ flexShrink: 0 }} />
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ color: "#fff", fontSize: 12.5, fontWeight: 500 }}>
+                    <div style={{ color: INK, fontSize: 12.5, fontWeight: 500 }}>
                       {busy ? "Reading…" : "Password-not-set file not rendering right? Drop it here separately"}
                     </div>
                     <div style={{ color: MIST, fontSize: 11, marginTop: 2 }}>
@@ -1072,7 +1075,7 @@ export default function CourseInsightsApp() {
 
             {/* letterhead fields — college name & logo, set off from the masthead by a hairline */}
             <div style={{
-              borderTop: "1px solid rgba(255,255,255,0.09)", paddingTop: 18,
+              borderTop: "1px solid #E4E7EC", paddingTop: 18,
               display: "flex", gap: 20, flexWrap: "wrap",
             }}>
               <label style={{ display: "block", flex: "1 1 320px" }}>
@@ -1084,7 +1087,7 @@ export default function CourseInsightsApp() {
                   placeholder="e.g. Sreenidhi Institute of Science and Technology"
                   style={{
                     width: "100%", maxWidth: 420, padding: "8px 10px", borderRadius: 4,
-                    border: "1px solid #3E5079", background: "#152038", color: "#fff", fontSize: 13.5,
+                    border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK, fontSize: 13.5,
                   }}
                 />
               </label>
@@ -1095,7 +1098,7 @@ export default function CourseInsightsApp() {
                   {collegeLogo && (
                     <img
                       src={collegeLogo} alt="College logo preview"
-                      style={{ height: 34, maxWidth: 90, objectFit: "contain", background: "#fff", borderRadius: 3, padding: 2 }}
+                      style={{ height: 34, maxWidth: 90, objectFit: "contain", background: "#FFFFFF", borderRadius: 3, padding: 2, border: `1px solid ${PAPER_LINE}` }}
                     />
                   )}
                   <button
@@ -1103,8 +1106,8 @@ export default function CourseInsightsApp() {
                     className="cip-btn"
                     onClick={() => logoInputRef.current?.click()}
                     style={{
-                      background: "rgba(255,255,255,0.06)", color: "#fff", fontSize: 12.5,
-                      border: "1px solid #3E5079", borderRadius: 4, padding: "7px 12px",
+                      background: "#F5F7F9", color: INK, fontSize: 12.5,
+                      border: "1px solid #D5DAE1", borderRadius: 4, padding: "7px 12px",
                     }}
                   >
                     {collegeLogo ? "Change logo" : "Upload logo"}
@@ -1126,9 +1129,9 @@ export default function CourseInsightsApp() {
             </div>
 
             {fileErrors.length > 0 && (
-              <div style={{ marginTop: 16, background: "rgba(168,69,47,0.15)", border: `1px solid ${RUST}`, borderRadius: 4, padding: "10px 14px" }}>
+              <div style={{ marginTop: 16, background: "rgba(224,82,79,0.15)", border: `1px solid ${RUST}`, borderRadius: 4, padding: "10px 14px" }}>
                 {fileErrors.map((e, i) => (
-                  <div key={i} style={{ color: "#F3C9BE", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                  <div key={i} style={{ color: "#F9D0CF", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
                     <AlertTriangle size={13} style={{ marginTop: 2, flexShrink: 0 }} /> {e}
                   </div>
                 ))}
@@ -1144,8 +1147,8 @@ export default function CourseInsightsApp() {
                   return (
                     <span key={f.fileName} style={{
                       display: "inline-flex", alignItems: "center", gap: 6,
-                      background: "rgba(255,255,255,0.04)", border: "1px solid rgba(217,169,58,0.28)",
-                      color: "#fff", fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
+                      background: "#F5F7F9", border: "1px solid rgba(18,168,123,0.28)",
+                      color: INK, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
                     }}>
                       <FileSpreadsheet size={12} color={GOLD_SOFT} />
                       {f.fileName}{" "}
@@ -1163,8 +1166,8 @@ export default function CourseInsightsApp() {
                   return (
                     <span key={f.fileName} style={{
                       display: "inline-flex", alignItems: "center", gap: 6,
-                      background: "rgba(255,255,255,0.04)", border: "1px solid rgba(217,169,58,0.28)",
-                      color: "#fff", fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
+                      background: "#F5F7F9", border: "1px solid rgba(18,168,123,0.28)",
+                      color: INK, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
                     }}>
                       <KeyRound size={12} color={GOLD_SOFT} />
                       {f.fileName}{" "}
@@ -1191,7 +1194,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={threshold}
                       onChange={(e) => setThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #3E5079", background: "#152038", color: "#fff" }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
                     />
                   </label>
                   <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1199,7 +1202,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={threshold}
                       onChange={(e) => setThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #3E5079", background: "#152038", color: "#fff" }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
                     />
                   </label>
                   <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1207,7 +1210,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={avgMax}
                       onChange={(e) => setAvgMax(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #3E5079", background: "#152038", color: "#fff" }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
                     />
                   </label>
                   <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1215,7 +1218,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={goodMax}
                       onChange={(e) => setGoodMax(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #3E5079", background: "#152038", color: "#fff" }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
                     />
                   </label>
                   <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1223,14 +1226,14 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={courseRiskThreshold}
                       onChange={(e) => setCourseRiskThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #3E5079", background: "#152038", color: "#fff" }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
                     />
                   </label>
                 </div>
                 <label style={{
-                  color: "#fff", fontSize: 12.5, display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
-                  background: includeStudentData ? "rgba(217,169,58,0.14)" : "rgba(255,255,255,0.04)",
-                  border: `1px solid ${includeStudentData ? GOLD_SOFT : "#3E5079"}`, borderRadius: 4, padding: "6px 10px",
+                  color: INK, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
+                  background: includeStudentData ? "rgba(18,168,123,0.14)" : "#F5F7F9",
+                  border: `1px solid ${includeStudentData ? GOLD_SOFT : "#D5DAE1"}`, borderRadius: 4, padding: "6px 10px",
                 }}>
                   <input
                     type="checkbox" checked={includeStudentData}
@@ -1258,7 +1261,7 @@ export default function CourseInsightsApp() {
                     disabled={generatingPdf}
                     style={{
                       display: "inline-flex", alignItems: "center", gap: 8,
-                      background: `linear-gradient(180deg, ${GOLD_SOFT}, ${GOLD})`, color: NAVY, fontWeight: 600, fontSize: 13.5,
+                      background: GOLD, color: "#FFFFFF", fontWeight: 600, fontSize: 13.5,
                       padding: "9px 18px", borderRadius: 4, border: "none",
                     }}
                   >
@@ -1271,7 +1274,7 @@ export default function CourseInsightsApp() {
                   </button>
                 </div>
                 {pdfError && (
-                  <div style={{ width: "100%", color: "#F3C9BE", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                  <div style={{ width: "100%", color: "#F9D0CF", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
                     <AlertTriangle size={13} style={{ marginTop: 2, flexShrink: 0 }} /> {pdfError}
                   </div>
                 )}
@@ -1349,7 +1352,7 @@ export default function CourseInsightsApp() {
               sub={`${(((insights.categorizedStudents.find((c) => c.key === "excellent")?.students.length || 0) / insights.totalEvaluable) * 100 || 0).toFixed(1)}% of students`}
               accent={GREEN}
             />
-            <StatCard icon={KeyRound} label="Passwords Not Set" value={insights.totalPasswordIssues} accent={GOLD} />
+            <StatCard icon={KeyRound} label="Passwords Not Set" value={insights.totalPasswordIssues} accent={AMBER} />
             <StatCard
               icon={AlertTriangle}
               label="Courses At Risk"
@@ -1447,7 +1450,7 @@ export default function CourseInsightsApp() {
                     <td>
                       <span style={{
                         display: "inline-block", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 12.5,
-                        color: NAVY_SOFT, background: "#EAF3F8", border: `1px solid #C7DFEA`, borderRadius: 4,
+                        color: NAVY_SOFT, background: "#EBF0FF", border: `1px solid #C9D6FF`, borderRadius: 4,
                         padding: "2px 8px",
                       }}>
                         {r.label}
@@ -1458,7 +1461,7 @@ export default function CourseInsightsApp() {
                     {insights.enrollmentTotals.notApplicable > 0 && (
                       <td style={{ color: r.notApplicable > 0 ? SLATE : INK, fontWeight: r.notApplicable > 0 ? 600 : 400 }}>{r.notApplicable}</td>
                     )}
-                    <td style={{ color: r.passwordNotSet > 0 ? GOLD : INK, fontWeight: r.passwordNotSet > 0 ? 600 : 400 }}>{r.passwordNotSet}</td>
+                    <td style={{ color: r.passwordNotSet > 0 ? AMBER_DEEP : INK, fontWeight: r.passwordNotSet > 0 ? 600 : 400 }}>{r.passwordNotSet}</td>
                     <td style={{ fontWeight: 600 }}>{r.subTotal}</td>
                   </tr>
                 ))}
@@ -1662,7 +1665,7 @@ export default function CourseInsightsApp() {
                           }}>
                             <span style={{
                               display: "inline-block", fontFamily: "'Source Serif 4', Georgia, serif",
-                              color: NAVY_SOFT, background: "#EAF3F8", border: "1px solid #C7DFEA",
+                              color: NAVY_SOFT, background: "#EBF0FF", border: "1px solid #C9D6FF",
                               borderRadius: 4, padding: "2px 8px",
                             }}>
                               {secLabel}

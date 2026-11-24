@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#EEF1F4; --panel:#FFFFFF; --ink:#0F1B2D; --muted:#5A687A; --line:#D5DBE3; --soft:#F5F7FA;
-  --brand:#1F3A5F; --brand-soft:#B9C7DA; --pass:#0E7C66; --fail:#C4472D; --focus:#2F6FDE; --onbrand:#fff;
-  --b1:#0E7C66; --b2:#56A98F; --b3:#E9B14F; --b4:#E27D49; --b5:#C4472D;
+  --bg:#FAFBFC; --panel:#FFFFFF; --ink:#1A1F2B; --muted:#5B6475; --line:#E4E7EC; --soft:#F5F7F9;
+  --brand:#3366FF; --brand-soft:#B8C7F0; --pass:#0F936C; --fail:#E0524F; --focus:#3366FF; --onbrand:#fff;
+  --b1:#0F936C; --b2:#6CCB9F; --b3:#E8A33D; --b4:#F08A5D; --b5:#E0524F;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -19,14 +19,14 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#0D141D; --panel:#151F2C; --ink:#E6ECF3; --muted:#94A3B5; --line:#263344; --soft:#1A2636;
-    --brand:#7FA7DA; --brand-soft:#33465F; --pass:#3CC3A3; --fail:#F0805F; --focus:#7AA7FF; --onbrand:#0D141D;
-    --b1:#3CC3A3; --b2:#77C2A8; --b3:#E9B14F; --b4:#EE9460; --b5:#F0805F;
+    --brand:#8AA8FF; --brand-soft:#33465F; --pass:#3CC3A3; --fail:#F0805F; --focus:#7AA7FF; --onbrand:#0D141D;
+    --b1:#3CC3A3; --b2:#77C2A8; --b3:#E8A33D; --b4:#EE9460; --b5:#F0805F;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0D141D; --panel:#151F2C; --ink:#E6ECF3; --muted:#94A3B5; --line:#263344; --soft:#1A2636;
-  --brand:#7FA7DA; --brand-soft:#33465F; --pass:#3CC3A3; --fail:#F0805F; --focus:#7AA7FF; --onbrand:#0D141D;
-  --b1:#3CC3A3; --b2:#77C2A8; --b3:#E9B14F; --b4:#EE9460; --b5:#F0805F;
+  --brand:#8AA8FF; --brand-soft:#33465F; --pass:#3CC3A3; --fail:#F0805F; --focus:#7AA7FF; --onbrand:#0D141D;
+  --b1:#3CC3A3; --b2:#77C2A8; --b3:#E8A33D; --b4:#EE9460; --b5:#F0805F;
 }
 html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
 *,*::before,*::after{box-sizing:inherit}
@@ -344,10 +344,10 @@ function analyse(cutoff, sub, full){
   // performer categories
   const adv = state.data.adv, avgMin = state.data.avgMin;
   const defs = [
-    {label:'Advanced', col:'--b1', rgb:[14,124,102], range:`${fmt(adv)} marks and above`},
-    {label:'Good', col:'--b2', rgb:[86,169,143], range:`${fmt(cutoff)} to under ${fmt(adv)} marks`},
-    {label:'Average', col:'--b3', rgb:[233,177,79], range:`${fmt(avgMin)} to under ${fmt(cutoff)} marks`},
-    {label:'Needs focus', col:'--b5', rgb:[196,71,45], range:`under ${fmt(avgMin)} marks`}];
+    {label:'Advanced', col:'--b1', rgb:[15,147,108], range:`${fmt(adv)} marks and above`},
+    {label:'Good', col:'--b2', rgb:[108,203,159], range:`${fmt(cutoff)} to under ${fmt(adv)} marks`},
+    {label:'Average', col:'--b3', rgb:[232,163,61], range:`${fmt(avgMin)} to under ${fmt(cutoff)} marks`},
+    {label:'Needs focus', col:'--b5', rgb:[224,82,79], range:`under ${fmt(avgMin)} marks`}];
   defs.forEach(x => x.list = []);
   a.sorted.forEach(c => { defs[c.total >= adv ? 0 : c.total >= cutoff ? 1 : c.total >= avgMin ? 2 : 3].list.push(c); });
   a.bands = defs.map(x => ({...x, n:x.list.length, pct:pctOf(x.list.length, a.att)}));
@@ -578,7 +578,7 @@ function render(){
 }
 
 /* ---------- PDF ---------- */
-const NAVY=[31,58,95], INK=[15,27,45], MUTED=[90,104,122], LIGHT=[244,246,249], LINE=[213,219,227], PASS=[14,124,102], FAIL=[196,71,45];
+const NAVY=[51,102,255], INK=[26,31,43], MUTED=[91,100,117], LIGHT=[245,247,249], LINE=[228,231,236], PASS=[15,147,108], FAIL=[224,82,79];
 const pt = s => String(s).replace(/[\u2013\u2014]/g,'-').replace(/\u2265/g,'>=').replace(/[^\x20-\x7E\u00A0-\u00FF]/g,'?');
 
 function buildPdf(a = state.a, group = null){
@@ -602,7 +602,7 @@ function buildPdf(a = state.a, group = null){
   doc.setFillColor(...NAVY); doc.rect(0,0,W,46,'F');
   doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(21); doc.text(pt(m.title), M, 20, {maxWidth:CW});
   doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.text(pt([m.test || state.fileName, group !== null ? 'Group: ' + grpLabel(group) : ''].filter(Boolean).join('   |   ')), M, 29, {maxWidth:CW});
-  doc.setFontSize(9.5); doc.setTextColor(210,220,235); doc.text(pt([m.org,m.date].filter(Boolean).join('   |   ')), M, 38, {maxWidth:CW});
+  doc.setFontSize(9.5); doc.setTextColor(201,214,255); doc.text(pt([m.org,m.date].filter(Boolean).join('   |   ')), M, 38, {maxWidth:CW});
   y = 56;
 
   // KPIs
@@ -654,7 +654,7 @@ function buildPdf(a = state.a, group = null){
   ensure(80);
   const cx0 = M+4, cw = CW-8, top = y+8, chH = 48, base = top+chH, bw = cw/10, mx = Math.max(...a.hist,1), cutPct = pctOf(a.cutoff,a.totalMax);
   a.hist.forEach((n,i)=>{ const hh = n/mx*chH, x = cx0 + i*bw + bw*.14;
-    doc.setFillColor(...(i*10>=cutPct ? PASS : [160,180,205])); if (hh>0) doc.roundedRect(x, base-hh, bw*.72, hh, .8, .8, 'F');
+    doc.setFillColor(...(i*10>=cutPct ? PASS : [184,199,240])); if (hh>0) doc.roundedRect(x, base-hh, bw*.72, hh, .8, .8, 'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...INK); doc.text(String(n), x+bw*.36, base-hh-1.5, {align:'center'});
     doc.setFont('helvetica','normal'); doc.setFontSize(6.8); doc.setTextColor(...MUTED); doc.text(`${fmt(i*10*a.totalMax/100)}-${fmt((i+1)*10*a.totalMax/100)}`, x+bw*.36, base+4.5, {align:'center'}); });
   doc.setDrawColor(...LINE); doc.setLineWidth(.3); doc.line(cx0, base, cx0+cw, base);
