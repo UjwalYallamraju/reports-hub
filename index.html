@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reports Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/hub.css">
+</head>
+<body>
+<script src="shared/hub-nav.js" data-root="./" data-section=""></script>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Course and test reports in one place</h1>
+    <p>Upload course completion exports or test result sheets, review the analytics, and download a PDF to share with SPOCs, faculty and management.</p>
+    <span class="privacy">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Files are read in your browser and never uploaded to a server.
+    </span>
+  </div>
+</header>
+
+<main class="wrap sections">
+  <section class="section courses" aria-labelledby="h-courses">
+    <div class="section-head">
+      <div class="badge" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l10-4 10 4-10 4z"/><path d="M6 9v5c0 1.7 2.7 3 6 3s6-1.3 6-3V9"/></svg>
+      </div>
+      <div>
+        <h2 id="h-courses">Courses</h2>
+        <p>Course completion and progress analytics by section and student.</p>
+      </div>
+    </div>
+    <ul class="mini">
+      <li><a href="courses/insights/index.html"><strong>Course progress insights</strong><span>Group-wise course progress exports</span></a></li>
+    </ul>
+    <a class="open" href="courses/index.html">Open Courses</a>
+  </section>
+
+  <section class="section tests" aria-labelledby="h-tests">
+    <div class="section-head">
+      <div class="badge" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/><path d="M9 17h6"/></svg>
+      </div>
+      <div>
+        <h2 id="h-tests">Tests</h2>
+        <p>Pass rates, score bands, section and group breakdowns, top performers.</p>
+      </div>
+    </div>
+    <ul class="mini">
+      <li><a href="tests/single-tests-report.html"><strong>Single test report</strong><span>Attempted + Not Attempted files</span></a></li>
+      <li><a href="tests/group-tests-report.html"><strong>Group-wise tests report</strong><span>One sheet, many tests</span></a></li>
+      <li><a href="tests/section-report.html"><strong>Section-wise test analysis</strong><span>Result sheet with section columns</span></a></li>
+    </ul>
+    <a class="open" href="tests/index.html">Open Tests</a>
+  </section>
+</main>
+</body>
+</html>

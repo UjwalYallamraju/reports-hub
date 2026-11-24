@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tests · Reports Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/hub.css">
+</head>
+<body>
+<script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
+
+<header class="hero">
+  <div class="wrap">
+    <a class="crumb" href="../index.html">&larr; Reports Hub</a>
+    <h1>Test reports</h1>
+    <p>Pick the report that matches the file you exported. Each one builds the analysis in your browser and gives you a PDF to share.</p>
+  </div>
+</header>
+
+<main class="wrap tools">
+  <a class="tool" href="single-tests-report.html">
+    <h2>Single test report</h2>
+    <p>Insights for one scheduled test: who attempted, pass rate and score bands for each group.</p>
+    <dl>
+      <div><dt>Upload</dt><dd>The Attempted and Not Attempted .xlsx files for the test.</dd></div>
+      <div><dt>You get</dt><dd>Attempted % by group, pass rate and score bands, students who did not attempt, college summary and group PDFs.</dd></div>
+    </dl>
+    <span class="go">Open single test report &rarr;</span>
+  </a>
+
+  <a class="tool" href="group-tests-report.html">
+    <h2>Group-wise tests report</h2>
+    <p>Compare several tests across groups from one combined sheet.</p>
+    <dl>
+      <div><dt>Upload</dt><dd>One .xlsx with a row per student and a column per test, max marks in brackets, e.g. <em>Test-04 (20)</em>.</dd></div>
+      <div><dt>You get</dt><dd>Test-wise results, section comparison, student-wise results, PDF and Excel summary.</dd></div>
+    </dl>
+    <span class="go">Open group-wise report &rarr;</span>
+  </a>
+
+  <a class="tool" href="section-report.html">
+    <h2>Section-wise test analysis</h2>
+    <p>Management report for one test with section scores, sectional cut-offs and a mock-to-mock comparison.</p>
+    <dl>
+      <div><dt>Upload</dt><dd>The result sheet with Member Id, Name, Groups, section columns like <em>Coding - Easy (10M)</em>, Status and Total.</dd></div>
+      <div><dt>You get</dt><dd>Pass rate, section and group breakdowns, findings, full PDF plus one PDF per group (ZIP).</dd></div>
+    </dl>
+    <span class="go">Open section-wise analysis &rarr;</span>
+  </a>
+</main>
+<p class="wrap foot">Files are read in your browser and never uploaded to a server.</p>
+</body>
+</html>
