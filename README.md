@@ -11,6 +11,16 @@ Everything runs in the browser; no files are uploaded to a server.
 | Tests | Single test report | `tests/single-tests-report.html` | Test-Reports (newer copy of CT-Test-Reports) |
 | Tests | Group-wise tests report | `tests/group-tests-report.html` | Test-Reports (newer copy of CT-Test-Reports) |
 | Tests | Section-wise test analysis | `tests/section-report.html` | section-report (includes everything in segregation-test-report) |
+| Tests | Sectional cut-off report | `tests/sectional-cutoff-report.html` | Mock Test Analytics (Infosys) artifact, made company-neutral |
+
+## Sectional cut-off report
+
+Works for any company's mock test. Type the company name on the page; it is used in the title and PDF file names.
+
+- Section columns are found from headers with max marks in brackets: `Coding (20M)`, `Coding (20)`, `Coding (20 Marks)`. Total columns are ignored.
+- Recognised columns: Name / Student Name, Member Id / Roll No / Student Id, Email, Groups / Batch / Class / Branch, Status.
+- Without a Status column, students with any section score count as attempted.
+- Growth view: name files with the test number (`Test-01.xlsx`, `Test-02.xlsx`) so they sort in order.
 
 ## Folder layout
 
