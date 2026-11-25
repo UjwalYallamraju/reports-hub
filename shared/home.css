@@ -119,10 +119,49 @@
 
 /* ---------- timeline ---------- */
 .tl{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding-top:34px}
-.tl .line{position:absolute;left:6%;right:6%;top:19px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--blue-ink),var(--mint-ink));opacity:.65;transform-origin:0 50%;box-shadow:0 0 12px rgba(143,169,255,.5)}
+.tl .line{position:absolute;left:42px;right:calc((100% - 44px) / 3 - 42px);top:19px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--blue-ink),var(--mint-ink));opacity:.65;transform-origin:0 50%;box-shadow:0 0 12px rgba(143,169,255,.5)}
 .tl .st{position:relative;padding:22px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
 .tl .st .n{position:absolute;top:-34px;left:22px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font:700 16px Sora,Inter,sans-serif;color:#1A1004;background:linear-gradient(135deg,var(--gold),var(--sun));box-shadow:0 0 22px -4px var(--sun)}
 .tl .st h3{font-size:18px;margin:10px 0 6px}
+/* timeline in motion: a comet runs along the line and lights each step; each card has a looping sketch */
+.tl .comet{position:absolute;left:0;top:14px;width:90px;height:12px;margin-left:-45px;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(closest-side,#fff 0,rgba(255,226,150,.95) 30%,rgba(242,140,40,.5) 60%,transparent);filter:blur(1px);box-shadow:0 0 24px 6px rgba(255,190,90,.35)}
+.tl .comet::after{content:"";position:absolute;right:50%;top:50%;width:140px;height:2px;margin-top:-1px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(255,226,150,.9))}
+.tl .st{transition:border-color .5s,background .5s,box-shadow .5s,transform .5s}
+.tl .st.lit{border-color:rgba(255,201,77,.45);background:rgba(255,201,77,.05);box-shadow:0 18px 50px -28px rgba(242,140,40,.8);transform:translateY(-4px)}
+.tl .st:nth-child(4).lit{border-color:rgba(143,169,255,.5);background:rgba(79,124,255,.06);box-shadow:0 18px 50px -28px rgba(79,124,255,.9)}
+.tl .st:nth-child(5).lit{border-color:rgba(95,224,191,.5);background:rgba(25,195,156,.06);box-shadow:0 18px 50px -28px rgba(25,195,156,.9)}
+.tl .st .n::after{content:"";position:absolute;inset:-2px;border-radius:14px;border:2px solid var(--gold);opacity:0}
+.tl .st.lit .n::after{animation:nring 1s ease-out}
+.tl .st.lit .n{animation:npop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes nring{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
+@keyframes npop{40%{transform:scale(1.15)}}
+.tl .st h3{padding-right:66px}
+.tl .ill{position:absolute;top:16px;right:18px;width:56px;height:48px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+/* 1: a sheet drops into the tray */
+.ill.i1 .tray{stroke:var(--gold)}
+.ill.i1 .doc rect{fill:rgba(255,201,77,.14);stroke:var(--gold)}
+.ill.i1 .doc path{stroke:rgba(255,201,77,.7)}
+.ill.i1 .doc{animation:dropin 2.6s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes dropin{0%{transform:translateY(-10px);opacity:0}20%{opacity:1}55%{transform:translateY(12px);opacity:1}75%,100%{transform:translateY(16px);opacity:0}}
+.ill.i1 .tray{animation:tray 2.6s ease-in-out infinite}
+@keyframes tray{50%,60%{filter:drop-shadow(0 0 6px var(--sun))}}
+/* 2: bars rise and settle like live analytics */
+.ill.i2 .base{stroke:rgba(143,169,255,.5)}
+.ill.i2 .b{fill:rgba(79,124,255,.85);stroke:none;transform-box:fill-box;transform-origin:50% 100%;animation:bar 2.4s ease-in-out infinite}
+.ill.i2 .b2{fill:#8FA9FF;animation-delay:.15s}.ill.i2 .b3{animation-delay:.3s}.ill.i2 .b4{fill:var(--mint-ink);animation-delay:.45s}
+.ill.i2 .b1{--h:.45}.ill.i2 .b2{--h:.7}.ill.i2 .b3{--h:.55}.ill.i2 .b4{--h:.95}
+@keyframes bar{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(var(--h))}}
+/* 3: the PDF downloads and gets a tick */
+.ill.i3 .pdf{fill:rgba(25,195,156,.12);stroke:var(--mint-ink)}
+.ill.i3 .pl{stroke:rgba(95,224,191,.7)}
+.ill.i3 .arr{stroke:var(--mint-ink);animation:arr 2.6s ease-in-out infinite}
+@keyframes arr{0%,100%{transform:translateY(-3px);opacity:.4}40%{transform:translateY(3px);opacity:1}}
+.ill.i3 .ok circle{fill:var(--mint);stroke:none}
+.ill.i3 .ok path{stroke:#05261D;stroke-width:2.4}
+.ill.i3 .ok{transform-box:fill-box;transform-origin:50% 50%;animation:ok 2.6s cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes ok{0%,35%{transform:scale(0);opacity:0}50%,85%{transform:scale(1);opacity:1}100%{transform:scale(.8);opacity:0}}
+
 .tl .st p{margin:0;color:var(--muted);font-size:15px}
 
 /* ---------- closing call to action ---------- */
@@ -167,7 +206,7 @@
   .bento{grid-template-columns:minmax(0,1fr)}
   .tile.t1,.tile.t2,.tile.t3,.tile.t4,.tile.t5{grid-column:auto}
   .tl{grid-template-columns:minmax(0,1fr);gap:46px}
-  .tl .line{display:none}
+  .tl .line,.tl .comet{display:none}
   .fc{font-size:11px;padding:9px 11px}
   .fc b{font-size:17px}
   .fc.donut svg{width:40px;height:40px}
@@ -176,7 +215,9 @@
   .fc.pdf{left:14%}
 }
 @media(prefers-reduced-motion:reduce){
-  .aurora i,.orbit .r2,.orbit .glow,.orbit .sun img,.ticker .track{animation:none}
+  .aurora i,.orbit .r2,.orbit .glow,.orbit .sun img,.ticker .track,.tl .ill *{animation:none!important}
+  .ill.i1 .doc{transform:translateY(8px)}.ill.i2 .b{transform:scaleY(var(--h))}
+  .tl .comet{display:none}
   .ticker{border-radius:22px;padding:12px}
   .ticker .vp{mask-image:none;-webkit-mask-image:none}
   .ticker .track{width:auto}

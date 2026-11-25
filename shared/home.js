@@ -137,12 +137,44 @@
       animate(c, {strokeDasharray: ['0 163.4', full], duration: 1300, delay: 300 + i * 150, ease: 'outExpo'});
     });
   };
+  // a comet runs along the timeline; each step lights up as it passes. Paused off screen.
+  function runComet(tl) {
+    const line = tl.querySelector('.line'), comet = tl.querySelector('.comet');
+    const steps = [...tl.querySelectorAll('.st')];
+    let onScreen = true;
+    new IntersectionObserver(es => { onScreen = es[0].isIntersecting; }).observe(tl);
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const light = st => { st.classList.remove('lit'); void st.offsetWidth; st.classList.add('lit'); setTimeout(() => st.classList.remove('lit'), 1500); };
+    const centres = () => steps.map(st => { const n = st.querySelector('.n'); return st.offsetLeft + n.offsetLeft + n.offsetWidth / 2; });
+    (async function loop() {
+      while (!onScreen || document.hidden) await wait(500);
+      const flat = line && getComputedStyle(line).display !== 'none';
+      if (!flat) {                       // stacked on phones: light the steps in turn
+        for (const st of steps) { light(st); await wait(900); }
+      } else {
+        const xs = centres(), from = xs[0], to = xs[xs.length - 1], dur = 2600;
+        light(steps[0]);
+        animate(comet, {translateX: [from, to], duration: dur, ease: 'inOutSine'});
+        animate(comet, {opacity: [0, 1, 1, 0], duration: dur, ease: 'linear'});
+        // light each step when the comet reaches it (inOutSine timing, inverted)
+        xs.slice(1).forEach((x, i) => {
+          const f = (x - from) / (to - from), t = Math.acos(1 - 2 * f) / Math.PI;
+          setTimeout(() => light(steps[i + 1]), t * dur - 60);
+        });
+        await wait(dur);
+      }
+      await wait(2600);
+      loop();
+    })();
+  }
+
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;
     io.unobserve(e.target);
     if (e.target.classList.contains('tl')) {
       const line = e.target.querySelector('.line');
       if (line) animate(line, {scaleX: [0, 1], duration: 1600, delay: 200, ease: 'inOutQuart'});
+      setTimeout(() => runComet(e.target), 1700);
     } else play(e.target);
   }), {rootMargin: '0px 0px -10% 0px'});
   document.querySelectorAll('.tile, .tl').forEach(el => io.observe(el));
