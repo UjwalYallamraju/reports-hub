@@ -13,84 +13,91 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared/hub.css">
+<link rel="stylesheet" href="shared/home.css">
 <script>(function(d){if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim-ready');setTimeout(function(){if(!d.dataset.animOk)d.classList.remove('anim-ready')},3000)}})(document.documentElement)</script>
 </head>
 <body>
 <script src="shared/hub-nav.js" data-root="./" data-section="" data-sticky="on" data-fade="off"></script>
-<div class="ambient" aria-hidden="true"><div class="grid"></div></div>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i><div class="grid"></div></div>
 
 <main>
-  <section class="hero">
-    <div class="wrap hero-grid">
+  <section class="hx">
+    <div class="wrap hx-grid">
       <div>
-        <span class="kicker" data-reveal="hero"><span class="dot"></span>Files never leave your browser</span>
-        <h1 data-reveal="hero">Course and test reports, <span class="grad">in one place.</span></h1>
-        <p class="lede" data-reveal="hero">Upload a CodeTantra course completion or test result export, see the analytics in seconds, and download a PDF ready for SPOCs, faculty and management.</p>
+        <span class="kicker" data-reveal="hero"><span class="sun-dot"></span>For CodeTantra course and test exports</span>
+        <h1 data-reveal="hero">Reports that <span class="warm">shine</span>, from a single export.</h1>
+        <p class="lede" data-reveal="hero">Drop the Excel file you downloaded from CodeTantra. Get pass rates, sectional cut-offs, course completion and group comparisons in seconds, with a PDF ready for SPOCs, faculty and management.</p>
         <div class="ctas" data-reveal="hero">
-          <a class="btn blue" href="tests/index.html">Open test reports
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn mint" href="courses/index.html">Open course reports
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn sun" href="tests/index.html">Open test reports <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn ghost" href="courses/index.html">Course reports <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-        <div class="stats" data-reveal="hero">
-          <div class="stat"><b data-count="4">4</b><span>test report tools</span></div>
-          <div class="stat"><b data-count="1">1</b><span>course report tool</span></div>
-          <div class="stat"><b data-count="100" data-suffix="%">100%</b><span>processed in your browser</span></div>
+        <div class="trust" data-reveal="hero">
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Files stay in your browser</span><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>PDF and Excel downloads</span><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Works for any company's mock test</span>
         </div>
       </div>
 
-      <figure class="board" data-reveal="hero" style="margin:0">
-        <div class="board-head">
-          <div><b>Mock test results</b><br><small>Pass rate by test and course completion trend</small></div>
-          <div class="legend"><span><i style="background:#5B83FF"></i>Pass rate</span><span><i style="background:#5FE0BF"></i>Completion</span><span><i style="background:none;border-top:2px dashed #F2B254;border-radius:0;height:0;width:14px;vertical-align:3px"></i>Pass mark 50%</span></div>
-        </div>
-        <svg class="chart" id="heroChart" role="img" aria-label="Sample chart: pass rate rising from 58% to 83% over ten tests, course completion rising from 41% to 75%"></svg>
-        <div class="chips">
-          <span class="chip">Pass rate <b>83%</b></span><span class="chip">Completion <b>75%</b></span><span class="chip">Sample data</span>
-        </div>
-      </figure>
+      <div class="orbit" id="orbit" data-reveal="hero" aria-hidden="true">
+        <div class="ring r2"></div><div class="ring r1"></div><div class="glow"></div>
+        <div class="sun"><div class="sun-in"><img src="shared/brand/logo-hero.png" alt="" width="200" height="200"></div></div>
+        <div class="fc k1"><div class="inner"><div class="lab"><span>Pass rate</span><span>+12</span></div><b><span data-count="83" data-suffix="%">83%</span></b>
+          <svg class="spark" width="120" height="26" viewBox="0 0 120 26"><path class="spk" d="M2 22 L18 19 L32 20 L46 14 L60 15 L74 10 L88 11 L102 6 L118 3" fill="none" stroke="#5FE0BF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div class="fc k2"><div class="inner"><span>Qualified</span><b><span data-count="53">53</span><small style="font-size:13px;color:var(--muted);font-weight:500"> / 150</small></b></div></div>
+        <div class="fc bars"><div class="inner"><div class="lab"><span>Pass rate by test</span><span>T1 to T6</span></div>
+          <svg viewBox="0 0 160 70" width="100%"><defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C9CFF"/><stop offset="1" stop-color="#3A5DE0"/></linearGradient></defs><rect class="fb" x="5.1" y="38.5" width="16.5" height="31.5" rx="5" fill="url(#gb)"/><rect class="fb" x="31.7" y="29.4" width="16.5" height="40.6" rx="5" fill="url(#gb)"/><rect class="fb" x="58.4" y="33.6" width="16.5" height="36.4" rx="5" fill="url(#gb)"/><rect class="fb" x="85.1" y="21.0" width="16.5" height="49.0" rx="5" fill="url(#gb)"/><rect class="fb" x="111.7" y="23.8" width="16.5" height="46.2" rx="5" fill="url(#gb)"/><rect class="fb" x="138.4" y="11.2" width="16.5" height="58.8" rx="5" fill="url(#gb)"/></svg></div></div>
+        <div class="fc donut"><div class="inner" style="display:flex;align-items:center;gap:12px">
+          <svg width="52" height="52" viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="6"/>
+          <circle class="dn" cx="21" cy="21" r="15.9" fill="none" stroke="#19C39C" stroke-width="6" stroke-dasharray="72 28" stroke-dashoffset="25" stroke-linecap="round"/></svg>
+          <div><span>Completion</span><b><span data-count="72" data-suffix="%">72%</span></b></div></div></div>
+        <div class="fc pdf"><div class="inner" style="display:flex;align-items:center;gap:10px"><span class="ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Report.pdf ready</div></div>
+      </div>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="h-sections">
-    <div class="wrap">
-      <div class="band-head" data-reveal="scroll">
-        <div><h2 id="h-sections">Pick what you are reporting on</h2><p>Every tool reads the export as it comes from CodeTantra. No formatting, no copy-paste.</p></div>
-      </div>
-      <div class="panels">
-        <article class="panel courses" data-reveal="scroll">
-          <div class="panel-top">
-            <div class="icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l10-4 10 4-10 4z"/><path d="M6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
-            <div><h3>Courses</h3><p>Completion and progress by section and student, with who has not started.</p></div>
-          </div>
-          <ul class="list">
-            <li><a href="courses/insights/index.html"><strong>Course progress insights</strong><span>Group-wise course progress exports</span></a></li>
-          </ul>
-          <div class="meters" aria-label="Example of the completion view">
-            <div class="meter"><span>CSE-A</span><b><i style="width:86%"></i></b><em>86%</em></div>
-            <div class="meter"><span>CSE-B</span><b><i style="width:72%"></i></b><em>72%</em></div>
-            <div class="meter"><span>ECE-A</span><b><i style="width:58%"></i></b><em>58%</em></div>
-            <div class="meter"><span>IT-A</span><b><i style="width:41%"></i></b><em>41%</em></div>
-            <small>Example: average completion by section</small>
-          </div>
-          <a class="go" href="courses/index.html">All course reports
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </article>
+  <div class="ticker" aria-label="What the reports include"><div class="track"><span>PDF reports in one click</span><span>Sectional cut-offs for any company</span><span>Growth across mock tests</span><span>One PDF per group, zipped</span><span>Excel summaries</span><span>Students below each cut-off</span><span>Not-attempted follow-up lists</span><span>Course completion by section</span><span>Files never leave your browser</span><span class="dup" aria-hidden="true"><span>PDF reports in one click</span><span>Sectional cut-offs for any company</span><span>Growth across mock tests</span><span>One PDF per group, zipped</span><span>Excel summaries</span><span>Students below each cut-off</span><span>Not-attempted follow-up lists</span><span>Course completion by section</span><span>Files never leave your browser</span></span></div></div>
 
-        <article class="panel tests" data-reveal="scroll">
-          <div class="panel-top">
-            <div class="icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/><path d="M9 17h6"/></svg></div>
-            <div><h3>Tests</h3><p>Pass rates, score bands, sectional cut-offs, group comparisons and growth across tests.</p></div>
+  <section class="band" aria-labelledby="h-tools">
+    <div class="wrap">
+      <div class="band-head" data-reveal="scroll"><div><h2 id="h-tools">Five tools, one place</h2><p>Each one reads the export exactly as it comes from CodeTantra. No formatting, no copy-paste.</p></div></div>
+      <div class="bento">
+        <a class="tile sun t1" href="tests/sectional-cutoff-report.html" data-reveal="scroll">
+          <span class="tag">Company mocks</span>
+          <h3>Sectional cut-off report</h3>
+          <p>Infosys, TCS, Accenture or any company: set the cut-off for each section and see who qualifies, who missed by one section, and how students grow across mock tests.</p>
+          <div class="viz"><svg viewBox="0 0 520 130"><g><rect class="vb" x="8.2" y="81.6" width="26.9" height="38.4" rx="5" fill="#FF6B6B"/><rect class="vb" x="51.6" y="70.8" width="26.9" height="49.2" rx="5" fill="#FF6B6B"/><rect class="vb" x="94.9" y="62.4" width="26.9" height="57.6" rx="5" fill="#FF6B6B"/><rect class="vb" x="138.2" y="54.0" width="26.9" height="66.0" rx="5" fill="#19C39C"/><rect class="vb" x="181.6" y="45.6" width="26.9" height="74.4" rx="5" fill="#19C39C"/><rect class="vb" x="224.9" y="50.4" width="26.9" height="69.6" rx="5" fill="#19C39C"/><rect class="vb" x="268.2" y="36.0" width="26.9" height="84.0" rx="5" fill="#19C39C"/><rect class="vb" x="311.6" y="40.8" width="26.9" height="79.2" rx="5" fill="#19C39C"/><rect class="vb" x="354.9" y="31.2" width="26.9" height="88.8" rx="5" fill="#19C39C"/><rect class="vb" x="398.2" y="22.8" width="26.9" height="97.2" rx="5" fill="#19C39C"/><rect class="vb" x="441.6" y="27.6" width="26.9" height="92.4" rx="5" fill="#19C39C"/><rect class="vb" x="484.9" y="16.8" width="26.9" height="103.2" rx="5" fill="#19C39C"/><line class="vcut" x1="0" x2="520" y1="60.0" y2="60.0" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="6 5"/></g></svg></div>
+          <span class="open">Open sectional cut-off report <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="tile mint t2" href="courses/insights/index.html" data-reveal="scroll">
+          <span class="tag">Courses</span>
+          <h3>Course progress insights</h3>
+          <p>Completion by section, who has not started, and accounts without passwords.</p>
+          <div class="viz rings">
+            <svg viewBox="0 0 220 120">
+              <g transform="translate(30,60)"><circle r="26" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/><circle class="rg" r="26" fill="none" stroke="#19C39C" stroke-width="8" stroke-linecap="round" stroke-dasharray="140.5 163.4" transform="rotate(-90)"/><text y="5" text-anchor="middle" fill="#E8ECF8" font-size="13" font-weight="700" font-family="Sora,Inter,sans-serif">86%</text><text y="48" text-anchor="middle" fill="#98A3C2" font-size="11" font-family="Inter,sans-serif">CSE-A</text></g><g transform="translate(110,60)"><circle r="26" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/><circle class="rg" r="26" fill="none" stroke="#5FE0BF" stroke-width="8" stroke-linecap="round" stroke-dasharray="104.6 163.4" transform="rotate(-90)"/><text y="5" text-anchor="middle" fill="#E8ECF8" font-size="13" font-weight="700" font-family="Sora,Inter,sans-serif">64%</text><text y="48" text-anchor="middle" fill="#98A3C2" font-size="11" font-family="Inter,sans-serif">ECE-A</text></g><g transform="translate(190,60)"><circle r="26" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/><circle class="rg" r="26" fill="none" stroke="#F2B254" stroke-width="8" stroke-linecap="round" stroke-dasharray="67.0 163.4" transform="rotate(-90)"/><text y="5" text-anchor="middle" fill="#E8ECF8" font-size="13" font-weight="700" font-family="Sora,Inter,sans-serif">41%</text><text y="48" text-anchor="middle" fill="#98A3C2" font-size="11" font-family="Inter,sans-serif">IT-A</text></g>
+            </svg>
           </div>
-          <ul class="list">
-            <li><a href="tests/single-tests-report.html"><strong>Single test report</strong><span>Attempted + Not Attempted files</span></a></li>
-            <li><a href="tests/group-tests-report.html"><strong>Group-wise tests report</strong><span>One sheet, many tests</span></a></li>
-            <li><a href="tests/section-report.html"><strong>Section-wise test analysis</strong><span>Result sheet with section columns</span></a></li>
-            <li><a href="tests/sectional-cutoff-report.html"><strong>Sectional cut-off report</strong><span>Company mock tests, single or growth</span></a></li>
-          </ul>
-          <a class="go" href="tests/index.html">All test reports
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </article>
+          <span class="open">Open course insights <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="tile t3" href="tests/single-tests-report.html" data-reveal="scroll">
+          <span class="tag">One test</span>
+          <h3>Single test report</h3>
+          <p>Attempted and not attempted, pass rate and score bands by group.</p>
+          <div class="viz"><svg viewBox="0 0 300 70"><rect class="vb" x="6.3" y="56.3" width="20.7" height="7.7" rx="5" fill="url(#gb)"/><rect class="vb" x="39.7" y="51.2" width="20.7" height="12.8" rx="5" fill="url(#gb)"/><rect class="vb" x="73.0" y="42.2" width="20.7" height="21.8" rx="5" fill="url(#gb)"/><rect class="vb" x="106.3" y="33.3" width="20.7" height="30.7" rx="5" fill="url(#gb)"/><rect class="vb" x="139.7" y="24.3" width="20.7" height="39.7" rx="5" fill="url(#gb)"/><rect class="vb" x="173.0" y="15.4" width="20.7" height="48.6" rx="5" fill="url(#gb)"/><rect class="vb" x="206.3" y="26.9" width="20.7" height="37.1" rx="5" fill="url(#gb)"/><rect class="vb" x="239.7" y="38.4" width="20.7" height="25.6" rx="5" fill="url(#gb)"/><rect class="vb" x="273.0" y="47.4" width="20.7" height="16.6" rx="5" fill="url(#gb)"/></svg></div>
+          <span class="open">Open <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="tile t4" href="tests/group-tests-report.html" data-reveal="scroll">
+          <span class="tag">Many tests</span>
+          <h3>Group-wise tests report</h3>
+          <p>Compare several tests across sections from one sheet.</p>
+          <div class="viz"><svg viewBox="0 0 300 70"><path class="vline" d="M4 58 C40 50, 60 52, 90 40 S150 30, 180 34 S240 14, 296 10" fill="none" stroke="#8FA9FF" stroke-width="3" stroke-linecap="round"/><path class="vline" d="M4 64 C40 60, 70 60, 100 52 S160 48, 190 44 S250 32, 296 28" fill="none" stroke="#5FE0BF" stroke-width="3" stroke-linecap="round" opacity=".8"/></svg></div>
+          <span class="open">Open <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="tile mint t5" href="tests/section-report.html" data-reveal="scroll">
+          <span class="tag">Sections</span>
+          <h3>Section-wise analysis</h3>
+          <p>Section scores, weakest areas and mock-to-mock comparison.</p>
+          <div class="viz"><svg viewBox="0 0 300 70"><rect class="vh" x="0" y="4" width="246" height="12" rx="6" fill="#19C39C"/><rect x="246" y="4" width="54" height="12" rx="6" fill="rgba(255,255,255,.06)"/><rect class="vh" x="0" y="26" width="183" height="12" rx="6" fill="#5FE0BF"/><rect x="183" y="26" width="117" height="12" rx="6" fill="rgba(255,255,255,.06)"/><rect class="vh" x="0" y="48" width="114" height="12" rx="6" fill="#F2B254"/><rect x="114" y="48" width="186" height="12" rx="6" fill="rgba(255,255,255,.06)"/></svg></div>
+          <span class="open">Open <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
       </div>
     </div>
   </section>
@@ -98,10 +105,20 @@
   <section class="band" aria-labelledby="h-how">
     <div class="wrap">
       <div class="band-head" data-reveal="scroll"><div><h2 id="h-how">From export to PDF in three steps</h2></div></div>
-      <div class="steps">
-        <div class="step" data-reveal="scroll"><div class="n">1</div><h3>Upload the export</h3><p>Drop the Excel file you downloaded from CodeTantra. It is read on your computer and never uploaded.</p></div>
-        <div class="step" data-reveal="scroll"><div class="n">2</div><h3>Review the analytics</h3><p>Pass rates, cut-offs, score bands, sections, groups and students, with key findings written for you.</p></div>
-        <div class="step" data-reveal="scroll"><div class="n">3</div><h3>Download and share</h3><p>A complete PDF, one per group, or an Excel summary, ready for SPOCs, faculty and management.</p></div>
+      <div class="tl">
+        <div class="line" aria-hidden="true"></div>
+        <div class="st" data-reveal="scroll"><div class="n">1</div><h3>Upload the export</h3><p>Drop the Excel file from CodeTantra. It is read on your computer and never uploaded.</p></div>
+        <div class="st" data-reveal="scroll"><div class="n">2</div><h3>Review the analytics</h3><p>Pass rates, cut-offs, score bands, sections and students, with key findings written for you.</p></div>
+        <div class="st" data-reveal="scroll"><div class="n">3</div><h3>Download and share</h3><p>A complete PDF, one per group, or an Excel summary, ready for SPOCs, faculty and management.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="cta" data-reveal="scroll">
+        <div><h2>Got this week's export?</h2><p>Turn it into a report before your next review meeting.</p></div>
+        <div class="ctas"><a class="btn sun" href="tests/index.html">Test reports <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn ghost" href="courses/index.html">Course reports <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
       </div>
     </div>
   </section>
@@ -111,5 +128,6 @@
 
 <script src="shared/vendor/anime.umd.min.js"></script>
 <script src="shared/hub.js"></script>
+<script src="shared/home.js"></script>
 </body>
 </html>
