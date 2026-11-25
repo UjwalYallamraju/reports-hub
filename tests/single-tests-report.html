@@ -111,6 +111,12 @@ tr:hover td{background:#F7F8FA}
 .gchart p.cap{margin:0 0 8px}
 .gchart svg{width:100%;height:auto;display:block}
 @media (max-width:1100px){.gchart{grid-template-columns:minmax(0,1fr)}}
+.rsns{display:grid;gap:10px;max-width:720px;margin-top:6px}
+.rsn{display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr) 92px;gap:12px;align-items:center;font-size:14px}
+.rsn b{display:block;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.rsn i{display:block;height:100%;border-radius:99px;background:var(--amber)}
+.rsn em{font-style:normal;text-align:right;font-weight:600}.rsn small{font-weight:400;color:var(--muted)}
+@media (max-width:600px){.rsn{grid-template-columns:minmax(0,1fr) 80px}.rsn b{grid-column:1/-1;order:3}}
 @media (max-width:980px){
   .layout{grid-template-columns:minmax(0,1fr)}
   aside{position:static}
@@ -178,6 +184,12 @@ const state = {
   filter: {q: '', group: '', status: 'all', limit: 100},
   A: null
 };
+
+/* ------------------------------------------------------------------ remembered details (this browser only) */
+const REMEMBER = ['college', 'preparedBy'];
+const memKey = k => 'ctr.single.' + k;
+try { REMEMBER.forEach(k => { const v = localStorage.getItem(memKey(k)); if (v) state.meta[k] = v; }); } catch (e) { /* storage unavailable */ }
+const remember = (k, v) => { if (!REMEMBER.includes(k)) return; try { v ? localStorage.setItem(memKey(k), v) : localStorage.removeItem(memKey(k)); } catch (e) {} };
 
 /* ------------------------------------------------------------------ xlsx reader (no dependencies) */
 const utf8 = u8 => new TextDecoder('utf-8').decode(u8);
@@ -488,7 +500,7 @@ function insightsGroup(A, g) {
 
 /* ------------------------------------------------------------------ on-screen rendering */
 function histSVG(bins, pass) {
-  const W = 720, H = 260, padL = 8, padR = 8, top = 34, bottom = 26;
+  const W = 720, H = 276, padL = 8, padR = 8, top = 50, bottom = 26;
   const mc = Math.max(1, ...bins.map(b => b.count)), bw = (W - padL - padR) / bins.length, ch = H - top - bottom;
   let g = '';
   bins.forEach((b, i) => {
@@ -501,7 +513,8 @@ function histSVG(bins, pass) {
   const pi = bins.findIndex(b => b.lo >= pass);
   if (pi > 0) {
     const lx = padL + pi * bw;
-    g += `<line x1="${lx}" x2="${lx}" y1="14" y2="${H - bottom}" stroke="var(--ink)" stroke-dasharray="4 3"/><text x="${lx + 6}" y="22" font-size="12" font-weight="600" fill="var(--ink)">Pass mark ${num(pass)}</text>`;
+    const right = lx < W * 0.75;
+    g += `<line x1="${lx}" x2="${lx}" y1="8" y2="${H - bottom}" stroke="var(--ink)" stroke-dasharray="4 3"/><text x="${right ? lx + 6 : lx - 6}" y="18" text-anchor="${right ? 'start' : 'end'}" font-size="12" font-weight="600" fill="var(--ink)">Pass mark ${num(pass)}</text>`;
   }
   g += `<line x1="${padL}" x2="${W - padR}" y1="${H - bottom}" y2="${H - bottom}" stroke="var(--line)"/>`;
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Number of students at each score">${g}</svg>`;
@@ -589,6 +602,13 @@ function bandsHTML(s) {
   const bar = s.bands.map(b => `<div style="width:${b.count / n * 100}%;background:${b.color}" title="${esc(b.label)}: ${b.count}"></div>`).join('');
   const leg = s.bands.map(b => `<span><i style="background:${b.color}"></i>${esc(b.label)}: <b>${b.count}</b> (${pct(b.count / n * 100)})</span>`).join('');
   return `<div class="bandbar" aria-hidden="true">${bar}</div><div class="legend">${leg}</div>`;
+}
+function reasonsHTML(A) {
+  const s = A.all;
+  if (!A.hasNA || !s.notAtt) return '';
+  const rows = Object.entries(s.reasons).sort((a, b) => b[1] - a[1]);
+  const bars = rows.map(([k, v]) => `<div class="rsn"><span>${esc(k)}</span><b><i style="width:${(v / s.notAtt * 100).toFixed(1)}%"></i></b><em>${v} <small>(${pct(v / s.notAtt * 100)})</small></em></div>`).join('');
+  return `<div class="sec"><h2>Why students did not attempt</h2><p class="cap">${s.notAtt} of ${s.registered} registered students did not attempt, from the Not Attempted file's last activity.</p><div class="rsns">${bars}</div></div>`;
 }
 function kpisHTML(A) {
   const {max, pass} = state.meta, s = A.all, k = [];
@@ -689,6 +709,8 @@ function renderShell() {
           </label>
           <button class="btn alt" id="dl-group">Download group report (PDF)</button>
           <button class="btn alt" id="dl-zip">Download all reports (ZIP)</button>
+          <button class="btn alt" id="dl-xlsx">Download Excel summary</button>
+          <button class="btn alt" id="copy-sum">Copy summary text</button>
         </div>
         <p class="hint" id="dl-status" role="status"></p>
       </div>
@@ -704,6 +726,7 @@ function renderMain() {
     <div class="titleblock"><h1>${esc(m.testName || 'Test')} report</h1><p>${esc(sub || 'Add the college name and date in Report details.')}</p></div>
     ${note}
     <div class="kpis">${kpisHTML(A)}</div>
+    ${reasonsHTML(A)}
     <div class="hero">
       <h2>How scores are spread</h2>
       <p class="cap">Number of students at each score. Green bars are at or above the pass mark.</p>
@@ -1109,6 +1132,73 @@ function makeZip(files) {
   end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true); end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
   return new Blob([...chunks, ...central, new Uint8Array(end.buffer)], {type: 'application/zip'});
 }
+/* ------------------------------------------------------------------ xlsx writer (no dependencies, uses makeZip) */
+const xmlEsc = v => String(v ?? '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const colName = i => { let s = ''; i++; while (i) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; };
+function makeXlsx(sheets) {
+  const enc = new TextEncoder(), files = [];
+  const add = (name, text) => files.push({name, data: enc.encode(text)});
+  add('[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>' + sheets.map((_, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('') + '</Types>');
+  add('_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>');
+  add('xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>' + sheets.map((sh, i) => `<sheet name="${xmlEsc(sh.name.replace(/[\[\]:*?\/\\]/g, ' ').slice(0, 31))}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join('') + '</sheets></workbook>');
+  add('xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + sheets.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('') + `<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`);
+  add('xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEBF0FF"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>');
+  sheets.forEach((sh, i) => {
+    const widths = [];
+    sh.rows.forEach(r => r.forEach((v, c) => { widths[c] = Math.min(48, Math.max(widths[c] || 8, String(v ?? '').length + 2)); }));
+    const cols = widths.length ? '<cols>' + widths.map((w, c) => `<col min="${c + 1}" max="${c + 1}" width="${w}" customWidth="1"/>`).join('') + '</cols>' : '';
+    const body = sh.rows.map((r, ri) => `<row r="${ri + 1}">` + r.map((v, ci) => {
+      const ref = colName(ci) + (ri + 1), st = ri === 0 || (sh.boldCol0 && ci === 0) ? ' s="1"' : '';
+      if (v === null || v === undefined || v === '') return '';
+      return typeof v === 'number' && isFinite(v) ? `<c r="${ref}"${st}><v>${v}</v></c>` : `<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${xmlEsc(v)}</t></is></c>`;
+    }).join('') + '</row>').join('');
+    const freeze = sh.freeze ? '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>' : '';
+    add(`xl/worksheets/sheet${i + 1}.xml`, `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${freeze}${cols}<sheetData>${body}</sheetData></worksheet>`);
+  });
+  return new Blob([makeZip(files)], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+const r1n = x => Math.round(x * 10) / 10;
+function excelSummary() {
+  const A = state.A, m = state.meta, {max, pass} = m, s = A.all;
+  const sum = [['Item', 'Value'],
+    ['Test', m.testName || 'Test'], ['College', m.college], ['Batch', m.batch], ['Test date', m.date ? prettyDate(m.date) : ''],
+    ['Maximum marks', max], ['Pass mark', pass]];
+  if (A.hasNA) sum.push(['Registered', s.registered], ['Attempted', s.n], ['Not attempted', s.notAtt], ['Participation %', r1n(s.part)]);
+  else sum.push(['Attempted', s.n]);
+  sum.push(['Average score', r1n(s.avg)], ['Average %', r1n(s.avgPct)], ['Median score', r1n(s.median)], ['Highest', s.hi], ['Lowest', s.lo],
+    ['Pass rate %', r1n(s.passRate)], ['At or above pass mark', s.passCount], ['Below pass mark', s.below], ['Full marks', s.full],
+    ['Prepared by', m.preparedBy], ['Generated', new Date().toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'})]);
+  const groups = [['Group', ...(A.hasNA ? ['Registered'] : []), 'Attempted', ...(A.hasNA ? ['Not attempted', 'Participation %'] : []), 'Average', 'Average %', 'Pass rate %', 'Full marks', 'Below pass']];
+  A.groups.forEach(g => groups.push([g.label, ...(A.hasNA ? [g.st.registered] : []), g.st.n, ...(A.hasNA ? [g.st.notAtt, r1n(g.st.part)] : []),
+    g.st.n ? r1n(g.st.avg) : '', g.st.n ? r1n(g.st.avgPct) : '', g.st.n ? r1n(g.st.passRate) : '', g.st.full, g.st.below]));
+  const ranked = rankStudents(state.att), rank = new Map(ranked.map(a => [a, a.rank]));
+  const studs = [['Rank', 'Member ID', 'Name', 'Email', 'Group', 'Score', 'Out of', 'Score %', 'Result']];
+  [...state.att].sort((a, b) => cmpNat(a.group, b.group) || b.score - a.score || cmpNat(a.name, b.name))
+    .forEach(a => studs.push([rank.get(a), a.id, a.name, a.email, groupLabel(a.group), a.score, max, max ? r1n(a.score / max * 100) : '', a.score >= pass ? 'Pass' : 'Below pass']));
+  const sheets = [{name: 'Summary', rows: sum, boldCol0: true}, {name: 'Groups', rows: groups, freeze: true}, {name: 'Students', rows: studs, freeze: true}];
+  if (A.hasNA) {
+    const na = [['Member ID', 'Name', 'Email', 'Group', 'Last activity']];
+    [...state.na].sort((a, b) => cmpNat(a.group, b.group) || cmpNat(a.name, b.name)).forEach(a => na.push([a.id, a.name, a.email, groupLabel(a.group), a.reason]));
+    sheets.push({name: 'Not attempted', rows: na, freeze: true});
+  }
+  return makeXlsx(sheets);
+}
+function summaryText() {
+  const A = state.A, m = state.meta, {max, pass} = m, s = A.all;
+  const head = [m.testName || 'Test report', m.college, m.batch && `Batch ${m.batch}`, m.date && prettyDate(m.date)].filter(Boolean).join(' | ');
+  const line = [A.hasNA ? `Registered ${s.registered}` : '', `Attempted ${s.n}${A.hasNA ? ` (${pct(s.part)})` : ''}`,
+    `Average ${num(s.avg)}/${num(max)} (${pct(s.avgPct)})`, `Pass rate ${pct(s.passRate)} at pass mark ${num(pass)}`].filter(Boolean).join(' | ');
+  const groups = A.groups.length > 1 ? '\n\nGroups (average, pass rate' + (A.hasNA ? ', attempted' : '') + '):\n' +
+    [...A.groups].filter(g => g.st.n).sort((a, b) => b.st.avg - a.st.avg)
+      .map(g => `- ${g.label}: ${num(g.st.avg)}/${num(max)}, ${pct(g.st.passRate)}` + (A.hasNA ? `, ${pct(g.st.part)}` : '')).join('\n') : '';
+  return `${head}\n${line}\n\nKey insights:\n${insightsAll(A).map(t => '- ' + t).join('\n')}${groups}`;
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) {
+    const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e2) {} ta.remove(); return ok;
+  }
+}
 function download(blob, name) {
   const url = URL.createObjectURL(blob), a = document.createElement('a');
   a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
@@ -1141,7 +1231,7 @@ document.addEventListener('input', e => {
   if (k === 'max' || k === 'pass') {
     const v = parseFloat(t.value); if (!(v >= 0)) return;
     state.meta[k] = v; reanalyze(); renderMain();
-  } else { state.meta[k] = t.value; if (k === 'testName' || k === 'college' || k === 'batch' || k === 'date') renderMainTitle(); }
+  } else { state.meta[k] = t.value; remember(k, t.value.trim()); if (k === 'testName' || k === 'college' || k === 'batch' || k === 'date') renderMainTitle(); }
 });
 function renderMainTitle() {
   const m = state.meta, tb = $('.titleblock'); if (!tb) return;
@@ -1155,6 +1245,8 @@ document.addEventListener('click', e => {
   else if (t.id === 'more') { state.filter.limit += 200; $('#stbl').innerHTML = studentsHTML(); }
   else if (t.id === 'dl-all') withBusy(t, async say => { say('Building the college summary...'); const b = await buildPdf(null); download(new Blob([b], {type: 'application/pdf'}), `${baseName()}_College_Summary.pdf`); });
   else if (t.id === 'dl-group') withBusy(t, async say => { const key = $('#grp-select').value, g = state.A.groups.find(x => x.key === key); say(`Building ${g.label}...`); const b = await buildPdf(key); download(new Blob([b], {type: 'application/pdf'}), `${baseName()}_${safeName(g.label)}_Report.pdf`); });
+  else if (t.id === 'dl-xlsx') withBusy(t, async say => { say('Building the Excel summary...'); await new Promise(r => setTimeout(r, 0)); download(excelSummary(), `${baseName()}_Summary.xlsx`); });
+  else if (t.id === 'copy-sum') { copyText(summaryText()).then(ok => { const st = $('#dl-status'); if (st) st.textContent = ok ? 'Summary copied. Paste it into WhatsApp or email.' : 'Could not copy here. Select the key insights on the page instead.'; }); }
   else if (t.id === 'dl-zip') withBusy(t, async say => {
     const files = [], A = state.A;
     say('Building the college summary...'); files.push({name: `${baseName()}_College_Summary.pdf`, data: await buildPdf(null)});
