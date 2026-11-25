@@ -144,10 +144,13 @@
     let onScreen = true;
     new IntersectionObserver(es => { onScreen = es[0].isIntersecting; }).observe(tl);
     const wait = ms => new Promise(r => setTimeout(r, ms));
-    const light = st => { st.classList.remove('lit'); void st.offsetWidth; st.classList.add('lit'); setTimeout(() => st.classList.remove('lit'), 1500); };
+    const light = st => { st.classList.remove('lit'); void st.offsetWidth; st.classList.add('lit'); setTimeout(() => st.classList.add('done'), 350); setTimeout(() => st.classList.remove('lit'), 1500); };
     const centres = () => steps.map(st => { const n = st.querySelector('.n'); return st.offsetLeft + n.offsetLeft + n.offsetWidth / 2; });
     (async function loop() {
       while (!onScreen || document.hidden) await wait(500);
+      // reset the ticks, then let the comet earn them again
+      steps.forEach((st, i) => setTimeout(() => st.classList.remove('done'), i * 90));
+      await wait(500);
       const flat = line && getComputedStyle(line).display !== 'none';
       if (!flat) {                       // stacked on phones: light the steps in turn
         for (const st of steps) { light(st); await wait(900); }

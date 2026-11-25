@@ -136,8 +136,27 @@
 .tl .st.lit .n{animation:npop .6s cubic-bezier(.34,1.56,.64,1)}
 @keyframes nring{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
 @keyframes npop{40%{transform:scale(1.15)}}
-.tl .st h3{padding-right:66px}
-.tl .ill{position:absolute;top:16px;right:18px;width:56px;height:48px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+/* centred step cards: big sketch on top, one line of copy, a speed chip */
+.tl .st{text-align:center;display:flex;flex-direction:column;align-items:center;padding:34px 22px 24px}
+.tl .st .art{position:relative;width:150px;height:118px;display:grid;place-items:center;margin-bottom:6px}
+.tl .st .art::before{content:"";position:absolute;inset:6px 14px;border-radius:50%;background:radial-gradient(closest-side,var(--art-glow,rgba(255,201,77,.18)),transparent);transition:transform .5s,opacity .5s}
+.tl .st:nth-child(4){--art-glow:rgba(79,124,255,.22);--chip:#8FA9FF;--chip-bg:rgba(79,124,255,.12)}
+.tl .st:nth-child(5){--art-glow:rgba(25,195,156,.2);--chip:var(--mint-ink);--chip-bg:rgba(25,195,156,.12)}
+.tl .st.lit .art::before{transform:scale(1.2)}
+.tl .st h3{margin:4px 0 6px}
+.tl .st p{max-width:34ch}
+.chip-t{display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--chip,var(--gold));background:var(--chip-bg,rgba(242,140,40,.12));border:1px solid currentColor;border-color:color-mix(in srgb,currentColor 35%,transparent)}
+.chip-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* the number turns into a tick once the comet has passed */
+.tl .st .n b,.tl .st .n .tick{grid-area:1/1;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s}
+.tl .st .n .tick{width:20px;height:20px;fill:none;stroke:#05261D;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.3) rotate(-45deg)}
+.tl .st .n{transition:background .4s,box-shadow .4s}
+.tl .st.done .n{background:linear-gradient(135deg,#7CF0D2,var(--mint));box-shadow:0 0 22px -4px var(--mint)}
+.tl .st.done .n b{opacity:0;transform:scale(.3)}
+.tl .st.done .n .tick{opacity:1;transform:none}
+.tl .st.done .n::after{border-color:var(--mint-ink)}
+
+.tl .ill{position:relative;width:104px;height:89px;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
 /* 1: a sheet drops into the tray */
 .ill.i1 .tray{stroke:var(--gold)}
 .ill.i1 .doc rect{fill:rgba(255,201,77,.14);stroke:var(--gold)}
