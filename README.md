@@ -35,6 +35,16 @@ shared/hub.css          Styles for the home and landing pages
 apps/course-insights/   React source for Course Insights
 ```
 
+## Deploy on Vercel
+
+1. Push this folder to a GitHub repo.
+2. In Vercel: **Add New → Project → Import** the repo.
+3. Framework Preset: **Other**. Leave Build Command and Output Directory empty. Click **Deploy**.
+
+`vercel.json` adds security headers and long caching for the Course Insights build files.
+`.vercelignore` keeps the React source in `apps/` out of the deployment. After changing
+Course Insights, rebuild it (see below) and commit `courses/insights/` before pushing.
+
 ## Publish on GitHub Pages
 
 1. Push this folder to a new repo (for example `reports-hub`).
