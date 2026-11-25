@@ -3,7 +3,8 @@
            data-items=".kpi,.sec"        report cards that rise in when a report first appears
            data-count=".kpi .v"          numbers that count up at the same moment
            data-drop=".drop"></script>   upload zones that react to drag and drop
-   Also shows a small spinning-sun badge while a PDF or ZIP is being built.
+   Also shows a small spinning-sun badge while a PDF or ZIP is being built, and celebrates
+   each finished download with sparks from the button and a "Downloaded" chip.
    Re-renders while typing or filtering do not replay anything; loading a new file does.
    With reduced motion: no movement, but the busy badge still appears (without spinning). */
 (function () {
@@ -31,8 +32,16 @@
     '.ct-busy img{width:34px;height:34px;flex:none;filter:drop-shadow(0 0 10px rgba(242,140,40,.7));animation:ctSpin 2.4s linear infinite}' +
     '.ct-busy span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
     '@keyframes ctSpin{to{transform:rotate(360deg)}}' +
+    '.ct-done{position:fixed;right:20px;bottom:20px;z-index:10000;display:flex;align-items:center;gap:12px;padding:10px 18px 10px 10px;' +
+      'border-radius:999px;background:rgba(10,34,30,.94);border:1px solid rgba(95,224,191,.45);color:#E8ECF8;font:600 14px/1.3 Inter,system-ui,sans-serif;' +
+      'box-shadow:0 18px 50px -18px rgba(0,0,0,.8),0 0 30px -8px rgba(25,195,156,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);max-width:calc(100vw - 40px)}' +
+    '.ct-done i{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#5FE0BF,#19C39C);color:#05261D;box-shadow:0 0 16px rgba(25,195,156,.7)}' +
+    '.ct-done i svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}' +
+    '.ct-done span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ct-done small{display:block;font-weight:500;font-size:12px;color:#98A3C2}' +
+    '.ct-spark{position:fixed;left:0;top:0;z-index:10001;pointer-events:none;border-radius:50%}' +
+    '.ct-ring{position:fixed;left:0;top:0;z-index:10001;pointer-events:none;border-radius:50%;border:2px solid rgba(255,201,77,.85);box-shadow:0 0 20px rgba(242,140,40,.6)}' +
     '@media(prefers-reduced-motion:reduce){.ct-ants rect,.ct-busy img{animation:none}}' +
-    '@media print{.ct-busy,.ct-ants,.ct-scan{display:none!important}}';
+    '@media print{.ct-busy,.ct-ants,.ct-scan,.ct-done,.ct-spark,.ct-ring{display:none!important}}';
   document.head.appendChild(css);
 
   var visible = function (el) { return el.offsetParent !== null || getComputedStyle(el).position === 'fixed'; };
@@ -120,9 +129,9 @@
 
   /* ---------- 3. busy badge while PDFs / ZIPs are built ---------- */
   var BUSY = /^(Preparing|Building|Generating|Adding)\b/;
-  var badge = null;
+  var badge = null, leaving = null;
   function syncBusy() {
-    var src = all('button,[role="status"]').filter(function (el) { return !el.closest('.ct-busy') && BUSY.test((el.textContent || '').trim()); })[0];
+    var src = Date.now() < doneUntil ? null : all('button,[role="status"]').filter(function (el) { return !el.closest('.ct-busy') && BUSY.test((el.textContent || '').trim()); })[0];
     if (src) {
       var text = src.textContent.trim().replace(/\.\.\.$/, '…');
       if (!badge) {
@@ -133,10 +142,111 @@
       }
       if (badge.lastChild.textContent !== text) badge.lastChild.textContent = text;
     } else if (badge) {
-      var b = badge; badge = null;
+      var b = badge; badge = null; leaving = b;
       if (moving) A.animate(b, {opacity: [1, 0], translateY: [0, 10], duration: 300, ease: 'inQuad', onComplete: function () { b.remove(); }});
       else b.remove();
     }
+  }
+
+  /* ---------- 4. celebrate a finished download ----------
+     Every tool saves through an <a download> (a.click() or a dispatched click, as jsPDF does),
+     so watching those catches PDFs, ZIPs and Excel files alike. Sparks fly from the button you
+     pressed and a "Downloaded" chip replaces the busy badge for a moment. */
+  var doneUntil = 0, lastBtn = null, lastBtnAt = 0, toast = null, toastTimer = 0, burstAt = 0, files = [];
+  document.addEventListener('click', function (e) {
+    if (!e.isTrusted || !e.target.closest) return;
+    var a = e.target.closest('a[download]');
+    if (a) { downloaded(a); return; }
+    var b = e.target.closest('button,[role="button"],.btn');
+    if (b) { lastBtn = b; lastBtnAt = Date.now(); }
+  }, true);
+  var AP = HTMLAnchorElement.prototype, nativeClick = AP.click;
+  AP.click = function () { downloaded(this); return nativeClick.apply(this, arguments); };
+  AP.dispatchEvent = function (ev) {
+    if (ev && ev.type === 'click' && !ev.isTrusted) downloaded(this);
+    return EventTarget.prototype.dispatchEvent.call(this, ev);
+  };
+
+  function downloaded(a) {
+    if (!a || !a.hasAttribute || !a.hasAttribute('download')) return;
+    var name = a.getAttribute('download') || 'file';
+    var now = Date.now();
+    if (now - burstAt > 2500) files = [];
+    if (files.indexOf(name) < 0) files.push(name);
+    showToast();
+    if (now - burstAt > 1500) { burstAt = now; sparks(); }
+  }
+
+  function originRect() {
+    var b = lastBtn;
+    if (b && b.isConnected && Date.now() - lastBtnAt < 120000) {
+      var r = b.getBoundingClientRect();
+      if (r.width && r.bottom > 0 && r.top < innerHeight) return r;
+    }
+    return null;
+  }
+
+  function sparks() {
+    if (!moving) return;
+    var r = originRect(), cx, cy;
+    if (r) { cx = r.left + r.width / 2; cy = r.top + r.height / 2; }
+    else { cx = innerWidth - 60; cy = innerHeight - 40; }
+    // a glow ring that hugs the button's own shape and grows out ~18px on every side
+    var ring = document.createElement('span'); ring.className = 'ct-ring';
+    var rw = r ? r.width : 48, rh = r ? r.height : 48;
+    ring.style.width = rw + 'px'; ring.style.height = rh + 'px';
+    ring.style.left = (cx - rw / 2) + 'px'; ring.style.top = (cy - rh / 2) + 'px';
+    ring.style.borderRadius = r && lastBtn ? (getComputedStyle(lastBtn).borderRadius || '12px') : '50%';
+    document.body.appendChild(ring);
+    A.animate(ring, {scaleX: [1, 1 + 36 / rw], scaleY: [1, 1 + 36 / rh], opacity: [1, 0], duration: 750, ease: 'outCubic', onComplete: function () { ring.remove(); }});
+    var cols = ['#FFC94D', '#F28C28', '#FFB547', '#5FE0BF', '#8FA9FF', '#FFFFFF'];
+    for (var i = 0; i < 30; i++) {
+      var s = document.createElement('span'); s.className = 'ct-spark';
+      var size = 5 + Math.random() * 5, ang = Math.random() * Math.PI * 2, dist = 60 + Math.random() * 100;
+      var c = cols[i % cols.length];
+      s.style.width = size + 'px'; s.style.height = (i % 3 ? size : size * 2.2) + 'px';
+      if (!(i % 3)) s.style.borderRadius = '2px';
+      s.style.background = c; s.style.boxShadow = '0 0 8px ' + c;
+      s.style.left = (cx - size / 2) + 'px'; s.style.top = (cy - size / 2) + 'px';
+      document.body.appendChild(s);
+      (function (el) {
+        A.animate(el, {
+          translateX: [0, Math.cos(ang) * dist], translateY: [0, Math.sin(ang) * dist + 30],
+          rotate: [0, (Math.random() - .5) * 540], scale: [1, 0.2], opacity: [1, 0],
+          duration: 800 + Math.random() * 600, ease: 'outExpo', onComplete: function () { el.remove(); }
+        });
+      })(s);
+    }
+    if (r && lastBtn) A.animate(lastBtn, {scale: [1, 0.95, 1.05, 1], duration: 520, ease: 'outQuad', onComplete: function () { lastBtn.style.transform = ''; }});
+  }
+
+  function showToast() {
+    doneUntil = Date.now() + 2800;
+    var fresh = !toast;
+    if (fresh) {
+      toast = document.createElement('div'); toast.className = 'ct-done'; toast.setAttribute('role', 'status');
+      toast.innerHTML = '<i><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><span></span>';
+      document.body.appendChild(toast);
+    }
+    if (badge) { badge.remove(); badge = null; }  // the chip takes the badge's place at once
+    if (leaving) { leaving.remove(); leaving = null; }
+    var label = toast.lastChild;
+    label.textContent = '';
+    label.appendChild(document.createTextNode(files.length > 1 ? 'Downloaded ' + files.length + ' files' : 'Downloaded'));
+    var sm = document.createElement('small'); sm.textContent = files.length > 1 ? files[files.length - 1] : files[0];
+    label.appendChild(sm);
+    syncBusy();
+    if (fresh && moving) {
+      A.animate(toast, {opacity: [0, 1], translateY: [16, 0], scale: [0.9, 1], duration: 500, ease: 'outBack(1.8)'});
+      A.animate(toast.firstChild, {scale: [0, 1], rotate: [-90, 0], duration: 650, delay: 120, ease: 'outBack(2.2)'});
+    }
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      var t = toast; toast = null; doneUntil = 0;
+      var done = function () { t.remove(); check(); };
+      if (moving) A.animate(t, {opacity: [1, 0], translateY: [0, 10], duration: 300, ease: 'inQuad', onComplete: done});
+      else done();
+    }, 2800);
   }
 
   new MutationObserver(function () { if (!queued) { queued = true; requestAnimationFrame(check); } })

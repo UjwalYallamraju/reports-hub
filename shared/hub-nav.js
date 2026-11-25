@@ -10,6 +10,19 @@
   var sticky = me.getAttribute('data-sticky') === 'on';
   var fade = me.getAttribute('data-fade') !== 'off';
 
+  /* time of day: the sun shifts colour through the day (html[data-tod]).
+     morning 5-11 gold · midday 11-16 white-hot · evening 16-19 amber · night 19-5 ember.
+     ?tod=night (etc.) in the URL previews a phase. */
+  var TOD = ['morning', 'midday', 'evening', 'night'];
+  function tod() {
+    var f = (/[?&]tod=(\w+)/.exec(location.search) || [])[1];
+    if (TOD.indexOf(f) >= 0) return f;
+    var h = new Date().getHours();
+    return h >= 5 && h < 11 ? 'morning' : h >= 11 && h < 16 ? 'midday' : h >= 16 && h < 19 ? 'evening' : 'night';
+  }
+  function setTod() { var t = tod(); if (document.documentElement.getAttribute('data-tod') !== t) document.documentElement.setAttribute('data-tod', t); }
+  setTod(); setInterval(setTod, 5 * 60 * 1000);
+
   var css =
     '.hubnav{all:initial;display:block;position:' + (sticky ? 'sticky' : 'relative') + ';top:0;z-index:50;' +
       (sticky ? 'background:rgba(11,16,32,.86);-webkit-backdrop-filter:saturate(160%) blur(14px);backdrop-filter:saturate(160%) blur(14px);' : 'background:#0B1020;') +
@@ -24,6 +37,9 @@
     '.hubnav a.hub-brand:hover{background:none}' +
     '.hubnav .hub-mark{width:34px;height:34px;display:block;filter:drop-shadow(0 0 10px rgba(242,140,40,.55));transition:transform .6s cubic-bezier(.2,.8,.2,1)}' +
     '.hubnav a.hub-brand:hover .hub-mark{transform:rotate(45deg)}' +
+    '[data-tod="midday"] .hubnav .hub-mark{filter:brightness(1.12) saturate(.9) drop-shadow(0 0 12px rgba(255,230,170,.7))}' +
+    '[data-tod="evening"] .hubnav .hub-mark{filter:hue-rotate(-10deg) saturate(1.2) drop-shadow(0 0 10px rgba(240,110,40,.65))}' +
+    '[data-tod="night"] .hubnav .hub-mark{filter:hue-rotate(-18deg) saturate(1.15) brightness(.9) drop-shadow(0 0 10px rgba(220,80,40,.6))}' +
     '@media(prefers-reduced-motion:reduce){.hubnav .hub-mark{transition:none}}' +
     '.hubnav .hub-name b{background:linear-gradient(100deg,#8FA9FF,#5FE0BF);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}' +
     '.hubnav .hub-links{display:flex;gap:4px;margin-left:auto}' +

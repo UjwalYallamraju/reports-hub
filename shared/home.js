@@ -12,6 +12,22 @@
     t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
     t.style.setProperty('--my', (e.clientY - r.top) + 'px');
   }));
+  // greeting that follows the clock (the sun's colour follows html[data-tod], set by hub-nav.js)
+  const kicker = document.querySelector('.hx .kicker');
+  const greet = () => {
+    if (!kicker) return;
+    const f = (/[?&]tod=(\w+)/.exec(location.search) || [])[1];
+    const h = {morning: 8, midday: 14, evening: 18, night: 22}[f] ?? new Date().getHours();
+    const msg = h >= 5 && h < 12 ? ['Good morning', 'ready for this week\u2019s results?']
+      : h >= 12 && h < 17 ? ['Good afternoon', 'let\u2019s turn exports into reports']
+      : h >= 17 && h < 21 ? ['Good evening', 'ready for this week\u2019s results?']
+      : ['Working late?', 'reports in a minute, then rest'];
+    const text = msg[0] + ' \u00b7 ' + msg[1];
+    const node = [...kicker.childNodes].find(n => n.nodeType === 3 && n.data.trim());
+    if (node && node.data !== text) node.data = text;
+  };
+  greet(); setInterval(greet, 5 * 60 * 1000);
+
   if (!motion) return;
   const {animate, stagger, svg: S} = A;
 

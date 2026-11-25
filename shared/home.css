@@ -5,18 +5,34 @@
    COLOUR  deep navy ground; sun orange + gold as the warm lead, blue for Tests, mint for Courses
    TYPE    Sora headings, Inter text
    LAYOUT  hero split, feature ticker, bento grid of tools, drawn timeline, closing call to action */
-:root{--sun:#F28C28;--gold:#FFC94D;--sun-soft:rgba(242,140,40,.16)}
+:root{--sun:#F28C28;--gold:#FFC94D;--sun-soft:rgba(242,140,40,.16);
+  --glow-a:rgba(255,180,70,.55);--glow-b:rgba(242,140,40,.18);--sun-shadow:rgba(242,140,40,.65);--sun-tint:none;--warm-blob:#C45A12;--warm-op:.32}
+/* the sun through the day (html[data-tod] is set by hub-nav.js) */
+[data-tod="morning"]{--glow-a:rgba(255,205,110,.55);--glow-b:rgba(255,170,60,.16);--sun-shadow:rgba(255,190,80,.6);--sun-tint:saturate(1.05) brightness(1.04);--warm-blob:#C9771C}
+[data-tod="midday"]{--glow-a:rgba(255,246,220,.72);--glow-b:rgba(255,205,120,.24);--sun-shadow:rgba(255,232,175,.85);--sun-tint:brightness(1.16) saturate(.88);--warm-blob:#D08A2A;--warm-op:.36}
+[data-tod="evening"]{--glow-a:rgba(255,138,50,.62);--glow-b:rgba(230,90,30,.24);--sun-shadow:rgba(240,110,40,.78);--sun-tint:hue-rotate(-10deg) saturate(1.22);--warm-blob:#B8460E;--warm-op:.4}
+[data-tod="night"]{--glow-a:rgba(255,112,60,.46);--glow-b:rgba(180,60,40,.22);--sun-shadow:rgba(220,80,40,.62);--sun-tint:hue-rotate(-18deg) saturate(1.15) brightness(.88);--warm-blob:#8A2E14;--warm-op:.36}
+.aurora i,.orbit .glow,.orbit .sun,.orbit .sun img{transition:background 1.5s,filter 1.5s,opacity 1.5s}
 
 /* living background */
 .aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:var(--bg)}
 .aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.42;will-change:transform}
 .aurora i:nth-child(1){width:60vmax;height:60vmax;left:-18vmax;top:-26vmax;background:radial-gradient(circle,#2B4BD6,transparent 65%);animation:drift1 26s ease-in-out infinite alternate}
-.aurora i:nth-child(2){width:52vmax;height:52vmax;right:-20vmax;top:10vmax;background:radial-gradient(circle,#C45A12,transparent 62%);opacity:.32;animation:drift2 32s ease-in-out infinite alternate}
+.aurora i:nth-child(2){width:52vmax;height:52vmax;right:-20vmax;top:10vmax;background:radial-gradient(circle,var(--warm-blob),transparent 62%);opacity:var(--warm-op);animation:drift2 32s ease-in-out infinite alternate}
 .aurora i:nth-child(3){width:58vmax;height:58vmax;left:20vmax;bottom:-34vmax;background:radial-gradient(circle,#0E8F74,transparent 65%);opacity:.3;animation:drift3 28s ease-in-out infinite alternate}
 .aurora .grid{opacity:.4}
 @keyframes drift1{to{transform:translate(12vmax,8vmax) scale(1.1)}}
 @keyframes drift2{to{transform:translate(-10vmax,12vmax) scale(.92)}}
 @keyframes drift3{to{transform:translate(-8vmax,-10vmax) scale(1.08)}}
+
+/* night: a few stars come out */
+.aurora::before,.aurora::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity 2s;pointer-events:none}
+.aurora::before{background-image:radial-gradient(1px 1px at 33.1% 10.7%,rgba(255,255,255,.7),transparent),radial-gradient(1.5px 1.5px at 9.0% 33.1%,rgba(255,255,255,.8),transparent),radial-gradient(1.2px 1.2px at 57.9% 54.8%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 5.6% 27.2%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 25.1% 34.0%,rgba(255,255,255,.8),transparent),radial-gradient(1.2px 1.2px at 81.4% 9.2%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 62.5% 35.8%,rgba(255,255,255,.6),transparent),radial-gradient(1.2px 1.2px at 57.4% 25.0%,rgba(255,255,255,.5),transparent),radial-gradient(1.5px 1.5px at 6.5% 51.8%,rgba(255,255,255,.8),transparent),radial-gradient(1.5px 1.5px at 42.2% 33.4%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 55.8% 41.6%,rgba(255,255,255,.6),transparent),radial-gradient(1.5px 1.5px at 57.8% 39.1%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 11.4% 43.3%,rgba(255,255,255,.6),transparent),radial-gradient(1.8px 1.8px at 61.4% 30.8%,rgba(255,255,255,.6),transparent),radial-gradient(1.8px 1.8px at 76.6% 29.0%,rgba(255,255,255,.8),transparent),radial-gradient(1.2px 1.2px at 36.7% 16.4%,rgba(255,255,255,.8),transparent),radial-gradient(1.5px 1.5px at 69.1% 16.2%,rgba(255,255,255,.8),transparent),radial-gradient(1.8px 1.8px at 52.4% 52.8%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 29.6% 58.9%,rgba(255,255,255,.6),transparent),radial-gradient(1.5px 1.5px at 51.1% 11.6%,rgba(255,255,255,.8),transparent),radial-gradient(1px 1px at 16.6% 30.4%,rgba(255,255,255,.8),transparent),radial-gradient(1.5px 1.5px at 94.4% 6.5%,rgba(255,255,255,.7),transparent),radial-gradient(1.8px 1.8px at 34.7% 22.3%,rgba(255,255,255,.6),transparent),radial-gradient(1px 1px at 57.7% 28.5%,rgba(255,255,255,.8),transparent),radial-gradient(1px 1px at 92.7% 29.5%,rgba(255,255,255,.7),transparent),radial-gradient(1.8px 1.8px at 7.8% 42.7%,rgba(255,255,255,.8),transparent)}
+.aurora::after{background-image:radial-gradient(1.6px 1.6px at 96.7% 41.6%,rgba(255,236,200,.8),transparent),radial-gradient(1.2px 1.2px at 93.9% 10.8%,rgba(255,236,200,.8),transparent),radial-gradient(1.2px 1.2px at 16.5% 40.2%,rgba(255,236,200,.8),transparent),radial-gradient(1.6px 1.6px at 48.6% 36.2%,rgba(255,236,200,.8),transparent),radial-gradient(1.6px 1.6px at 29.1% 10.4%,rgba(255,236,200,.8),transparent),radial-gradient(1.2px 1.2px at 60.5% 20.5%,rgba(255,236,200,.8),transparent),radial-gradient(1.2px 1.2px at 68.3% 31.9%,rgba(255,236,200,.8),transparent),radial-gradient(1.6px 1.6px at 45.8% 52.5%,rgba(255,236,200,.8),transparent),radial-gradient(1.6px 1.6px at 40.2% 24.9%,rgba(255,236,200,.8),transparent),radial-gradient(1.2px 1.2px at 62.9% 5.6%,rgba(255,236,200,.8),transparent),radial-gradient(1.2px 1.2px at 96.5% 27.6%,rgba(255,236,200,.8),transparent),radial-gradient(1.2px 1.2px at 34.6% 5.0%,rgba(255,236,200,.8),transparent)}
+[data-tod="night"] .aurora::before{opacity:.9}
+[data-tod="night"] .aurora::after{opacity:.8;animation:twinkle 3.6s ease-in-out infinite alternate}
+@keyframes twinkle{0%{opacity:.15}100%{opacity:.9}}
+@media(prefers-reduced-motion:reduce){[data-tod="night"] .aurora::after{animation:none}}
 
 /* ---------- hero ---------- */
 .hx{padding:clamp(36px,6vw,80px) 0 clamp(24px,4vw,48px);overflow-x:clip}
@@ -39,9 +55,9 @@
 .orbit .ring.r2{--in:6%;border-style:solid;border-color:rgba(255,255,255,.07)}
 .orbit .ring.r2::after{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--sun)}
 .orbit .r2{animation:spin 40s linear infinite}
-.orbit .glow{position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle,rgba(255,180,70,.55),rgba(242,140,40,.18) 45%,transparent 70%);filter:blur(10px);animation:pulse 4.5s ease-in-out infinite}
-.orbit .sun{position:absolute;z-index:4;left:50%;top:50%;width:36%;max-width:200px;transform:translate(-50%,-50%) translate(calc(var(--px)*6px),calc(var(--py)*6px));filter:drop-shadow(0 0 30px rgba(242,140,40,.65))}
-.orbit .sun img{display:block;width:100%;height:auto;animation:spin 60s linear infinite}
+.orbit .glow{position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle,var(--glow-a),var(--glow-b) 45%,transparent 70%);filter:blur(10px);animation:pulse 4.5s ease-in-out infinite}
+.orbit .sun{position:absolute;z-index:4;left:50%;top:50%;width:36%;max-width:200px;transform:translate(-50%,-50%) translate(calc(var(--px)*6px),calc(var(--py)*6px));filter:drop-shadow(0 0 30px var(--sun-shadow))}
+.orbit .sun img{display:block;width:100%;height:auto;filter:var(--sun-tint);animation:spin 60s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{50%{transform:scale(1.08);opacity:.85}}
 
