@@ -125,7 +125,7 @@
     }, {passive: true});
   }
 
-  /* ---------- embers off the sun, and dust with depth behind the page (canvas) ---------- */
+  /* ---------- dust with depth behind the page (canvas) ---------- */
   const light = () => document.documentElement.getAttribute('data-mode') === 'light';
   const loopCanvas = (cv, setup, draw) => {
     if (!cv) return;
@@ -137,23 +137,6 @@
     new IntersectionObserver(es => { on = es[0].isIntersecting; if (on && !raf) raf = requestAnimationFrame(tick); }).observe(cv);
     document.addEventListener('visibilitychange', () => { if (!document.hidden && on && !raf) raf = requestAnimationFrame(tick); });
   };
-  // embers: rise from the sun's disc and drift outwards, fading
-  loopCanvas(orbit && orbit.querySelector('.embers'), (w, h, s) => s || {p: []}, (ctx, w, h, s) => {
-    const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.16;
-    if (s.p.length < 46 && Math.random() < 0.5) {
-      const a = Math.random() * Math.PI * 2;
-      s.p.push({x: cx + Math.cos(a) * R, y: cy + Math.sin(a) * R, vx: Math.cos(a) * (0.25 + Math.random() * 0.5), vy: Math.sin(a) * (0.25 + Math.random() * 0.5) - 0.15, life: 0, max: 90 + Math.random() * 110, r: 0.8 + Math.random() * 2});
-    }
-    ctx.globalCompositeOperation = light() ? 'source-over' : 'lighter';
-    s.p = s.p.filter(q => {
-      q.life++; q.x += q.vx; q.y += q.vy; q.vx *= 0.995; q.vy = q.vy * 0.995 - 0.004;
-      const k = 1 - q.life / q.max; if (k <= 0) return false;
-      const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r * 4);
-      g.addColorStop(0, `rgba(255,${180 + (q.r * 20 | 0)},90,${(0.85 * k).toFixed(3)})`); g.addColorStop(1, 'rgba(242,140,40,0)');
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, q.r * 4, 0, 6.283); ctx.fill();
-      return true;
-    });
-  });
   // dust: three depths of slow particles; nearer ones move more as you scroll
   loopCanvas(document.querySelector('.aurora .dust'), (w, h) => {
     const p = [];

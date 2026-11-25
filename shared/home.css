@@ -305,8 +305,6 @@
   -webkit-mask:radial-gradient(circle,#000 18%,transparent 66%);mask:radial-gradient(circle,#000 18%,transparent 66%);animation:spin 90s linear infinite}
 [data-tod="night"] .orbit .rays{opacity:.35}
 [data-tod="midday"] .orbit .rays{opacity:.7}
-/* embers drifting off the sun (drawn by home.js) */
-.orbit .embers{position:absolute;inset:-10%;width:120%;height:120%;pointer-events:none;z-index:3}
 /* floating dust with depth, behind the page (drawn by home.js) */
 .aurora .dust{position:absolute;inset:0;width:100%;height:100%}
 /* shimmer across the warm word */
@@ -326,4 +324,4 @@
 @keyframes fxSpinA{to{--fxa:360deg}}
 /* bento tiles: a light edge follows the tilt */
 .tile.fx-tilting{box-shadow:0 30px 60px -30px color-mix(in srgb,var(--accent) 80%,transparent),0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}
-@media(prefers-reduced-motion:reduce){.orbit .rays,.hx h1 .warm,.hx .btn.sun,.cta::after{animation:none}.orbit .embers,.aurora .dust{display:none}}
+@media(prefers-reduced-motion:reduce){.orbit .rays,.hx h1 .warm,.hx .btn.sun,.cta::after{animation:none}.aurora .dust{display:none}}
