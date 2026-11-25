@@ -299,5 +299,5 @@ document.addEventListener('paste',e=>{if(e.target.id==='ttl'){e.preventDefault()
 document.addEventListener('focusout',e=>{if(e.target.id==='ttl'&&!e.target.textContent.trim()){S.title='';render()}});
 setMode();render();
 </script><script src="../shared/vendor/anime.umd.min.js"></script>
-<script src="../shared/skin/motion.js" data-items="#cfg,#out .card"></script>
+<script src="../shared/skin/motion.js" data-items="#cfg,#out .card:not(.empty)" data-count="#out .kp .v" data-drop=".dz"></script>
 </body></html>

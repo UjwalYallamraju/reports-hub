@@ -253,7 +253,7 @@ function StatCard({ icon: Icon, label, value, sub, accent }) {
         <Icon size={14} />
         <span>{label}</span>
       </div>
-      <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 30, color: NAVY, marginTop: 6, fontWeight: 600 }}>
+      <div className="cip-kpi-v" style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 30, color: NAVY, marginTop: 6, fontWeight: 600 }}>
         {value}
       </div>
       {sub && <div style={{ fontSize: 12, color: SLATE, marginTop: 2 }}>{sub}</div>}
@@ -1037,6 +1037,7 @@ export default function CourseInsightsApp() {
 
               <div style={{ flex: "1 1 320px", minWidth: 280, display: "flex", flexDirection: "column" }}>
                 <div
+                  className="cip-drop"
                   onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                   onDragLeave={() => setDragOver(false)}
                   onDrop={onDrop}
@@ -1073,6 +1074,7 @@ export default function CourseInsightsApp() {
                     path always parses it as a password report using flexible column
                     matching, rather than relying on an exact "Created Time" header. */}
                 <div
+                  className="cip-drop"
                   onDragOver={(e) => { e.preventDefault(); setPasswordDragOver(true); }}
                   onDragLeave={() => setPasswordDragOver(false)}
                   onDrop={onPasswordDrop}
