@@ -534,9 +534,9 @@ function statusText(r){
 function buildPdf(jsPDF,A,cfg,img){
   const doc=new jsPDF({unit:'mm',format:'a4',compress:true});
   const W=210,H=297,M=14,CW=182,TOP=24,BOT=281,MM=0.3528;
-  const INK=[23,35,63],MUTED=[74,86,115],RULE=[220,225,236],PRI=[47,75,208],HEAD=[247,248,252];
-  const TINT={ex:[213,235,223],good:[230,241,217],avg:[251,239,203],low:[247,213,206]};
-  const DOT={good:[15,139,110],warn:[207,75,58],info:PRI};
+  const INK=[26,31,43],MUTED=[91,100,117],RULE=[228,231,236],PRI=[51,102,255],HEAD=[247,248,250];
+  const TINT={ex:[208,240,227],good:[226,245,236],avg:[252,237,212],low:[249,214,213]};
+  const DOT={good:[15,147,108],warn:[224,82,79],info:PRI};
   const T=s=>String(s==null?'':s).replace(/[\u2013\u2014\u2212]/g,'-').replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/\u2026/g,'..').replace(/\u00a0/g,' ').replace(/[^\x20-\x7E\u00A1-\u00FF]/g,'');
   const K=A.kpi;
   let y=0;
@@ -627,10 +627,10 @@ function buildPdf(jsPDF,A,cfg,img){
   else if(logo){by+=9;}
   font('times','bold',16);tc([255,255,255]);doc.text(tlines,M,by+3,{lineHeightFactor:1.15});
   by+=3+(tlines.length-1)*7.4+8;
-  font('helvetica','normal',9.5);tc([214,219,246]);
+  font('helvetica','normal',9.5);tc([201,214,255]);
   const bits=[cfg.batch?('Batch '+cfg.batch):'',cfg.scope,pl(K.T,'test'),pl(K.N,'student')].filter(Boolean);
   doc.text(T(bits.join('   |   ')),M,by);
-  font('helvetica','normal',8.5);tc([214,219,246]);
+  font('helvetica','normal',8.5);tc([201,214,255]);
   doc.text(T('Generated '+cfg.date),W-M,10,{align:'right'});
   y=bandH+9;
 
@@ -643,7 +643,7 @@ function buildPdf(jsPDF,A,cfg,img){
     [K.allAttended+'/'+K.N,'Attempted every test']
   ];
   const kw=CW/5;
-  fc([244,245,248]);doc.rect(M,y,CW,26,'F');
+  fc([245,247,249]);doc.rect(M,y,CW,26,'F');
   dc(INK);doc.setLineWidth(0.6);doc.line(M,y,W-M,y);
   kp.forEach((k,i)=>{
     const x=M+i*kw;
@@ -1115,17 +1115,6 @@ function setLogo(logo){
   const cl=$('#btnLogoClear');if(cl)cl.hidden=!logo;
 }
 async function saveFile(filename,blob){
-  let dl=null;
-  try{if(window.claude&&typeof window.claude.use==='function')dl=await window.claude.use('downloads');}catch(e){dl=null;}
-  if(dl){
-    try{await dl.save({filename,data:blob});toast('Saved '+filename);}
-    catch(e){
-      if(e&&e.code==='declined')toast('Download cancelled.');
-      else if(e&&e.code==='rate_limited')toast('Another save prompt is open. Finish it and try again.');
-      else toast('The file could not be saved here.');
-    }
-    return;
-  }
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
   toast('Downloaded '+filename);

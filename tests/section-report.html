@@ -834,12 +834,7 @@ async function downloadPdf(){
     const doc = buildPdf(), m = meta();
     const base = (m.test || state.fileName || 'test').replace(/[^\w\-]+/g,'_').replace(/^_+|_+$/g,'');
     const filename = `${base}_analysis_report.pdf`;
-    let dl = null;
-    try { if (window.claude && window.claude.use) dl = await window.claude.use('downloads'); } catch(e){}
-    if (dl) {
-      try { await dl.save({ filename, data: doc.output('blob') }); toast('PDF saved.'); }
-      catch(e){ if (!e || e.code !== 'declined') toast('The PDF could not be saved here. ' + ((e && e.message) || '')); }
-    } else { doc.save(filename); toast('PDF downloaded.'); }
+    doc.save(filename); toast('PDF downloaded.');
   } catch(e){ console.error(e); toast('Could not build the PDF: ' + e.message); }
   btn.disabled = false; btn.textContent = 'Download complete PDF';
 }
@@ -892,9 +887,6 @@ $('mSecApply').addEventListener('click', () => { const p = parseFloat($('mSecPct
 const slug = s => String(s).replace(/[^\w\-]+/g,'_').replace(/^_+|_+$/g,'') || 'group';
 const fileBase = () => (meta().test || state.fileName || 'test').replace(/[^\w\-]+/g,'_').replace(/^_+|_+$/g,'');
 async function saveBlob(blob, filename){
-  let dl = null;
-  try { if (window.claude && window.claude.use) dl = await window.claude.use('downloads'); } catch(e){}
-  if (dl) { try { await dl.save({ filename, data: blob }); return true; } catch(e){ if (!e || e.code !== 'declined') toast('Could not save here. ' + ((e && e.message) || '')); return false; } }
   const u = URL.createObjectURL(blob), l = document.createElement('a'); l.href = u; l.download = filename; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); return true;
 }
 const groupAnalysis = g => analyse(state.data.cutoffUsed, byGroup(state.data.cands).find(x => x[0] === g)[1], true);

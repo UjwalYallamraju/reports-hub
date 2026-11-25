@@ -98,8 +98,16 @@ function isFooterRow(row) {
 // plus filtered body rows (footer/blank rows stripped out).
 async function readWorkbookRows(file) {
   const buf = await file.arrayBuffer();
-  const wb = XLSX.read(buf, { type: "array" });
+  const wb = XLSX.read(buf, { type: "array", cellNF: true });
   const ws = wb.Sheets[wb.SheetNames[0]];
+  // A cell that shows "85%" in Excel can be stored as the number 0.85 with a
+  // percentage format. Read it as 85 so it matches text cells like "85.00".
+  Object.keys(ws).forEach((ref) => {
+    const cell = ws[ref];
+    if (ref[0] !== "!" && cell && cell.t === "n" && typeof cell.z === "string" && cell.z.includes("%")) {
+      cell.v = cell.v * 100;
+    }
+  });
   const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null, blankrows: false });
   if (!rows.length) throw new Error("Empty sheet");
   const header = rows[0].map((h) => (h === null ? "" : String(h).trim()));
@@ -668,8 +676,10 @@ export default function CourseInsightsApp() {
         const agg = branches[sec.branch].courseAgg.get(c.key) || {
           label: c.label, code: c.code, sumPct: 0, students: 0, notStarted: 0,
         };
-        agg.sumPct += c.avg * sec.studentCount;
-        agg.students += sec.studentCount;
+        // Weight by students the course is enabled for, not the whole section,
+        // so "--" (not enabled) students don't skew the branch average.
+        agg.sumPct += c.avg * c.enabledCount;
+        agg.students += c.enabledCount;
         agg.notStarted += c.notStartedCount;
         branches[sec.branch].courseAgg.set(c.key, agg);
       });
@@ -784,7 +794,7 @@ export default function CourseInsightsApp() {
 
   const toggleSection = (label) => setExpandedSections((p) => ({ ...p, [label]: !p[label] }));
 
-  // Printing/exporting directly from inside this sandboxed preview is unreliable,
+  // Printing straight from the app is unreliable in some browsers,
   // so instead we package the rendered report into a standalone HTML file the
   // person can open in a normal browser tab, where "Print / Save as PDF" always works.
   const downloadReport = () => {

@@ -1168,8 +1168,6 @@ for (const ev of ['dragover', 'dragenter']) document.addEventListener(ev, e => {
 for (const ev of ['dragleave', 'drop']) document.addEventListener(ev, e => { const d = e.target.closest && e.target.closest('.drop'); if (d) { e.preventDefault(); d.classList.remove('over'); if (ev === 'drop') handleFiles(e.dataTransfer.files); } });
 window.addEventListener('dragover', e => e.preventDefault()); window.addEventListener('drop', e => { if (!(e.target.closest && e.target.closest('.drop'))) e.preventDefault(); });
 
-// test hook (harmless in production)
-window.__trd = {state, buildPdf, handleFiles};
 render();
 })();
 </script>
