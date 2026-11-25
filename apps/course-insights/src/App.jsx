@@ -31,12 +31,13 @@ const AMBER = "#E8A33D";
 const AMBER_DEEP = "#B97A12";
 
 // Dark app shell around the light report "paper" (the report and its PDF/HTML exports stay light).
-const D_BG = "#0B1020";
-const D_TEXT = "#E8ECF8";
-const D_MUTED = "#98A3C2";
-const D_FIELD = "#0E1529";
-const D_LINE = "#2E3A5E";
-const D_PANEL = "rgba(255,255,255,0.04)";
+// Shell colours come from CSS variables (index.html) so the page follows light/dark mode.
+const D_BG = "var(--cip-bg)";
+const D_TEXT = "var(--cip-text)";
+const D_MUTED = "var(--cip-muted)";
+const D_FIELD = "var(--cip-field)";
+const D_LINE = "var(--cip-line)";
+const D_PANEL = "var(--cip-panel)";
 
 const COMPLETE_THRESHOLD = 99.5;
 
@@ -983,7 +984,7 @@ export default function CourseInsightsApp() {
   return (
     <div className="cip-shell" style={{
       fontFamily: "'Inter', -apple-system, sans-serif", minHeight: "100vh", color: D_TEXT, paddingBottom: 60,
-      background: `radial-gradient(900px 600px at 8% -10%, rgba(43,75,214,0.28), transparent 60%), radial-gradient(800px 600px at 100% 110%, rgba(14,143,116,0.2), transparent 60%), ${D_BG}`,
+      background: "var(--cip-shell)",
       backgroundAttachment: "fixed",
     }}>
       <style>{`
@@ -1009,7 +1010,7 @@ export default function CourseInsightsApp() {
       `}</style>
 
       {/* ---------- Upload / control zone (no-print) ---------- */}
-      <div className="no-print" style={{ background: "rgba(18,26,48,0.55)", borderBottom: "1px solid #232C48", backdropFilter: "blur(6px)" }}>
+      <div className="no-print" style={{ background: "var(--cip-bar)", borderBottom: "1px solid var(--cip-line2)", backdropFilter: "blur(6px)" }}>
         <div style={{ height: 3, background: `linear-gradient(90deg, transparent, ${GOLD_SOFT}, transparent)` }} />
         <div style={{ padding: "34px 32px 26px" }}>
           <div style={{ maxWidth: 1080, margin: "0 auto" }}>
@@ -1097,7 +1098,7 @@ export default function CourseInsightsApp() {
 
             {/* letterhead fields — college name & logo, set off from the masthead by a hairline */}
             <div style={{
-              borderTop: "1px solid #232C48", paddingTop: 18,
+              borderTop: "1px solid var(--cip-line2)", paddingTop: 18,
               display: "flex", gap: 20, flexWrap: "wrap",
             }}>
               <label style={{ display: "block", flex: "1 1 320px" }}>
@@ -1109,7 +1110,7 @@ export default function CourseInsightsApp() {
                   placeholder="e.g. Sreenidhi Institute of Science and Technology"
                   style={{
                     width: "100%", maxWidth: 420, padding: "8px 10px", borderRadius: 4,
-                    border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT, fontSize: 13.5,
+                    border: `1px solid ${D_LINE}`, background: D_FIELD, color: D_TEXT, fontSize: 13.5,
                   }}
                 />
               </label>
@@ -1129,7 +1130,7 @@ export default function CourseInsightsApp() {
                     onClick={() => logoInputRef.current?.click()}
                     style={{
                       background: D_PANEL, color: D_TEXT, fontSize: 12.5,
-                      border: "1px solid #2E3A5E", borderRadius: 4, padding: "7px 12px",
+                      border: `1px solid ${D_LINE}`, borderRadius: 4, padding: "7px 12px",
                     }}
                   >
                     {collegeLogo ? "Change logo" : "Upload logo"}
@@ -1216,7 +1217,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={threshold}
                       onChange={(e) => setThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: `1px solid ${D_LINE}`, background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
                   <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1224,7 +1225,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={threshold}
                       onChange={(e) => setThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: `1px solid ${D_LINE}`, background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
                   <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1232,7 +1233,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={avgMax}
                       onChange={(e) => setAvgMax(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: `1px solid ${D_LINE}`, background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
                   <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1240,7 +1241,7 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={goodMax}
                       onChange={(e) => setGoodMax(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: `1px solid ${D_LINE}`, background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
                   <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
@@ -1248,14 +1249,14 @@ export default function CourseInsightsApp() {
                     <input
                       type="number" min={0} max={100} value={courseRiskThreshold}
                       onChange={(e) => setCourseRiskThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: `1px solid ${D_LINE}`, background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
                 </div>
                 <label style={{
                   color: D_TEXT, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
                   background: includeStudentData ? "rgba(18,168,123,0.14)" : D_PANEL,
-                  border: `1px solid ${includeStudentData ? GOLD_SOFT : "#2E3A5E"}`, borderRadius: 4, padding: "6px 10px",
+                  border: `1px solid ${includeStudentData ? GOLD_SOFT : D_LINE}`, borderRadius: 4, padding: "6px 10px",
                 }}>
                   <input
                     type="checkbox" checked={includeStudentData}
@@ -1309,15 +1310,14 @@ export default function CourseInsightsApp() {
       {/* ---------- Report ---------- */}
       {!insights && (
         <div style={{ maxWidth: 560, margin: "56px auto", textAlign: "center" }}>
-          <div style={{ background: "rgba(18,26,48,0.7)", border: "1px solid #232C48", borderRadius: 16, padding: "40px 32px" }}>
-            <div style={{
-              width: 48, height: 48, borderRadius: "50%", border: `1.5px solid ${GOLD_SOFT}`,
-              display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px",
-            }}>
-              <FileSpreadsheet size={20} color={GOLD} />
-            </div>
+          <div style={{ background: "var(--cip-card)", border: "1px solid var(--cip-line2)", borderRadius: 16, padding: "40px 32px" }}>
+            <span className="ct-sleepy" aria-hidden="true">
+              <img src="../../shared/brand/logo-hero.png" alt="" />
+              <svg className="face" viewBox="0 0 100 100"><path d="M36 47q4.5 4.5 9 0M54 47q4.5 4.5 9 0" /><path d="M45.5 58q4 2.6 8 0" /></svg>
+              <i>z</i><i>z</i><i>Z</i>
+            </span>
             <div style={{ fontFamily: "'Sora', 'Inter', sans-serif", fontSize: 19, fontWeight: 600, color: D_TEXT, marginBottom: 8 }}>
-              Awaiting your first report
+              Nothing to report yet
             </div>
             <div style={{ fontSize: 13.5, color: D_MUTED, lineHeight: 1.75 }}>
               Upload at least one group-wise course report above to build the insights report. Every section
@@ -1330,7 +1330,7 @@ export default function CourseInsightsApp() {
 
 
       {insights && (
-        <div ref={reportRef} className="cip-page" style={{ maxWidth: 1080, margin: "28px auto 0", padding: "32px 36px", background: PAPER, color: INK, borderRadius: 18, boxShadow: "0 30px 80px -30px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.06)" }}>
+        <div ref={reportRef} className="cip-page" style={{ maxWidth: 1080, margin: "28px auto 0", padding: "32px 36px", background: PAPER, color: INK, borderRadius: 18, boxShadow: "var(--cip-paper-shadow)" }}>
 
           {/* report header */}
           <div data-pdf-block="true" style={{ display: "flex", alignItems: "center", gap: 16, borderBottom: `3px solid ${NAVY}`, paddingBottom: 14, marginBottom: 22 }}>

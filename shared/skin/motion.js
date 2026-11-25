@@ -40,8 +40,20 @@
     '.ct-done span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ct-done small{display:block;font-weight:500;font-size:12px;color:#98A3C2}' +
     '.ct-spark{position:fixed;left:0;top:0;z-index:10001;pointer-events:none;border-radius:50%}' +
     '.ct-ring{position:fixed;left:0;top:0;z-index:10001;pointer-events:none;border-radius:50%;border:2px solid rgba(255,201,77,.85);box-shadow:0 0 20px rgba(242,140,40,.6)}' +
+    '.ct-hint{position:fixed;left:50%;bottom:22px;z-index:10002;width:min(560px,calc(100vw - 28px));margin-left:max(-280px,calc(-50vw + 14px));display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:18px;' +
+      'background:rgba(16,23,44,.97);border:1px solid rgba(255,201,77,.4);color:#E8ECF8;font:400 14px/1.5 Inter,system-ui,sans-serif;box-shadow:0 30px 80px -24px rgba(0,0,0,.85),0 0 40px -14px rgba(242,140,40,.55)}' +
+    '.ct-hint img{width:42px;height:42px;flex:none;filter:drop-shadow(0 0 10px rgba(242,140,40,.6))}' +
+    '.ct-hint-b{flex:1;min-width:0}.ct-hint b{display:block;font:600 15.5px/1.3 Sora,Inter,system-ui,sans-serif;margin-bottom:3px}.ct-hint p{margin:0 0 10px;color:#98A3C2;overflow-wrap:anywhere}' +
+    '.ct-hint-a{display:flex;flex-wrap:wrap;gap:8px}' +
+    '.ct-hint-a a,.ct-hint-a .keep{display:inline-flex;align-items:center;min-height:34px;padding:0 13px;border-radius:10px;font:600 13px/1 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer}' +
+    '.ct-hint-a a{background:linear-gradient(135deg,#FFB547,#F28C28);color:#1A1004}.ct-hint-a a.alt{background:rgba(79,124,255,.16);color:#B9C8FF;box-shadow:inset 0 0 0 1px rgba(79,124,255,.4)}' +
+    '.ct-hint-a .keep{background:none;border:1px solid #2E3A5E;color:#98A3C2}.ct-hint-a .keep:hover{color:#E8ECF8}' +
+    '.ct-hint-x{all:unset;cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:8px;color:#6B7596;font-size:20px}.ct-hint-x:hover{color:#E8ECF8;background:rgba(255,255,255,.06)}' +
+    '[data-mode="light"] .ct-hint{background:#fff;color:#1A1F2B;border-color:#F5C98A;box-shadow:0 30px 80px -30px rgba(26,31,43,.45)}' +
+    '[data-mode="light"] .ct-hint p,[data-mode="light"] .ct-hint-a .keep{color:#5B6475}[data-mode="light"] .ct-hint-a .keep{border-color:#E4E7EC}' +
+    '[data-mode="light"] .ct-hint-a a.alt{background:#EBF0FF;color:#2952D9;box-shadow:inset 0 0 0 1px #C9D6FF}' +
     '@media(prefers-reduced-motion:reduce){.ct-ants rect,.ct-busy img{animation:none}}' +
-    '@media print{.ct-busy,.ct-ants,.ct-scan,.ct-done,.ct-spark,.ct-ring{display:none!important}}';
+    '@media print{.ct-busy,.ct-ants,.ct-scan,.ct-done,.ct-spark,.ct-ring,.ct-hint{display:none!important}}';
   document.head.appendChild(css);
 
   var visible = function (el) { return el.offsetParent !== null || getComputedStyle(el).position === 'fixed'; };
@@ -248,6 +260,109 @@
       else done();
     }, 2800);
   }
+
+  /* ---------- 5. wrong file? point to the right tool ----------
+     Every file dropped or chosen here is read just far enough to see its header row. When it is
+     clearly a different kind of export, a friendly card names it and links to the tool that reads it. */
+  var base = me.src.replace(/shared\/skin\/motion\.js(\?.*)?$/, '');
+  var TOOLS = {
+    single: ['Single test report', 'tests/single-tests-report.html'],
+    group: ['Group-wise tests report', 'tests/group-tests-report.html'],
+    section: ['Section-wise test analysis', 'tests/section-report.html'],
+    cutoff: ['Sectional cut-off report', 'tests/sectional-cutoff-report.html'],
+    course: ['Course progress insights', 'courses/insights/index.html']
+  };
+  var KIND = {
+    single: {what: 'a single test export', why: 'one total score per student', go: ['single']},
+    group: {what: 'a group tests export', why: 'several tests side by side', go: ['group']},
+    section: {what: 'a sectional test export', why: 'marks for each section and a total', go: ['section', 'cutoff']},
+    course: {what: 'a course progress export', why: 'completion for each course', go: ['course']}
+  };
+  var path = location.pathname;
+  var here = /single-tests-report/.test(path) ? 'single' : /group-tests-report/.test(path) ? 'group'
+    : /sectional-cutoff-report/.test(path) ? 'cutoff' : /section-report/.test(path) ? 'section' : /\/insights\//.test(path) ? 'course' : '';
+  var READS = {single: ['single', 'section'], group: ['group'], section: ['section'], cutoff: ['section'], course: ['course']}[here];
+
+  function classify(rows, name) {
+    var hdr = null;
+    for (var i = 0; i < rows.length && !hdr; i++) {
+      var r = rows[i] || [], strs = r.filter(function (c) { return typeof c === 'string' && c.trim(); });
+      if (strs.length >= 3 && strs.some(function (s) { return /name/i.test(s); })) hdr = r;
+    }
+    if (!hdr) return null;
+    var H = hdr.map(function (c) { return String(c == null ? '' : c).trim(); }).filter(Boolean);
+    var isMark = function (h) { return /\(\s*\d+(\.\d+)?\s*(m|marks?)?\s*\)\s*$/i.test(h); };
+    var marks = H.filter(isMark), total = marks.filter(function (h) { return /^total\b/i.test(h); });
+    var parts = marks.filter(function (h) { return !/^total\b/i.test(h); });
+    var tests = parts.filter(function (h) { return /^\d+\s*-\s*\S/.test(h); });
+    var courses = H.filter(function (h) { return /^\d+\s*-\s*\S/.test(h) && !isMark(h); });
+    if (H.some(function (h) { return /created\s*time|password/i.test(h); })) return 'course';
+    if (courses.length && !marks.length) return 'course';
+    if (tests.length && !total.length) return 'group';
+    if (parts.length >= 2) return 'section';
+    if (total.length) return 'single';
+    if (/attempted/i.test(name || '') || (H.some(function (h) { return /^groups?$/i.test(h); }) && H.some(function (h) { return /name/i.test(h); }))) return 'single';
+    return null;
+  }
+  var xlsxLoading = null;
+  function needXLSX() {
+    if (window.XLSX) return Promise.resolve(window.XLSX);
+    if (!xlsxLoading) xlsxLoading = new Promise(function (ok, no) {
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      s.onload = function () { window.XLSX ? ok(window.XLSX) : no(); }; s.onerror = no;
+      document.head.appendChild(s);
+    });
+    return xlsxLoading;
+  }
+  function sniff(file) {
+    return file.arrayBuffer().then(function (buf) {
+      return needXLSX().then(function (X) {
+        var wb = X.read(buf, {type: 'array', sheetRows: 15});
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        return classify(X.utils.sheet_to_json(ws, {header: 1, raw: true, defval: null}), file.name);
+      });
+    }).catch(function () { return null; });
+  }
+  var hint = null, sniffRun = 0;
+  function closeHint() { if (hint) { var h = hint; hint = null; h.remove(); } }
+  function check2(files) {
+    if (!READS || !files || !files.length) return;
+    var run = ++sniffRun;
+    closeHint();
+    var list = [].slice.call(files, 0, 4).filter(function (f) { return /\.(xlsx|xls|csv)$/i.test(f.name); });
+    Promise.all(list.map(sniff)).then(function (kinds) {
+      if (run !== sniffRun) return;
+      for (var i = 0; i < kinds.length; i++) {
+        var k = kinds[i];
+        if (k && READS.indexOf(k) < 0) { showHint(k, list[i].name); return; }
+      }
+    });
+  }
+  function showHint(kind, fname) {
+    var K = KIND[kind], me2 = TOOLS[here][0];
+    hint = document.createElement('div');
+    hint.className = 'ct-hint'; hint.setAttribute('role', 'status');
+    hint.innerHTML = '<img alt="" src="' + base + 'shared/brand/logo-96.png"><div class="ct-hint-b"><b></b><p></p><div class="ct-hint-a"></div></div>' +
+      '<button type="button" class="ct-hint-x" aria-label="Dismiss">×</button>';
+    hint.querySelector('b').textContent = 'This looks like ' + K.what;
+    hint.querySelector('p').textContent = '“' + fname + '” has ' + K.why + '. The ' + me2 + ' reads a different file. Try:';
+    K.go.forEach(function (t, i) {
+      var a = document.createElement('a'); a.href = base + TOOLS[t][1]; a.textContent = TOOLS[t][0] + ' →';
+      if (i) a.className = 'alt';
+      hint.querySelector('.ct-hint-a').appendChild(a);
+    });
+    var keep = document.createElement('button'); keep.type = 'button'; keep.className = 'keep'; keep.textContent = 'It’s the right file';
+    hint.querySelector('.ct-hint-a').appendChild(keep);
+    hint.querySelector('.ct-hint-x').onclick = keep.onclick = closeHint;
+    document.body.appendChild(hint);
+    if (moving) A.animate(hint, {opacity: [0, 1], translateY: [24, 0], duration: 520, ease: 'outBack(1.4)'});
+  }
+  if (READS) {
+    document.addEventListener('change', function (e) { var t = e.target; if (t && t.type === 'file') check2(t.files); }, true);
+    document.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) check2(e.dataTransfer.files); }, true);
+  }
+  window.__ctClassify = classify; // used by the test suite
 
   new MutationObserver(function () { if (!queued) { queued = true; requestAnimationFrame(check); } })
     .observe(document.body, {childList: true, subtree: true, characterData: true});
