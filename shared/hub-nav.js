@@ -170,6 +170,20 @@
         '<nav aria-label="Footer"><a href="' + root + 'tests/index.html">Tests</a><a href="' + root + 'courses/index.html">Courses</a></nav></div>' +
         '<span>Files are read in your browser and never uploaded to a server.</span></div>';
       document.body.appendChild(f);
+      // short page: the footer sits at the bottom of the window; long page: 32px after the content
+      var base = 32, queued = false;
+      var place = function () {
+        queued = false;
+        var cur = parseFloat(f.style.marginTop) || base;
+        var bottom = f.getBoundingClientRect().bottom + scrollY - cur + base;   // where it would end with the normal gap
+        var m = base + Math.max(0, Math.floor(innerHeight - bottom));
+        if (Math.abs(m - cur) > 0.5) f.style.marginTop = m + 'px';
+      };
+      var later = function () { if (!queued) { queued = true; requestAnimationFrame(place); } };
+      place();
+      addEventListener('resize', later);
+      addEventListener('load', later);
+      if (window.ResizeObserver) new ResizeObserver(later).observe(document.body);
     };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addFoot); else addFoot();
   }
