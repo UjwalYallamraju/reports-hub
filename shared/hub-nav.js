@@ -122,16 +122,16 @@
       '@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}' : '') +
     /* slim footer on tool pages, laid out like the landing pages' footer and aligned with the bar above.
        Every box sets its own size and spacing so no tool's styles can shift it. */
-    '.ct-foot{all:initial;display:block;box-sizing:border-box;margin-top:56px;border-top:1px solid rgba(255,255,255,.08);color:#6B7596;font:400 13.5px/1.5 Inter,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}' +
+    '.ct-foot{all:initial;display:block;box-sizing:border-box;margin-top:32px;border-top:1px solid rgba(255,255,255,.08);color:#6B7596;font:400 13.5px/1.5 Inter,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}' +
     '.ct-foot *{box-sizing:border-box!important;margin:0!important;padding:0;border:0!important;background:none!important;box-shadow:none!important;font:inherit;line-height:inherit;letter-spacing:normal;text-transform:none;position:static}' +
-    '.ct-foot .ct-foot-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;width:100%;max-width:1200px;margin:0 auto!important;padding:20px 24px 32px!important}' +
+    '.ct-foot .ct-foot-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;width:100%;max-width:1200px;margin:0 auto!important;padding:18px 24px 22px!important}' +
     '.ct-foot .ct-foot-l{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}' +
     '.ct-foot .ct-foot-b{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:#98A3C2}' +
     '.ct-foot img{display:block;width:18px;height:18px}' +
     '.ct-foot nav{display:flex;gap:16px}' +
     '.ct-foot a{color:#98A3C2;text-decoration:none}.ct-foot a:hover{color:#E8ECF8}.ct-foot a:focus-visible{outline:2px solid #8FA9FF;outline-offset:2px;border-radius:4px}' +
     '[data-mode="light"] .ct-foot{border-top-color:#E4E7EC;color:#8A93A6}[data-mode="light"] .ct-foot .ct-foot-b,[data-mode="light"] .ct-foot a{color:#5B6475}[data-mode="light"] .ct-foot a:hover{color:#1A1F2B}' +
-    '@media(max-width:600px){.ct-foot .ct-foot-in{flex-direction:column;align-items:flex-start;padding:18px 14px 28px!important}}' +
+    '@media(max-width:600px){.ct-foot .ct-foot-in{flex-direction:column;align-items:flex-start;padding:16px 14px 20px!important}}' +
     '@media print{.hubnav,.ct-foot{display:none!important}}' +
     (fade && !vt ? '@keyframes hubIn{from{opacity:0}to{opacity:1}}@media(prefers-reduced-motion:no-preference){body>*:not(.hubnav):not(script):not(style){animation:hubIn .5s ease-out both}}' : '');
 

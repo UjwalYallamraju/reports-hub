@@ -61,3 +61,9 @@
   .ct-bar #pdfbox::-webkit-scrollbar{display:none}
   .ct-bar #pdfbox>*{flex:none;white-space:nowrap}
 }
+
+/* the shared footer brings its own top spacing, so the tools' extra bottom padding goes */
+.ct-bar ~ #intro{padding-bottom:0!important}
+.ct-bar ~ main{padding-bottom:0!important}
+.ct-bar ~ main .layout{padding-bottom:0!important}
+.cip-shell{padding-bottom:0!important}
