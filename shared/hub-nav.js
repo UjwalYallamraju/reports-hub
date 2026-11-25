@@ -22,7 +22,9 @@
     '.hubnav a:focus-visible{outline:2px solid #8FA9FF;outline-offset:2px}' +
     '.hubnav a.hub-brand{display:inline-flex;align-items:center;gap:10px;padding:6px 6px 6px 0;color:#E8ECF8;font-weight:700;font-size:16px;letter-spacing:-.01em}' +
     '.hubnav a.hub-brand:hover{background:none}' +
-    '.hubnav .hub-mark{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#4F7CFF,#19C39C);box-shadow:0 0 18px -2px rgba(79,124,255,.7)}' +
+    '.hubnav .hub-mark{width:34px;height:34px;display:block;filter:drop-shadow(0 0 10px rgba(242,140,40,.55));transition:transform .6s cubic-bezier(.2,.8,.2,1)}' +
+    '.hubnav a.hub-brand:hover .hub-mark{transform:rotate(45deg)}' +
+    '@media(prefers-reduced-motion:reduce){.hubnav .hub-mark{transition:none}}' +
     '.hubnav .hub-name b{background:linear-gradient(100deg,#8FA9FF,#5FE0BF);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}' +
     '.hubnav .hub-links{display:flex;gap:4px;margin-left:auto}' +
     '.hubnav a[aria-current="page"]{color:#fff;background:rgba(79,124,255,.18);box-shadow:inset 0 0 0 1px rgba(79,124,255,.45)}' +
@@ -35,7 +37,13 @@
   style.textContent = css;
   document.head.appendChild(style);
 
-  var mark = '<span class="hub-mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M5 19V11M12 19V5M19 19v-6"/></svg></span>';
+  var mark = '<img class="hub-mark" src="' + root + 'shared/brand/logo-96.png" width="34" height="34" alt="">';
+
+  // Same browser-tab icon on every page, tools included.
+  [].forEach.call(document.querySelectorAll('link[rel~="icon"],link[rel="apple-touch-icon"]'), function (l) { l.parentNode.removeChild(l); });
+  [['icon', 'shared/brand/favicon-32.png', '32x32'], ['icon', 'shared/brand/favicon-64.png', '64x64'], ['apple-touch-icon', 'shared/brand/apple-touch-icon.png', '180x180']].forEach(function (f) {
+    var l = document.createElement('link'); l.rel = f[0]; l.type = 'image/png'; l.sizes = f[2]; l.href = root + f[1]; document.head.appendChild(l);
+  });
   var nav = document.createElement('nav');
   nav.className = 'hubnav';
   nav.setAttribute('aria-label', 'CodeTantra Reports');
