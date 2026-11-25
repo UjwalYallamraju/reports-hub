@@ -1,4 +1,4 @@
-# Reports Hub
+# CodeTantra Reports
 
 One website for all course and test report tools. Upload an export, review the analytics, download a PDF.
 Everything runs in the browser; no files are uploaded to a server.

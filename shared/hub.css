@@ -1,4 +1,4 @@
-/* Reports Hub landing pages (home, Courses, Tests).
+/* CodeTantra Reports landing pages (home, Courses, Tests).
    Colours and type match the existing test report tools. */
 :root{
   --bg:#FAFBFC; --surface:#FFFFFF; --ink:#1A1F2B; --muted:#5B6475; --rule:#E4E7EC;

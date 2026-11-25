@@ -1,4 +1,4 @@
-/* Reports Hub: shared top bar added to every tool page.
+/* CodeTantra Reports: shared top bar added to every tool page.
    Usage: <script src="RELATIVE/shared/hub-nav.js" data-root="RELATIVE/" data-section="tests|courses"></script>
    Place it as the first element inside <body>. */
 (function () {
@@ -29,10 +29,10 @@
   var logo = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>';
   var nav = document.createElement('nav');
   nav.className = 'hubnav';
-  nav.setAttribute('aria-label', 'Reports Hub');
+  nav.setAttribute('aria-label', 'CodeTantra Reports');
   nav.innerHTML =
     '<div class="hubnav-in">' +
-      '<a class="hub-brand" href="' + root + 'index.html">' + logo + 'Reports Hub</a>' +
+      '<a class="hub-brand" href="' + root + 'index.html">' + logo + 'CodeTantra Reports</a>' +
       '<div class="hub-links">' +
         '<a class="hub-courses" href="' + root + 'courses/index.html"' + (section === 'courses' ? ' aria-current="page"' : '') + '>Courses</a>' +
         '<a href="' + root + 'tests/index.html"' + (section === 'tests' ? ' aria-current="page"' : '') + '>Tests</a>' +
