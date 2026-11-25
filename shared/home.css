@@ -119,9 +119,9 @@
 
 /* ---------- timeline ---------- */
 .tl{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding-top:34px}
-.tl .line{position:absolute;left:42px;right:calc((100% - 44px) / 3 - 42px);top:19px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--blue-ink),var(--mint-ink));opacity:.65;transform-origin:0 50%;box-shadow:0 0 12px rgba(143,169,255,.5)}
+.tl .line{position:absolute;left:calc((100% - 44px) / 6);right:calc((100% - 44px) / 6);top:19px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--blue-ink),var(--mint-ink));opacity:.65;transform-origin:0 50%;box-shadow:0 0 12px rgba(143,169,255,.5)}
 .tl .st{position:relative;padding:22px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
-.tl .st .n{position:absolute;top:-34px;left:22px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font:700 16px Sora,Inter,sans-serif;color:#1A1004;background:linear-gradient(135deg,var(--gold),var(--sun));box-shadow:0 0 22px -4px var(--sun)}
+.tl .st .n{position:absolute;top:-34px;left:calc(50% - 20px);width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font:700 16px Sora,Inter,sans-serif;color:#1A1004;background:linear-gradient(135deg,var(--gold),var(--sun));box-shadow:0 0 22px -4px var(--sun)}
 .tl .st h3{font-size:18px;margin:10px 0 6px}
 /* timeline in motion: a comet runs along the line and lights each step; each card has a looping sketch */
 .tl .comet{position:absolute;left:0;top:14px;width:90px;height:12px;margin-left:-45px;border-radius:50%;pointer-events:none;opacity:0;
