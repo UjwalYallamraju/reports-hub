@@ -34,6 +34,8 @@ shared/hub-nav.js       Top bar shown on every page
 shared/hub.css          Styles for the home and landing pages (dark theme)
 shared/hub.js           Landing-page chart and animations (anime.js)
 shared/vendor/          anime.js 4.5.0 (MIT), saved with the site
+shared/skin/            Dark skin for the tools: base.css + one file per tool, motion.js (entrance animation)
+shared/brand/           Logo and favicons
 apps/course-insights/   React source for Course Insights
 ```
 

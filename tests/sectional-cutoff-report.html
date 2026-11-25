@@ -50,7 +50,9 @@ label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--mu
 .in{margin:6px 0 10px;background:var(--bg)}.dt>td{background:var(--bg);padding:8px 14px}
 .empty{text-align:center;padding:40px 20px;color:var(--mut)}.empty h2{color:var(--ink)}
 @media print{header nav,#up,.np,.hubnav{display:none!important}body{background:#fff}.card{break-inside:avoid}header{position:static}.dt{display:table-row!important}}
-</style></head><body>
+</style><link rel="stylesheet" href="../shared/skin/base.css">
+<link rel="stylesheet" href="../shared/skin/cutoff.css">
+</head><body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
 <header><div class="wrap">
 <a class="home" href="index.html" aria-label="Back to all test reports"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>All tests</a>
@@ -296,4 +298,6 @@ document.addEventListener('keydown',e=>{if(e.target.id==='ttl'&&e.key==='Enter')
 document.addEventListener('paste',e=>{if(e.target.id==='ttl'){e.preventDefault();document.execCommand('insertText',false,(e.clipboardData.getData('text/plain')||'').replace(/\s+/g,' '))}});
 document.addEventListener('focusout',e=>{if(e.target.id==='ttl'&&!e.target.textContent.trim()){S.title='';render()}});
 setMode();render();
-</script></body></html>
+</script><script src="../shared/vendor/anime.umd.min.js"></script>
+<script src="../shared/skin/motion.js" data-items="#cfg,#out .card"></script>
+</body></html>

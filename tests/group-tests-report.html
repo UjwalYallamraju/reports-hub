@@ -186,6 +186,8 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
+<link rel="stylesheet" href="../shared/skin/base.css">
+<link rel="stylesheet" href="../shared/skin/group.css">
 </head>
 <body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
@@ -1203,5 +1205,7 @@ function init(){
 }
 init();
 </script>
+<script src="../shared/vendor/anime.umd.min.js"></script>
+<script src="../shared/skin/motion.js" data-items="#report .rp-head,#report .kpi,#report section.blk"></script>
 </body>
 </html>

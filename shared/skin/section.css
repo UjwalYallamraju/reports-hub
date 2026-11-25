@@ -1,0 +1,28 @@
+/* Section-wise test analysis: dark skin (replaces the tool's own dark palette). */
+:root:not([data-theme="light"]),:root[data-theme="dark"]{
+  --bg:#0B1020; --panel:#121A30; --ink:#E8ECF8; --muted:#98A3C2; --line:#232C48; --soft:#18203A;
+  --brand:#4F7CFF; --brand-soft:#3A4A7A; --pass:#19C39C; --fail:#FF6B6B; --focus:#8FA9FF; --onbrand:#fff;
+  --b1:#19C39C; --b2:#6CCB9F; --b3:#F2B254; --b4:#F59A6B; --b5:#FF6B6B;
+}
+:root:not([data-theme="light"]) .btn.primary,:root[data-theme="dark"] .btn.primary{color:#fff}
+h1,h2,h3,.drop strong,.settings .filebar b,.grp b,.kpi b,.cathead b{font-family:Sora,Inter,system-ui,sans-serif!important}
+svg text{font-family:Inter,sans-serif}
+
+.intro h1{background:linear-gradient(100deg,#E8ECF8 30%,#8FA9FF 70%,#5FE0BF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.drop{background:rgba(18,26,48,.6);border-color:#3A4A7A;border-radius:18px;transition:background .2s,border-color .2s,box-shadow .3s}
+.drop:hover,.drop.over{background:var(--ct-blue-soft);box-shadow:var(--ct-glow)}
+.cols i{background:#18203A}
+.btn{border-radius:11px}
+.btn.primary{background:linear-gradient(135deg,#4F7CFF,#3A5DE0);border-color:transparent;box-shadow:var(--ct-glow)}
+.err{background:var(--ct-red-soft)}
+
+.settings,.card,.kpis{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),var(--panel);box-shadow:0 18px 50px -30px rgba(0,0,0,.8);border-radius:16px}
+label.f input,label.f select,#grpSel{background:var(--ct-field);border-color:var(--ct-line2)}
+label.f input:focus,label.f select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(79,124,255,.25);outline:none}
+.rhead{border-bottom-color:rgba(79,124,255,.6)}
+.grp{background:rgba(79,124,255,.10)}
+tr:hover td{background:rgba(79,124,255,.06)}
+.tabs button{color:var(--ink)}
+.tabs button[aria-pressed=true]{background:linear-gradient(135deg,#4F7CFF,#3A5DE0);box-shadow:var(--ct-glow)}
+.hbar .t i,.mini>i{background:linear-gradient(90deg,#3A5DE0,#7C9CFF)}
+.toast{background:#E8ECF8;color:#0B1020}

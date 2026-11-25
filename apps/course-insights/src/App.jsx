@@ -24,6 +24,14 @@ const RUST = "#E0524F";
 const AMBER = "#E8A33D";
 const AMBER_DEEP = "#B97A12";
 
+// Dark app shell around the light report "paper" (the report and its PDF/HTML exports stay light).
+const D_BG = "#0B1020";
+const D_TEXT = "#E8ECF8";
+const D_MUTED = "#98A3C2";
+const D_FIELD = "#0E1529";
+const D_LINE = "#2E3A5E";
+const D_PANEL = "rgba(255,255,255,0.04)";
+
 const COMPLETE_THRESHOLD = 99.5;
 
 // ---------- helpers ----------
@@ -967,13 +975,16 @@ export default function CourseInsightsApp() {
   };
 
   return (
-    <div style={{
-      fontFamily: "'Inter', -apple-system, sans-serif", background: PAPER, minHeight: "100vh",
-      color: INK, paddingBottom: 60,
+    <div className="cip-shell" style={{
+      fontFamily: "'Inter', -apple-system, sans-serif", minHeight: "100vh", color: D_TEXT, paddingBottom: 60,
+      background: `radial-gradient(900px 600px at 8% -10%, rgba(43,75,214,0.28), transparent 60%), radial-gradient(800px 600px at 100% 110%, rgba(14,143,116,0.2), transparent 60%), ${D_BG}`,
+      backgroundAttachment: "fixed",
     }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap');
         * { box-sizing: border-box; }
+        html, body { margin: 0; background: ${D_BG}; }
+        .cip-shell input::placeholder { color: #6B7596; }
         .cip-btn { cursor: pointer; border: none; font-family: inherit; }
         .cip-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         table.cip-table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -992,7 +1003,7 @@ export default function CourseInsightsApp() {
       `}</style>
 
       {/* ---------- Upload / control zone (no-print) ---------- */}
-      <div className="no-print" style={{ background: "#FFFFFF", borderBottom: `1px solid ${PAPER_LINE}` }}>
+      <div className="no-print" style={{ background: "rgba(18,26,48,0.55)", borderBottom: "1px solid #232C48", backdropFilter: "blur(6px)" }}>
         <div style={{ height: 3, background: `linear-gradient(90deg, transparent, ${GOLD_SOFT}, transparent)` }} />
         <div style={{ padding: "34px 32px 26px" }}>
           <div style={{ maxWidth: 1080, margin: "0 auto" }}>
@@ -1009,7 +1020,7 @@ export default function CourseInsightsApp() {
                     <GraduationCap size={20} color={GOLD_SOFT} />
                   </div>
                   <div>
-                    <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 25, fontWeight: 700, color: INK, lineHeight: 1.15 }}>
+                    <div style={{ fontFamily: "'Sora', 'Inter', sans-serif", fontSize: 25, fontWeight: 700, color: D_TEXT, lineHeight: 1.15 }}>
                       Course Progress Insights
                     </div>
                     <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", fontSize: 13.5, color: GOLD_SOFT, marginTop: 3 }}>
@@ -1017,7 +1028,7 @@ export default function CourseInsightsApp() {
                     </div>
                   </div>
                 </div>
-                <div style={{ color: MIST, fontSize: 13, lineHeight: 1.75, maxWidth: 440 }}>
+                <div style={{ color: D_MUTED, fontSize: 13, lineHeight: 1.75, maxWidth: 440 }}>
                   Upload section-wise CodeTantra course reports — individual per-section files, or one combined
                   workbook with every section stacked together. Sections are always read from each row's
                   "Groups" column, and everything compiles into a single consolidated report.
@@ -1033,7 +1044,7 @@ export default function CourseInsightsApp() {
                   style={{
                     position: "relative", border: `1px solid ${dragOver ? GOLD_SOFT : "rgba(18,168,123,0.22)"}`,
                     borderRadius: 3, padding: "28px 22px", textAlign: "center", cursor: "pointer",
-                    background: dragOver ? "rgba(18,168,123,0.08)" : "#F5F7F9",
+                    background: dragOver ? "rgba(18,168,123,0.08)" : D_PANEL,
                     transition: "all 0.15s", flex: "1 1 auto", boxSizing: "border-box",
                   }}
                 >
@@ -1042,10 +1053,10 @@ export default function CourseInsightsApp() {
                   <CornerBracket position="bl" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
                   <CornerBracket position="br" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
                   <UploadCloud size={24} color={GOLD_SOFT} style={{ marginBottom: 8 }} />
-                  <div style={{ color: INK, fontSize: 14, fontWeight: 500 }}>
+                  <div style={{ color: D_TEXT, fontSize: 14, fontWeight: 500 }}>
                     {busy ? "Reading files…" : "Drop .xlsx files here, or click to browse"}
                   </div>
-                  <div style={{ color: MIST, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>
+                  <div style={{ color: D_MUTED, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>
                     Group-wise course reports and password-not-set reports — individual sections or one
                     combined sheet, any number at once
                   </div>
@@ -1069,16 +1080,16 @@ export default function CourseInsightsApp() {
                   style={{
                     marginTop: 10, border: `1px dashed ${passwordDragOver ? GOLD_SOFT : "rgba(18,168,123,0.3)"}`,
                     borderRadius: 3, padding: "12px 14px", cursor: "pointer",
-                    background: passwordDragOver ? "rgba(18,168,123,0.08)" : "#F5F7F9",
+                    background: passwordDragOver ? "rgba(18,168,123,0.08)" : D_PANEL,
                     display: "flex", alignItems: "center", gap: 10, transition: "all 0.15s",
                   }}
                 >
                   <KeyRound size={15} color={GOLD_SOFT} style={{ flexShrink: 0 }} />
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ color: INK, fontSize: 12.5, fontWeight: 500 }}>
+                    <div style={{ color: D_TEXT, fontSize: 12.5, fontWeight: 500 }}>
                       {busy ? "Reading…" : "Password-not-set file not rendering right? Drop it here separately"}
                     </div>
-                    <div style={{ color: MIST, fontSize: 11, marginTop: 2 }}>
+                    <div style={{ color: D_MUTED, fontSize: 11, marginTop: 2 }}>
                       Parsed as a password report regardless of exact column names/order
                     </div>
                   </div>
@@ -1093,11 +1104,11 @@ export default function CourseInsightsApp() {
 
             {/* letterhead fields — college name & logo, set off from the masthead by a hairline */}
             <div style={{
-              borderTop: "1px solid #E4E7EC", paddingTop: 18,
+              borderTop: "1px solid #232C48", paddingTop: 18,
               display: "flex", gap: 20, flexWrap: "wrap",
             }}>
               <label style={{ display: "block", flex: "1 1 320px" }}>
-                <div style={{ color: MIST, fontSize: 12.5, marginBottom: 5 }}>College / Institute name (shown on the report)</div>
+                <div style={{ color: D_MUTED, fontSize: 12.5, marginBottom: 5 }}>College / Institute name (shown on the report)</div>
                 <input
                   type="text"
                   value={collegeName}
@@ -1105,13 +1116,13 @@ export default function CourseInsightsApp() {
                   placeholder="e.g. Sreenidhi Institute of Science and Technology"
                   style={{
                     width: "100%", maxWidth: 420, padding: "8px 10px", borderRadius: 4,
-                    border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK, fontSize: 13.5,
+                    border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT, fontSize: 13.5,
                   }}
                 />
               </label>
 
               <div style={{ flex: "0 0 auto" }}>
-                <div style={{ color: MIST, fontSize: 12.5, marginBottom: 5 }}>College logo (optional)</div>
+                <div style={{ color: D_MUTED, fontSize: 12.5, marginBottom: 5 }}>College logo (optional)</div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   {collegeLogo && (
                     <img
@@ -1124,8 +1135,8 @@ export default function CourseInsightsApp() {
                     className="cip-btn"
                     onClick={() => logoInputRef.current?.click()}
                     style={{
-                      background: "#F5F7F9", color: INK, fontSize: 12.5,
-                      border: "1px solid #D5DAE1", borderRadius: 4, padding: "7px 12px",
+                      background: D_PANEL, color: D_TEXT, fontSize: 12.5,
+                      border: "1px solid #2E3A5E", borderRadius: 4, padding: "7px 12px",
                     }}
                   >
                     {collegeLogo ? "Change logo" : "Upload logo"}
@@ -1133,7 +1144,7 @@ export default function CourseInsightsApp() {
                   {collegeLogo && (
                     <X
                       size={16}
-                      style={{ cursor: "pointer", color: MIST }}
+                      style={{ cursor: "pointer", color: D_MUTED }}
                       onClick={() => setCollegeLogo("")}
                     />
                   )}
@@ -1165,12 +1176,12 @@ export default function CourseInsightsApp() {
                   return (
                     <span key={f.fileName} style={{
                       display: "inline-flex", alignItems: "center", gap: 6,
-                      background: "#F5F7F9", border: "1px solid rgba(18,168,123,0.28)",
-                      color: INK, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
+                      background: D_PANEL, border: "1px solid rgba(18,168,123,0.28)",
+                      color: D_TEXT, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
                     }}>
                       <FileSpreadsheet size={12} color={GOLD_SOFT} />
                       {f.fileName}{" "}
-                      <span style={{ color: MIST }}>
+                      <span style={{ color: D_MUTED }}>
                         · {f.students.length} students{distinctGroups > 1 ? ` · ${distinctGroups} sections` : ""}
                       </span>
                       <X size={13} style={{ cursor: "pointer", marginLeft: 2 }} onClick={() => removeCourseFile(f.fileName)} />
@@ -1184,12 +1195,12 @@ export default function CourseInsightsApp() {
                   return (
                     <span key={f.fileName} style={{
                       display: "inline-flex", alignItems: "center", gap: 6,
-                      background: "#F5F7F9", border: "1px solid rgba(18,168,123,0.28)",
-                      color: INK, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
+                      background: D_PANEL, border: "1px solid rgba(18,168,123,0.28)",
+                      color: D_TEXT, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
                     }}>
                       <KeyRound size={12} color={GOLD_SOFT} />
                       {f.fileName}{" "}
-                      <span style={{ color: MIST }}>
+                      <span style={{ color: D_MUTED }}>
                         · {f.entries.length} no password{distinctGroups > 1 ? ` · ${distinctGroups} sections` : ""}
                       </span>
                       <X size={13} style={{ cursor: "pointer", marginLeft: 2 }} onClick={() => removePasswordFile(f.fileName)} />
@@ -1197,7 +1208,7 @@ export default function CourseInsightsApp() {
                   );
                 })}
                 <button className="cip-btn" onClick={clearAll} style={{
-                  background: "none", color: MIST, fontSize: 12, textDecoration: "underline", padding: "4px 6px",
+                  background: "none", color: D_MUTED, fontSize: 12, textDecoration: "underline", padding: "4px 6px",
                 }}>
                   clear all
                 </button>
@@ -1207,51 +1218,51 @@ export default function CourseInsightsApp() {
             {insights && (
               <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-                  <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
+                  <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
                     At-risk threshold (average % below)
                     <input
                       type="number" min={0} max={100} value={threshold}
                       onChange={(e) => setThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
-                  <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
+                  <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
                     Average performance threshold (average % from)
                     <input
                       type="number" min={0} max={100} value={threshold}
                       onChange={(e) => setThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
-                  <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
+                  <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
                     Good performance threshold (average % from)
                     <input
                       type="number" min={0} max={100} value={avgMax}
                       onChange={(e) => setAvgMax(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
-                  <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
+                  <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
                     Excellent performance threshold (average % from)
                     <input
                       type="number" min={0} max={100} value={goodMax}
                       onChange={(e) => setGoodMax(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
-                  <label style={{ color: MIST, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
+                  <label style={{ color: D_MUTED, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8 }}>
                     Course at-risk threshold (course avg % below)
                     <input
                       type="number" min={0} max={100} value={courseRiskThreshold}
                       onChange={(e) => setCourseRiskThreshold(Number(e.target.value) || 0)}
-                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #D5DAE1", background: "#FFFFFF", color: INK }}
+                      style={{ width: 56, padding: "4px 6px", borderRadius: 4, border: "1px solid #2E3A5E", background: D_FIELD, color: D_TEXT }}
                     />
                   </label>
                 </div>
                 <label style={{
-                  color: INK, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
-                  background: includeStudentData ? "rgba(18,168,123,0.14)" : "#F5F7F9",
-                  border: `1px solid ${includeStudentData ? GOLD_SOFT : "#D5DAE1"}`, borderRadius: 4, padding: "6px 10px",
+                  color: D_TEXT, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
+                  background: includeStudentData ? "rgba(18,168,123,0.14)" : D_PANEL,
+                  border: `1px solid ${includeStudentData ? GOLD_SOFT : "#2E3A5E"}`, borderRadius: 4, padding: "6px 10px",
                 }}>
                   <input
                     type="checkbox" checked={includeStudentData}
@@ -1259,7 +1270,7 @@ export default function CourseInsightsApp() {
                     style={{ accentColor: GOLD_SOFT, width: 15, height: 15, cursor: "pointer" }}
                   />
                   Include student-level data in export
-                  <span style={{ color: MIST }}>({insights.totalEvaluable + insights.totalNotApplicable} students)</span>
+                  <span style={{ color: D_MUTED }}>({insights.totalEvaluable + insights.totalNotApplicable} students)</span>
                 </label>
                 <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 10 }}>
                   <button
@@ -1267,7 +1278,7 @@ export default function CourseInsightsApp() {
                     onClick={downloadReport}
                     style={{
                       display: "inline-flex", alignItems: "center", gap: 6,
-                      background: "none", color: MIST, fontSize: 12.5,
+                      background: "none", color: D_MUTED, fontSize: 12.5,
                       padding: "9px 4px", textDecoration: "underline",
                     }}
                   >
@@ -1305,17 +1316,17 @@ export default function CourseInsightsApp() {
       {/* ---------- Report ---------- */}
       {!insights && (
         <div style={{ maxWidth: 560, margin: "56px auto", textAlign: "center" }}>
-          <div style={{ background: "#fff", border: `1px solid ${PAPER_LINE}`, borderRadius: 4, padding: "40px 32px" }}>
+          <div style={{ background: "rgba(18,26,48,0.7)", border: "1px solid #232C48", borderRadius: 16, padding: "40px 32px" }}>
             <div style={{
               width: 48, height: 48, borderRadius: "50%", border: `1.5px solid ${GOLD_SOFT}`,
               display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px",
             }}>
               <FileSpreadsheet size={20} color={GOLD} />
             </div>
-            <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 19, fontWeight: 600, color: NAVY, marginBottom: 8 }}>
+            <div style={{ fontFamily: "'Sora', 'Inter', sans-serif", fontSize: 19, fontWeight: 600, color: D_TEXT, marginBottom: 8 }}>
               Awaiting your first report
             </div>
-            <div style={{ fontSize: 13.5, color: SLATE, lineHeight: 1.75 }}>
+            <div style={{ fontSize: 13.5, color: D_MUTED, lineHeight: 1.75 }}>
               Upload at least one group-wise course report above to build the insights report. Every section
               is read automatically from the "Groups" column on each row — one file per section, or a single
               combined workbook with all sections together.
@@ -1326,7 +1337,7 @@ export default function CourseInsightsApp() {
 
 
       {insights && (
-        <div ref={reportRef} className="cip-page" style={{ maxWidth: 1080, margin: "28px auto 0", padding: "0 32px" }}>
+        <div ref={reportRef} className="cip-page" style={{ maxWidth: 1080, margin: "28px auto 0", padding: "32px 36px", background: PAPER, color: INK, borderRadius: 18, boxShadow: "0 30px 80px -30px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.06)" }}>
 
           {/* report header */}
           <div data-pdf-block="true" style={{ display: "flex", alignItems: "center", gap: 16, borderBottom: `3px solid ${NAVY}`, paddingBottom: 14, marginBottom: 22 }}>

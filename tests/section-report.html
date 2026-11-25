@@ -135,6 +135,8 @@ svg .cnt{fill:var(--ink);font-weight:600}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link rel="stylesheet" href="../shared/skin/base.css">
+<link rel="stylesheet" href="../shared/skin/section.css">
 </head>
 <body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
@@ -951,5 +953,7 @@ $('grpPdfBtn').addEventListener('click', downloadGroupPdf);
 $('grpZipBtn').addEventListener('click', downloadAllGroupsZip);
 $('pdfBtn').addEventListener('click', downloadPdf);
 </script>
+<script src="../shared/vendor/anime.umd.min.js"></script>
+<script src="../shared/skin/motion.js" data-items="#settings,#report .rhead,#report .kpis,#report section.blk"></script>
 </body>
 </html>
