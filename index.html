@@ -4,60 +4,110 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CodeTantra Reports</title>
+<meta name="description" content="Upload CodeTantra course and test exports, review the analytics and download PDF reports. Files stay in your browser.">
+<meta name="theme-color" content="#0B1020">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234F7CFF'/%3E%3Cstop offset='1' stop-color='%2319C39C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M9 24V15M16 24V8M23 24v-8' stroke='%23fff' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared/hub.css">
+<script>(function(d){if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim-ready');setTimeout(function(){if(!d.dataset.animOk)d.classList.remove('anim-ready')},3000)}})(document.documentElement)</script>
 </head>
 <body>
-<script src="shared/hub-nav.js" data-root="./" data-section=""></script>
+<script src="shared/hub-nav.js" data-root="./" data-section="" data-sticky="on" data-fade="off"></script>
+<div class="ambient" aria-hidden="true"><div class="grid"></div></div>
 
-<header class="hero">
-  <div class="wrap">
-    <h1>Course and test reports in one place</h1>
-    <p>Upload course completion exports or test result sheets, review the analytics, and download a PDF to share with SPOCs, faculty and management.</p>
-    <span class="privacy">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-      Files are read in your browser and never uploaded to a server.
-    </span>
-  </div>
-</header>
-
-<main class="wrap sections">
-  <section class="section courses" aria-labelledby="h-courses">
-    <div class="section-head">
-      <div class="badge" aria-hidden="true">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l10-4 10 4-10 4z"/><path d="M6 9v5c0 1.7 2.7 3 6 3s6-1.3 6-3V9"/></svg>
-      </div>
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
       <div>
-        <h2 id="h-courses">Courses</h2>
-        <p>Course completion and progress analytics by section and student.</p>
+        <span class="kicker" data-reveal="hero"><span class="dot"></span>Files never leave your browser</span>
+        <h1 data-reveal="hero">Course and test reports, <span class="grad">in one place.</span></h1>
+        <p class="lede" data-reveal="hero">Upload a CodeTantra course completion or test result export, see the analytics in seconds, and download a PDF ready for SPOCs, faculty and management.</p>
+        <div class="ctas" data-reveal="hero">
+          <a class="btn blue" href="tests/index.html">Open test reports
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn mint" href="courses/index.html">Open course reports
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="stats" data-reveal="hero">
+          <div class="stat"><b data-count="4">4</b><span>test report tools</span></div>
+          <div class="stat"><b data-count="1">1</b><span>course report tool</span></div>
+          <div class="stat"><b data-count="100" data-suffix="%">100%</b><span>processed in your browser</span></div>
+        </div>
       </div>
+
+      <figure class="board" data-reveal="hero" style="margin:0">
+        <div class="board-head">
+          <div><b>Mock test results</b><br><small>Pass rate by test and course completion trend</small></div>
+          <div class="legend"><span><i style="background:#5B83FF"></i>Pass rate</span><span><i style="background:#5FE0BF"></i>Completion</span><span><i style="background:none;border-top:2px dashed #F2B254;border-radius:0;height:0;width:14px;vertical-align:3px"></i>Pass mark 50%</span></div>
+        </div>
+        <svg class="chart" id="heroChart" role="img" aria-label="Sample chart: pass rate rising from 58% to 83% over ten tests, course completion rising from 41% to 75%"></svg>
+        <div class="chips">
+          <span class="chip">Pass rate <b>83%</b></span><span class="chip">Completion <b>75%</b></span><span class="chip">Sample data</span>
+        </div>
+      </figure>
     </div>
-    <ul class="mini">
-      <li><a href="courses/insights/index.html"><strong>Course progress insights</strong><span>Group-wise course progress exports</span></a></li>
-    </ul>
-    <a class="open" href="courses/index.html">Open Courses</a>
   </section>
 
-  <section class="section tests" aria-labelledby="h-tests">
-    <div class="section-head">
-      <div class="badge" aria-hidden="true">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/><path d="M9 17h6"/></svg>
+  <section class="band" aria-labelledby="h-sections">
+    <div class="wrap">
+      <div class="band-head" data-reveal="scroll">
+        <div><h2 id="h-sections">Pick what you are reporting on</h2><p>Every tool reads the export as it comes from CodeTantra. No formatting, no copy-paste.</p></div>
       </div>
-      <div>
-        <h2 id="h-tests">Tests</h2>
-        <p>Pass rates, score bands, section and group breakdowns, top performers.</p>
+      <div class="panels">
+        <article class="panel courses" data-reveal="scroll">
+          <div class="panel-top">
+            <div class="icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l10-4 10 4-10 4z"/><path d="M6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
+            <div><h3>Courses</h3><p>Completion and progress by section and student, with who has not started.</p></div>
+          </div>
+          <ul class="list">
+            <li><a href="courses/insights/index.html"><strong>Course progress insights</strong><span>Group-wise course progress exports</span></a></li>
+          </ul>
+          <div class="meters" aria-label="Example of the completion view">
+            <div class="meter"><span>CSE-A</span><b><i style="width:86%"></i></b><em>86%</em></div>
+            <div class="meter"><span>CSE-B</span><b><i style="width:72%"></i></b><em>72%</em></div>
+            <div class="meter"><span>ECE-A</span><b><i style="width:58%"></i></b><em>58%</em></div>
+            <div class="meter"><span>IT-A</span><b><i style="width:41%"></i></b><em>41%</em></div>
+            <small>Example: average completion by section</small>
+          </div>
+          <a class="go" href="courses/index.html">All course reports
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+
+        <article class="panel tests" data-reveal="scroll">
+          <div class="panel-top">
+            <div class="icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/><path d="M9 17h6"/></svg></div>
+            <div><h3>Tests</h3><p>Pass rates, score bands, sectional cut-offs, group comparisons and growth across tests.</p></div>
+          </div>
+          <ul class="list">
+            <li><a href="tests/single-tests-report.html"><strong>Single test report</strong><span>Attempted + Not Attempted files</span></a></li>
+            <li><a href="tests/group-tests-report.html"><strong>Group-wise tests report</strong><span>One sheet, many tests</span></a></li>
+            <li><a href="tests/section-report.html"><strong>Section-wise test analysis</strong><span>Result sheet with section columns</span></a></li>
+            <li><a href="tests/sectional-cutoff-report.html"><strong>Sectional cut-off report</strong><span>Company mock tests, single or growth</span></a></li>
+          </ul>
+          <a class="go" href="tests/index.html">All test reports
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
       </div>
     </div>
-    <ul class="mini">
-      <li><a href="tests/single-tests-report.html"><strong>Single test report</strong><span>Attempted + Not Attempted files</span></a></li>
-      <li><a href="tests/group-tests-report.html"><strong>Group-wise tests report</strong><span>One sheet, many tests</span></a></li>
-      <li><a href="tests/section-report.html"><strong>Section-wise test analysis</strong><span>Result sheet with section columns</span></a></li>
-      <li><a href="tests/sectional-cutoff-report.html"><strong>Sectional cut-off report</strong><span>Company mock tests, single or growth</span></a></li>
-    </ul>
-    <a class="open" href="tests/index.html">Open Tests</a>
+  </section>
+
+  <section class="band" aria-labelledby="h-how">
+    <div class="wrap">
+      <div class="band-head" data-reveal="scroll"><div><h2 id="h-how">From export to PDF in three steps</h2></div></div>
+      <div class="steps">
+        <div class="step" data-reveal="scroll"><div class="n">1</div><h3>Upload the export</h3><p>Drop the Excel file you downloaded from CodeTantra. It is read on your computer and never uploaded.</p></div>
+        <div class="step" data-reveal="scroll"><div class="n">2</div><h3>Review the analytics</h3><p>Pass rates, cut-offs, score bands, sections, groups and students, with key findings written for you.</p></div>
+        <div class="step" data-reveal="scroll"><div class="n">3</div><h3>Download and share</h3><p>A complete PDF, one per group, or an Excel summary, ready for SPOCs, faculty and management.</p></div>
+      </div>
+    </div>
   </section>
 </main>
+
+<footer class="foot"><div class="wrap"><span>CodeTantra Reports</span><span>Files are read in your browser and never uploaded to a server.</span></div></footer>
+
+<script src="shared/vendor/anime.umd.min.js"></script>
+<script src="shared/hub.js"></script>
 </body>
 </html>

@@ -31,7 +31,9 @@ courses/insights/       Built Course Insights app (generated, do not edit by han
 tests/index.html        Tests landing page
 tests/*.html            Test report tools (plain HTML, edit directly)
 shared/hub-nav.js       Top bar shown on every page
-shared/hub.css          Styles for the home and landing pages
+shared/hub.css          Styles for the home and landing pages (dark theme)
+shared/hub.js           Landing-page chart and animations (anime.js)
+shared/vendor/          anime.js 4.5.0 (MIT), saved with the site
 apps/course-insights/   React source for Course Insights
 ```
 
