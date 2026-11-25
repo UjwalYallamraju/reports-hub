@@ -24,6 +24,11 @@ Works for any company's mock test. Type the company name on the page; it is used
 
 ## Handy features
 
+- **PDF cover page:** each tool's main PDF starts with a cover (title, headline number, four key figures,
+  three findings, prepared by, cut-offs, date). The **Cover page** button in the tool's header opens an editor
+  with a live preview; college name, department line, college logo and "prepared by" are remembered for every
+  tool, the company logo and report type per tool, and it can be switched off. `shared/cover.js` adds the page
+  with pdf-lib when the tool saves its PDF; batch, per-group and not-attempted PDFs and ZIPs are left as they are.
 - **Smart drop (home page):** drop any export on the home page. `shared/detect.js` recognises it from the header row
   and opens the right tool with the file already loaded (handed over through IndexedDB in this browser; never uploaded).
   Sectional exports ask which report; unknown files ask which tool.
