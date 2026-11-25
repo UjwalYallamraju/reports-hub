@@ -173,9 +173,17 @@ async function parseWorkbook(file) {
     const nameIdx = header.indexOf("Name");
     const emailIdx = header.indexOf("Email");
     const groupIdx = header.indexOf("Groups");
+    // Course columns are the ones after the last student-detail column. When
+    // the sheet has no Groups column, Member Id / Name / Email must still be
+    // skipped, or they get read as courses and drag every average down.
+    const identityIdxs = [idIdx, nameIdx, emailIdx, groupIdx].filter((i) => i >= 0);
+    const lastIdentityIdx = Math.max(-1, ...identityIdxs);
     const courseIdxs = header
       .map((h, i) => ({ h, i }))
-      .filter(({ h, i }) => i > groupIdx && h && h !== "");
+      .filter(({ h, i }) => i > lastIdentityIdx && h && h !== "");
+    if (!courseIdxs.length) {
+      throw new Error("No course columns found after the Member Id / Name / Email / Groups columns.");
+    }
     const courses = courseIdxs.map(({ h }) => ({
       key: h,
       label: shortCourseLabel(h),

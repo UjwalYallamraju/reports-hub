@@ -337,23 +337,58 @@ function metaFromFilename(name) {
   return {batch, testName, date: `${m[4]}-${m[3]}-${m[2]}`};
 }
 
+// Identifies which test a file belongs to from its CodeTantra file name
+// (test name + date), or null when the name doesn't follow that pattern.
+const testKey = name => { const m = metaFromFilename(name); return m.testName ? `${m.testName.toLowerCase()}|${m.date || ''}` : null; };
+const shortName = n => n.length > 60 ? n.slice(0, 57) + '...' : n;
+
 async function handleFiles(fileList) {
   const errEl = $('#err'); if (errEl) { errEl.classList.remove('show'); errEl.textContent = ''; }
-  const msgs = [];
+  const msgs = [], parsed = [];
   for (const file of Array.from(fileList)) {
-    try {
-      const res = await ingest(file);
-      if (res.kind === 'att') {
-        state.att = res.recs; state.files.att = {name: file.name, count: res.recs.length};
-        if (res.max) state.meta.max = res.max;
-        state.meta.pass = res.pass ?? Math.ceil(state.meta.max * 0.5);
-      } else {
-        state.na = res.recs; state.files.na = {name: file.name, count: res.recs.length};
-      }
-      const fm = metaFromFilename(file.name);
-      for (const k of ['batch', 'testName', 'date']) if (fm[k] && !state.meta[k]) state.meta[k] = fm[k];
-    } catch (e) { msgs.push(e.message || String(e)); }
+    try { parsed.push({file, res: await ingest(file), key: testKey(file.name)}); }
+    catch (e) { msgs.push(e.message || String(e)); }
   }
+  const atts = parsed.filter(p => p.res.kind === 'att'), nas = parsed.filter(p => p.res.kind === 'na');
+  if (atts.length > 1) msgs.push(`${atts.length} Attempted files were added at once, so only "${shortName(atts[atts.length - 1].file.name)}" was used. Add one test at a time.`);
+  if (nas.length > 1) msgs.push(`${nas.length} Not Attempted files were added at once, so only "${shortName(nas[nas.length - 1].file.name)}" was used. Add one test at a time.`);
+  const att = atts[atts.length - 1], na = nas[nas.length - 1];
+
+  // 1. A new Attempted file. Anything from a different test is cleared so two tests never mix.
+  if (att) {
+    const prev = state.files.att, sameTest = !!(prev && prev.key && prev.key === att.key);
+    state.att = att.res.recs; state.files.att = {name: att.file.name, count: att.res.recs.length, key: att.key};
+    if (att.res.max) state.meta.max = att.res.max;
+    state.meta.pass = att.res.pass ?? Math.ceil(state.meta.max * 0.5);
+    if (!sameTest) {
+      const fm = metaFromFilename(att.file.name);
+      state.meta.testName = fm.testName || ''; state.meta.batch = fm.batch || ''; state.meta.date = fm.date || '';
+      state.filter = {q: '', group: '', status: 'all', limit: 100};
+    }
+    const oldNa = state.files.na;
+    if (oldNa && !na) {
+      // Keep an earlier Not Attempted file only if it clearly belongs to this test, or if it was
+      // added first and this is the first Attempted file (names that can't be compared).
+      const keep = oldNa.key && att.key ? oldNa.key === att.key : (!prev || sameTest);
+      if (!keep) {
+        state.na = []; state.files.na = null;
+        msgs.push(`The Not Attempted file "${shortName(oldNa.name)}" was removed because it is from a different test. Add the Not Attempted file for this test.`);
+      }
+    }
+  }
+
+  // 2. A Not Attempted file. Refuse it when the file names show it is from another test.
+  if (na) {
+    const cur = state.files.att;
+    if (cur && cur.key && na.key && cur.key !== na.key) {
+      msgs.push(`"${shortName(na.file.name)}" was not added because it is from a different test than the Attempted file "${shortName(cur.name)}".`);
+    } else {
+      state.na = na.res.recs; state.files.na = {name: na.file.name, count: na.res.recs.length, key: na.key};
+      const fm = metaFromFilename(na.file.name);
+      for (const k of ['batch', 'testName', 'date']) if (fm[k] && !state.meta[k]) state.meta[k] = fm[k];
+    }
+  }
+
   if (!state.files.att && !msgs.length) msgs.push('Add the Attempted file. It has the scores, and the report is built from it.');
   else if (!state.files.att && state.files.na) msgs.push('Add the Attempted file too. It has the scores, and the report is built from it.');
   reanalyze();
