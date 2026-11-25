@@ -15,23 +15,83 @@
   if (!motion) return;
   const {animate, stagger, svg: S} = A;
 
-  /* ---------- the sun system ---------- */
+  /* ---------- the sun system: a live demo loop ----------
+     An export drops into the sun, the sun pulses, and the report cards burst out of it.
+     Then it holds, folds the cards back in and plays again. Paused while off screen. */
   const orbit = document.getElementById('orbit');
   if (orbit) {
     const q = s => [...orbit.querySelectorAll(s)];
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const cards = q('.fc'), pdf = orbit.querySelector('.fc.pdf'), xl = orbit.querySelector('.xl');
+    const main = cards.filter(c => c !== pdf);
+    const steps = [...document.querySelectorAll('.steps li')];
+    const setStep = n => steps.forEach((li, i) => { li.classList.toggle('on', i === n); li.classList.toggle('done', i < n); });
+    q('.fb').forEach(b => { b.style.transformBox = 'fill-box'; b.style.transformOrigin = '50% 100%'; });
+
+    // offset from a card's centre to the sun's centre, in px
+    // layout positions (offset*) ignore transforms, so this is right even mid-animation
+    const toSun = el => ({x: orbit.clientWidth / 2 - (el.offsetLeft + el.offsetWidth / 2),
+                          y: orbit.clientHeight / 2 - (el.offsetTop + el.offsetHeight / 2)});
+    const count = n => { const o = {v: 0}, end = +n.dataset.demo, suf = n.dataset.suffix || '';
+      animate(o, {v: end, duration: 1300, ease: 'outExpo', onUpdate: () => { n.textContent = Math.round(o.v) + suf; }}); };
+    const charts = () => {
+      q('[data-demo]').forEach(count);
+      animate(q('.fb'), {scaleY: [0, 1], duration: 900, delay: stagger(70, {start: 200}), ease: 'outBack(1.5)'});
+      q('.spk').forEach(p => animate(S.createDrawable(p), {draw: ['0 0', '0 1'], duration: 1200, delay: 150, ease: 'inOutQuad'}));
+      q('.dn').forEach(c => animate(c, {strokeDasharray: ['0 100', '72 28'], duration: 1300, delay: 200, ease: 'outExpo'}));
+    };
+    const burst = (els, gap) => els.forEach((el, i) => { const d = toSun(el);
+      animate(el, {translateX: [d.x, 0], translateY: [d.y, 0], scale: [0.15, 1], opacity: [0, 1], duration: 850, delay: i * gap, ease: 'outBack(1.4)'}); });
+    const fold = els => els.forEach((el, i) => { const d = toSun(el);
+      animate(el, {translateX: d.x * 0.9, translateY: d.y * 0.9, scale: 0.15, opacity: 0, duration: 520, delay: i * 50, ease: 'inQuart'}); });
+
+    cards.forEach(c => { c.style.opacity = 0; });
     animate(q('.ring'), {scale: [0.6, 1], opacity: [0, 1], duration: 1200, delay: stagger(120, {start: 200}), ease: 'outExpo'});
     animate(q('.sun-in'), {scale: [0.4, 1], opacity: [0, 1], duration: 1400, delay: 250, ease: 'outElastic(1, .6)'});
-    animate(q('.fc .inner'), {opacity: [0, 1], scale: [0.7, 1], duration: 900, delay: stagger(140, {start: 650}), ease: 'outBack(1.7)'});
-    animate(q('.fb'), {scaleY: [0, 1], duration: 900, delay: stagger(80, {start: 1100}), ease: 'outBack(1.5)'});
-    q('.fb').forEach(b => { b.style.transformBox = 'fill-box'; b.style.transformOrigin = '50% 100%'; });
-    q('.spk').forEach(p => animate(S.createDrawable(p), {draw: ['0 0', '0 1'], duration: 1300, delay: 1000, ease: 'inOutQuad'}));
-    q('.dn').forEach(c => animate(c, {strokeDasharray: ['0 100', '72 28'], duration: 1400, delay: 1100, ease: 'outExpo'}));
 
-    // gentle float, each card on its own rhythm
+    // gentle float on the inner content, each card on its own rhythm
     q('.fc .inner').forEach((el, i) => animate(el, {
-      translateY: [-(5 + i % 3 * 2), 5 + i % 2 * 3], duration: 2600 + i * 450, delay: 1500 + i * 200,
+      translateY: [-(4 + i % 3 * 2), 4 + i % 2 * 3], duration: 2600 + i * 450,
       ease: 'inOutSine', loop: true, alternate: true
     }));
+
+    let onScreen = true;
+    new IntersectionObserver(es => { onScreen = es[0].isIntersecting; }).observe(orbit);
+    const ready = async () => { while (!onScreen || document.hidden) await wait(400); };
+
+    (async function loop(first) {
+      await ready();
+      setStep(0);
+      if (!first) { fold([...cards].reverse()); await wait(700); }
+      else await wait(900);
+      // the export appears at the left and is carried into the sun
+      const W = orbit.clientWidth, Hh = orbit.clientHeight;
+      const sx = W * 0.02, sy = Hh * 0.4, cx = W / 2 - xl.offsetWidth / 2, cy = Hh / 2 - xl.offsetHeight / 2;
+      animate(xl, {translateX: [sx - 30, sx], translateY: [sy + 24, sy], scale: 1, opacity: [0, 1], duration: 520, ease: 'outExpo'});
+      await wait(750);
+      animate(xl, {translateX: cx, translateY: cy, scale: 0.3, duration: 820, ease: 'inOutQuart'});
+      animate(xl, {opacity: 0, duration: 220, delay: 620, ease: 'linear'});
+      await wait(780);
+      // the sun takes it in
+      setStep(1);
+      animate(q('.sun-in'), {scale: [1, 1.16, 1], duration: 760, ease: 'outQuad'});
+      q('.wave').forEach((w, i) => animate(w, {scale: [0.6, 2.7], opacity: [0.95, 0], duration: 1150, delay: i * 200, ease: 'outCubic'}));
+      await wait(380);
+      burst(main, 110);
+      charts();
+      await wait(1100);
+      // the report is built, then ready
+      setStep(2);
+      pdf.classList.add('busy');
+      pdf.querySelector('.pt').textContent = 'Building report…';
+      burst([pdf], 0);
+      await wait(1200);
+      pdf.classList.remove('busy');
+      pdf.querySelector('.pt').textContent = 'Report.pdf ready';
+      animate(pdf.querySelector('.ok'), {scale: [0.4, 1], duration: 600, ease: 'outBack(2.5)'});
+      await wait(5200);
+      loop(false);
+    })(true);
 
     // lean toward the pointer (smoothed)
     let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;

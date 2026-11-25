@@ -129,6 +129,7 @@ tr:hover td{background:#F7F8FA}
 </style>
 <link rel="stylesheet" href="../shared/skin/base.css">
 <link rel="stylesheet" href="../shared/skin/single.css">
+<link rel="stylesheet" href="../shared/skin/drop.css">
 </head>
 <body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
@@ -663,7 +664,7 @@ function renderLanding() {
   <section class="landing">
     <h1>Turn a test export into a report your SPOCs can act on.</h1>
     <p class="sub">Add the Attempted and Not Attempted Excel files from the same test. You get group-wise insights and PDF reports ready to share.</p>
-    <label class="drop" id="drop"><input type="file" id="fileInput" multiple accept=".xlsx,.csv"><strong>Drop the Excel files here</strong><span>or click to choose both files together</span></label>
+    <label class="drop ct-drop" id="drop"><input type="file" id="fileInput" multiple accept=".xlsx,.csv"><span class="ct-drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><g class="arr"><path d="M12 18v-6.5M9.2 14.2 12 11.4l2.8 2.8"/></g></svg></span><strong class="ct-drop-t">Drop your Excel exports here</strong><span class="ct-drop-s">or <u>click to browse</u></span><span class="ct-drop-fmt"><i>.xlsx</i><i>.csv</i></span><span class="ct-drop-note">Add the Attempted and Not Attempted files together</span></label>
     <ul class="needs">
       <li><b>Attempted file</b> has each student's score. Required.</li>
       <li><b>Not Attempted file</b> adds registered counts and participation. Optional, but recommended.</li>

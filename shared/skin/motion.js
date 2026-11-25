@@ -20,8 +20,8 @@
   css.textContent =
     '.ct-ants{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:0;transition:opacity .2s ease;z-index:2}' +
     '.ct-ants rect{fill:none;stroke:#8FA9FF;stroke-width:2;stroke-dasharray:10 8;animation:ctAnts .7s linear infinite}' +
-    '.ct-drag-on{box-shadow:0 0 0 1px rgba(79,124,255,.5),0 0 40px -6px rgba(79,124,255,.65)!important}' +
-    '.ct-drag-on>.ct-ants{opacity:1}' +
+    '[data-ct-drag]{box-shadow:0 0 0 1px rgba(79,124,255,.5),0 0 40px -6px rgba(79,124,255,.65)!important}' +
+    '[data-ct-drag]>.ct-ants{opacity:1}' +
     '.ct-scan{position:absolute;top:0;bottom:0;left:0;width:38%;pointer-events:none;z-index:3;border-radius:inherit;' +
       'background:linear-gradient(90deg,transparent,rgba(95,224,191,.35),rgba(143,169,255,.45),transparent)}' +
     '@keyframes ctAnts{to{stroke-dashoffset:-18}}' +
@@ -95,7 +95,7 @@
   }
   function syncAnts() { if (dropSel) zones().filter(visible).forEach(ensureAnts); }
   var over = null, lastZone = null;
-  function setOver(z) { if (over === z) return; if (over) over.classList.remove('ct-drag-on'); over = z; if (z) z.classList.add('ct-drag-on'); }
+  function setOver(z) { if (over === z) return; if (over) over.removeAttribute('data-ct-drag'); over = z; if (z) z.setAttribute('data-ct-drag', ''); }
   function sweep(z) {
     if (!z || !moving || !z.isConnected) return;
     if (getComputedStyle(z).position === 'static') z.style.position = 'relative';

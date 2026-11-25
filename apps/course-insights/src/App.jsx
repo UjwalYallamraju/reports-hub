@@ -3,9 +3,15 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import {
-  UploadCloud, FileSpreadsheet, X, Download, AlertTriangle, KeyRound,
+  FileSpreadsheet, X, Download, AlertTriangle, KeyRound,
   Users, GraduationCap, TrendingUp, ChevronDown, ChevronRight,
 } from "lucide-react";
+
+const DropIcon = () => (
+  <span className="ct-drop-ic" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><g className="arr"><path d="M12 18v-6.5M9.2 14.2 12 11.4l2.8 2.8"/></g></svg>
+  </span>
+);
 
 // ---------- constants ----------
 const NAVY = "#1A1F2B";
@@ -1037,30 +1043,22 @@ export default function CourseInsightsApp() {
 
               <div style={{ flex: "1 1 320px", minWidth: 280, display: "flex", flexDirection: "column" }}>
                 <div
-                  className="cip-drop"
+                  className={"cip-drop ct-drop" + (dragOver ? " ct-over" : "")}
+                  role="button" tabIndex={0}
                   onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                   onDragLeave={() => setDragOver(false)}
                   onDrop={onDrop}
                   onClick={() => inputRef.current?.click()}
-                  style={{
-                    position: "relative", border: `1px solid ${dragOver ? GOLD_SOFT : "rgba(18,168,123,0.22)"}`,
-                    borderRadius: 3, padding: "28px 22px", textAlign: "center", cursor: "pointer",
-                    background: dragOver ? "rgba(18,168,123,0.08)" : D_PANEL,
-                    transition: "all 0.15s", flex: "1 1 auto", boxSizing: "border-box",
-                  }}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); inputRef.current?.click(); } }}
+                  style={{ flex: "1 1 auto" }}
                 >
-                  <CornerBracket position="tl" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
-                  <CornerBracket position="tr" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
-                  <CornerBracket position="bl" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
-                  <CornerBracket position="br" color={dragOver ? GOLD_SOFT : "rgba(18,168,123,0.4)"} />
-                  <UploadCloud size={24} color={GOLD_SOFT} style={{ marginBottom: 8 }} />
-                  <div style={{ color: D_TEXT, fontSize: 14, fontWeight: 500 }}>
-                    {busy ? "Reading files…" : "Drop .xlsx files here, or click to browse"}
-                  </div>
-                  <div style={{ color: D_MUTED, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>
-                    Group-wise course reports and password-not-set reports — individual sections or one
-                    combined sheet, any number at once
-                  </div>
+                  <DropIcon />
+                  <strong className="ct-drop-t">{busy ? "Reading files…" : "Drop your Excel exports here"}</strong>
+                  <span className="ct-drop-s">or <u>click to browse</u></span>
+                  <span className="ct-drop-fmt"><i>.xlsx</i><i>.xls</i></span>
+                  <span className="ct-drop-note">
+                    Group-wise course reports and password-not-set reports, one section per file or one combined sheet, any number at once
+                  </span>
                   <input
                     ref={inputRef} type="file" multiple accept=".xlsx,.xls"
                     style={{ display: "none" }}
@@ -1074,27 +1072,20 @@ export default function CourseInsightsApp() {
                     path always parses it as a password report using flexible column
                     matching, rather than relying on an exact "Created Time" header. */}
                 <div
-                  className="cip-drop"
+                  className={"cip-drop ct-drop ct-drop-mini" + (passwordDragOver ? " ct-over" : "")}
+                  role="button" tabIndex={0}
                   onDragOver={(e) => { e.preventDefault(); setPasswordDragOver(true); }}
                   onDragLeave={() => setPasswordDragOver(false)}
                   onDrop={onPasswordDrop}
                   onClick={() => passwordInputRef.current?.click()}
-                  style={{
-                    marginTop: 10, border: `1px dashed ${passwordDragOver ? GOLD_SOFT : "rgba(18,168,123,0.3)"}`,
-                    borderRadius: 3, padding: "12px 14px", cursor: "pointer",
-                    background: passwordDragOver ? "rgba(18,168,123,0.08)" : D_PANEL,
-                    display: "flex", alignItems: "center", gap: 10, transition: "all 0.15s",
-                  }}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); passwordInputRef.current?.click(); } }}
+                  style={{ marginTop: 10 }}
                 >
-                  <KeyRound size={15} color={GOLD_SOFT} style={{ flexShrink: 0 }} />
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ color: D_TEXT, fontSize: 12.5, fontWeight: 500 }}>
-                      {busy ? "Reading…" : "Password-not-set file not rendering right? Drop it here separately"}
-                    </div>
-                    <div style={{ color: D_MUTED, fontSize: 11, marginTop: 2 }}>
-                      Parsed as a password report regardless of exact column names/order
-                    </div>
-                  </div>
+                  <span className="ct-drop-ic" aria-hidden="true"><KeyRound size={17} /></span>
+                  <span style={{ minWidth: 0 }}>
+                    <strong className="ct-drop-t">{busy ? "Reading…" : "Password-not-set file not showing right? Drop it here"}</strong>
+                    <span className="ct-drop-s">Read as a password report, whatever the column names or order</span>
+                  </span>
                   <input
                     ref={passwordInputRef} type="file" multiple accept=".xlsx,.xls"
                     style={{ display: "none" }}

@@ -188,6 +188,7 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
 </style>
 <link rel="stylesheet" href="../shared/skin/base.css">
 <link rel="stylesheet" href="../shared/skin/group.css">
+<link rel="stylesheet" href="../shared/skin/drop.css">
 </head>
 <body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
@@ -216,10 +217,8 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
   <div>
     <h1>Group Test Report</h1>
     <p class="lede">Group Tests Results page file needs to be uploaded</p>
-    <div class="drop" id="drop" role="button" tabindex="0" aria-label="Choose an Excel file or drop it here">
-      <strong>Drop the Excel file here</strong>
-      <span class="sub">.xlsx, .xls or .csv</span>
-      <span class="btn primary" aria-hidden="true">Choose file</span>
+    <div class="drop ct-drop" id="drop" role="button" tabindex="0" aria-label="Choose an Excel file or drop it here">
+      <span class="ct-drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><g class="arr"><path d="M12 18v-6.5M9.2 14.2 12 11.4l2.8 2.8"/></g></svg></span><strong class="ct-drop-t">Drop your Excel export here</strong><span class="ct-drop-s">or <u>click to browse</u></span><span class="ct-drop-fmt"><i>.xlsx</i><i>.xls</i><i>.csv</i></span><span class="ct-drop-note">The Group Tests Results file from CodeTantra</span>
     </div>
     <div class="err" id="err" role="alert" hidden></div>
     <p class="fine">The file is read inside your browser and is not uploaded anywhere. Email addresses in the sheet are never shown in the report.</p>

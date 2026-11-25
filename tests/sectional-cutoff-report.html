@@ -52,6 +52,7 @@ label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--mu
 @media print{header nav,#up,.np,.hubnav{display:none!important}body{background:#fff}.card{break-inside:avoid}header{position:static}.dt{display:table-row!important}}
 </style><link rel="stylesheet" href="../shared/skin/base.css">
 <link rel="stylesheet" href="../shared/skin/cutoff.css">
+<link rel="stylesheet" href="../shared/skin/drop.css">
 </head><body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
 <header><div class="wrap">
@@ -59,7 +60,7 @@ label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--mu
 <div><b>Sectional Cut-off Report</b><small>Qualification by section cut-offs, for any company's mock test</small></div>
 <nav id="modes"><button data-m="single" class="on">Single Test</button><button data-m="multi">Growth Across Tests</button></nav><div id="pdfbox" hidden><label class="ck"><input type="checkbox" id="incl" checked>Include student list</label><button class="pb" id="pdf">Download Complete PDF</button><select id="pdfb" title="Choose a batch"></select><button class="pb alt" id="pdfB">Download Batch PDF</button><button class="pb alt" id="pdfN" title="Separate list for the academic coordinator">Not Attempted PDF</button></div></div></header>
 <main class="wrap">
-<section class="card" id="up"><label class="dz" id="dz"><input id="fi" type="file" accept=".xlsx,.xls,.csv"><b>Drop the result sheet here, or click to browse</b><span id="hint"></span></label>
+<section class="card" id="up"><label class="dz ct-drop" id="dz"><input id="fi" type="file" accept=".xlsx,.xls,.csv"><span class="ct-drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><g class="arr"><path d="M12 18v-6.5M9.2 14.2 12 11.4l2.8 2.8"/></g></svg></span><b class="ct-drop-t">Drop your Excel export here</b><span class="ct-drop-s">or <u>click to browse</u></span><span class="ct-drop-fmt"><i>.xlsx</i><i>.xls</i><i>.csv</i></span><span class="ct-drop-note" id="hint"></span></label>
 <details class="fmt"><summary>What the sheet needs</summary><ul>
 <li>One row per student with a <b>Name</b> column. <b>Member Id</b>, <b>Email</b> and a <b>Groups</b> / <b>Batch</b> column are used when present.</li>
 <li>One column per section with its maximum marks in brackets, for example <i>Coding (20M)</i>, <i>Aptitude (30)</i> or <i>Verbal (15 Marks)</i>. Total columns are ignored; the total is added up from the sections.</li>
@@ -204,7 +205,7 @@ document.addEventListener('click',e=>{const mb=e.target.closest('[data-m]');
  if(mb){S.mode=mb.dataset.m;document.querySelectorAll('#modes button').forEach(b=>b.classList.toggle('on',b===mb));setMode();render();return}
  const th=e.target.closest('th[data-k]');if(th){const k=th.dataset.k;if(S.mode==='single'){S.sd=S.sk===k?-S.sd:(k==='name'||k==='batch'?1:-1);S.sk=k}else S.md=-S.md;tbl();return}
  const r=e.target.closest('tr.dr');if(r){const k=r.dataset.k;S.open.has(k)?S.open.delete(k):S.open.add(k);tbl()}});
-function setMode(){const m=S.mode==='multi';$('#fi').multiple=m;$('#hint').textContent=m?'Growth mode: select all test files together (Ctrl/Shift-click) to compare them in order':'Single test mode: choose one result file (.xlsx or .csv)'}
+function setMode(){const m=S.mode==='multi';$('#fi').multiple=m;$('#hint').textContent=m?'Growth mode: select all test files together (Ctrl/Shift-click) to compare them in order':'Single test: choose one result file'}
 $('#fi').onchange=e=>{onFiles(e.target.files);e.target.value=''};
 $('#dz').ondragover=e=>e.preventDefault();$('#dz').ondrop=e=>{e.preventDefault();onFiles(e.dataTransfer.files)};
 const slug=s=>String(s||'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'');

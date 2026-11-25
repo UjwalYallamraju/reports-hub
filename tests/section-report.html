@@ -137,6 +137,7 @@ svg .cnt{fill:var(--ink);font-weight:600}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <link rel="stylesheet" href="../shared/skin/base.css">
 <link rel="stylesheet" href="../shared/skin/section.css">
+<link rel="stylesheet" href="../shared/skin/drop.css">
 </head>
 <body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
@@ -153,10 +154,9 @@ svg .cnt{fill:var(--ink);font-weight:600}
       <p class="priv">The file is read in your browser and is not uploaded anywhere.</p>
     </div>
     <div>
-      <label class="drop" id="drop">
+      <label class="drop ct-drop" id="drop">
         <input type="file" id="file" accept=".xlsx,.xls,.csv">
-        <strong>Drop the Excel file here</strong>
-        <span>or click to choose a .xlsx / .xls / .csv file</span>
+        <span class="ct-drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><g class="arr"><path d="M12 18v-6.5M9.2 14.2 12 11.4l2.8 2.8"/></g></svg></span><strong class="ct-drop-t">Drop your Excel export here</strong><span class="ct-drop-s">or <u>click to browse</u></span><span class="ct-drop-fmt"><i>.xlsx</i><i>.xls</i><i>.csv</i></span>
         <div class="cols"><i>Member Id</i><i>Name</i><i>Groups</i><i>Section columns like "Coding - Easy (10M)"</i><i>Status</i><i>Total (100M)</i><i>Passed</i></div>
       </label>
     </div>
