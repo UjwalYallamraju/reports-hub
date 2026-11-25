@@ -1,0 +1,63 @@
+/* CodeTantra Reports: the shared header bar on every tool page, in dark and light.
+   Each tool keeps its own bar element and buttons and adds .ct-bar; inside it:
+     <a class="ct-back">‹ All tests</a>
+     <div class="ct-th"><span class="ct-th-ic">icon</span><div class="ct-th-t"><b>Tool name</b><small>One line</small></div></div>
+   Loaded in both modes (hub-nav.js leaves it on in light mode). */
+.ct-bar{background:rgba(14,21,41,.88)!important;border-bottom:1px solid #232C48!important;color:#E8ECF8;
+  -webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important;box-shadow:none!important}
+.ct-bar,.ct-bar>.wrap,.ct-bar-in{min-height:62px}
+.ct-bar.top,.ct-bar.bar,.ct-bar>.wrap,.ct-bar-in{display:flex!important;align-items:center!important;gap:14px!important;flex-wrap:wrap}
+.ct-bar.top,.ct-bar.bar{padding:10px max(24px,calc((100% - 1152px) / 2))!important}
+.ct-bar>.wrap{max-width:1200px!important;margin:0 auto!important;padding:10px 24px!important;box-sizing:border-box}
+.ct-bar.bar{justify-content:flex-start!important}
+.ct-bar.bar #pdfBtn{margin-left:auto}
+.ct-bar.top .top-left{gap:14px!important}
+.ct-bar-solo{position:relative}
+.ct-bar-in{max-width:1200px;margin:0 auto;padding:10px 24px;box-sizing:border-box}
+
+.ct-back{display:inline-flex!important;align-items:center;gap:6px!important;height:34px;padding:0 12px 0 8px!important;border-radius:10px!important;
+  border:1px solid #2E3A5E!important;background:rgba(255,255,255,.04)!important;color:#C9D1E8!important;
+  font:600 13px/1 Inter,system-ui,sans-serif!important;text-decoration:none!important;white-space:nowrap;transition:background .2s,border-color .2s,color .2s}
+.ct-back:hover{background:rgba(79,124,255,.12)!important;border-color:rgba(143,169,255,.55)!important;color:#fff!important}
+.ct-back:focus-visible{outline:2px solid #8FA9FF!important;outline-offset:2px}
+.ct-back svg{flex:none}
+
+.ct-th{display:flex;align-items:center;gap:12px;min-width:0}
+.ct-th-ic{width:38px;height:38px;flex:none;border-radius:11px;display:grid;place-items:center;color:#8FA9FF;
+  background:rgba(79,124,255,.15);border:1px solid rgba(79,124,255,.38);box-shadow:0 0 22px -8px #4F7CFF}
+.ct-th-ic.c{color:#5FE0BF;background:rgba(25,195,156,.14);border-color:rgba(25,195,156,.38);box-shadow:0 0 22px -8px #19C39C}
+.ct-th-ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ct-th-t{min-width:0}
+.ct-th b{display:block!important;margin:0!important;font:600 16.5px/1.25 Sora,Inter,system-ui,sans-serif!important;letter-spacing:-.01em;color:#E8ECF8!important}
+.ct-th small{display:block!important;margin-top:1px;font:500 12.5px/1.3 Inter,system-ui,sans-serif!important;color:#98A3C2!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* the group report's section links take the subtitle's place once a report is open */
+.ct-bar:has(#jump:not([hidden])) .ct-th small{display:none!important}
+/* nothing to download until a file is loaded */
+.ct-bar #pdfBtn:disabled{display:none}
+
+[data-mode="light"] .ct-bar{background:rgba(255,255,255,.9)!important;border-bottom-color:#E4E7EC!important;color:#1A1F2B}
+[data-mode="light"] .ct-back{border-color:#E4E7EC!important;background:#F7F8FB!important;color:#3A4254!important}
+[data-mode="light"] .ct-back:hover{background:#EEF2FF!important;border-color:#C9D6FF!important;color:#1A1F2B!important}
+[data-mode="light"] .ct-th-ic{color:#3366FF;background:#EBF0FF;border-color:#C9D6FF;box-shadow:none}
+[data-mode="light"] .ct-th-ic.c{color:#0F936C;background:#E6F6F0;border-color:#B5E6D5}
+[data-mode="light"] .ct-th b{color:#1A1F2B!important}
+[data-mode="light"] .ct-th small{color:#5B6475!important}
+
+@media (max-width:640px){
+  .ct-bar.top,.ct-bar.bar,.ct-bar-in,.ct-bar>.wrap{padding:8px 14px!important}
+  .ct-bar,.ct-bar>.wrap,.ct-bar-in{min-height:56px;gap:10px!important}
+  .ct-th small{display:none!important}
+  .ct-th b{font-size:15px!important}
+  .ct-th-ic{width:32px;height:32px;border-radius:9px}
+  .ct-back span{display:none}
+  .ct-back{padding:0 9px!important}
+}
+@media print{.ct-bar{display:none!important}}
+/* cut-off report on phones: mode switch full width, download buttons in one scrolling row */
+@media (max-width:640px){
+  .ct-bar #modes{width:100%;display:flex}
+  .ct-bar #modes button{flex:1}
+  .ct-bar #pdfbox:not([hidden]){display:flex!important;flex-wrap:nowrap!important;align-items:center;gap:8px;width:100%;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+  .ct-bar #pdfbox::-webkit-scrollbar{display:none}
+  .ct-bar #pdfbox>*{flex:none;white-space:nowrap}
+}

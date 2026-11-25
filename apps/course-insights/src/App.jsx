@@ -1009,6 +1009,20 @@ export default function CourseInsightsApp() {
         }
       `}</style>
 
+      {/* ---------- tool header, same as every other tool (styled by shared/skin/tool.css) ---------- */}
+      <div className="no-print ct-bar ct-bar-solo">
+        <div className="ct-bar-in">
+          <a className="ct-back" href="../index.html" aria-label="Back to all course reports">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+            <span>All courses</span>
+          </a>
+          <div className="ct-th">
+            <span className="ct-th-ic c" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 8l10-4 10 4-10 4z" /><path d="M6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /></svg></span>
+            <div className="ct-th-t"><b>Course progress insights</b><small>Course completion by section, for your SPOC</small></div>
+          </div>
+        </div>
+      </div>
+
       {/* ---------- Upload / control zone (no-print) ---------- */}
       <div className="no-print" style={{ background: "var(--cip-bar)", borderBottom: "1px solid var(--cip-line2)", backdropFilter: "blur(6px)" }}>
         <div style={{ height: 3, background: `linear-gradient(90deg, transparent, ${GOLD_SOFT}, transparent)` }} />
@@ -1028,7 +1042,7 @@ export default function CourseInsightsApp() {
                   </div>
                   <div>
                     <div style={{ fontFamily: "'Sora', 'Inter', sans-serif", fontSize: 25, fontWeight: 700, color: D_TEXT, lineHeight: 1.15 }}>
-                      Course Progress Insights
+                      See how every section is progressing
                     </div>
                     <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", fontSize: 13.5, color: GOLD_SOFT, marginTop: 3 }}>
                       Compiled for your SPOC, section by section
@@ -1044,17 +1058,17 @@ export default function CourseInsightsApp() {
 
               <div style={{ flex: "1 1 320px", minWidth: 280, display: "flex", flexDirection: "column" }}>
                 <div
-                  className={"cip-drop ct-drop" + (dragOver ? " ct-over" : "")}
+                  className={"cip-drop ct-drop" + (dragOver ? " ct-over" : "") + (courseFiles.length ? " ct-drop-compact" : "")}
                   role="button" tabIndex={0}
                   onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                   onDragLeave={() => setDragOver(false)}
                   onDrop={onDrop}
                   onClick={() => inputRef.current?.click()}
                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); inputRef.current?.click(); } }}
-                  style={{ flex: "1 1 auto" }}
+                  style={courseFiles.length ? undefined : { flex: "1 1 auto" }}
                 >
                   <DropIcon />
-                  <strong className="ct-drop-t">{busy ? "Reading files…" : "Drop your Excel exports here"}</strong>
+                  <strong className="ct-drop-t">{busy ? "Reading files…" : courseFiles.length ? "Drop more exports to add them" : "Drop your Excel exports here"}</strong>
                   <span className="ct-drop-s">or <u>click to browse</u></span>
                   <span className="ct-drop-fmt"><i>.xlsx</i><i>.xls</i></span>
                   <span className="ct-drop-note">
@@ -1067,13 +1081,13 @@ export default function CourseInsightsApp() {
                   />
                 </div>
 
-                <div className="ct-sample">
+                {!courseFiles.length && <div className="ct-sample">
                   <span>No file handy?</span>
                   <button type="button" onClick={() => window.CTDetect && window.CTDetect.samples("course")}>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17l-1.9-5.3L5 10l5.1-1.7z" /><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" /></svg>
                     Try it with sample data
                   </button>
-                </div>
+                </div>}
 
                 {/* Dedicated password-not-set dropzone. Separate from the box above
                     so a password export that isn't being detected/rendered correctly

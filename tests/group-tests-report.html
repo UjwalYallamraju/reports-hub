@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Test Report Builder</title>
+<title>Group-wise tests report · CodeTantra Reports</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -189,17 +189,15 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
 <link rel="stylesheet" href="../shared/skin/base.css">
 <link rel="stylesheet" href="../shared/skin/group.css">
 <link rel="stylesheet" href="../shared/skin/drop.css">
+<link rel="stylesheet" href="../shared/skin/tool.css">
 </head>
 <body>
 <script src="../shared/hub-nav.js" data-root="../" data-section="tests"></script>
 
-<header class="topbar">
+<header class="topbar ct-bar">
   <div class="wrap">
-    <a class="home" href="index.html" aria-label="Back to all test reports"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>All tests</a>
-    <div class="brand">
-      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="5" fill="var(--primary)"/><rect x="6" y="13" width="3.4" height="7" rx=".8" fill="var(--on-primary)"/><rect x="11.3" y="8" width="3.4" height="12" rx=".8" fill="var(--on-primary)"/><rect x="16.6" y="10.5" width="3.4" height="9.5" rx=".8" fill="var(--on-primary)"/></svg>
-      Test Report Builder
-    </div>
+    <a class="home ct-back" href="index.html" aria-label="Back to all test reports"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>All tests</span></a>
+    <div class="ct-th"><span class="ct-th-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></span><div class="ct-th-t"><b>Group-wise tests report</b><small>Several tests compared across groups</small></div></div>
     <nav class="jump" id="jump" aria-label="Report sections" hidden>
       <a href="#s-overview">Overview</a>
       <a href="#s-tests">Tests</a>

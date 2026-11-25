@@ -40,7 +40,7 @@
     html.setAttribute('data-mode', m);
     html.style.colorScheme = m;
     [].forEach.call(document.querySelectorAll('link[rel="stylesheet"][href*="skin/"]'), function (l) {
-      if (!/drop\.css/.test(l.getAttribute('href'))) l.disabled = m === 'light';
+      if (!/(drop|tool)\.css/.test(l.getAttribute('href'))) l.disabled = m === 'light';
     });
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', m === 'light' ? '#F6F8FC' : '#0B1020');
@@ -120,7 +120,13 @@
       '::view-transition-group(ct-sun){animation-duration:.5s}' +
       '@keyframes ctVtOut{to{opacity:0;transform:translateY(-8px)}}@keyframes ctVtIn{from{opacity:0;transform:translateY(12px)}}' +
       '@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}' : '') +
-    '@media print{.hubnav{display:none!important}}' +
+    /* slim footer on tool pages (the landing pages have their own) */
+    '.ct-foot{all:initial;display:block;margin-top:48px;border-top:1px solid rgba(255,255,255,.08);color:#6B7596;font:400 13.5px/1.5 Inter,system-ui,sans-serif}' +
+    '.ct-foot>div{max-width:1200px;margin:0 auto;padding:18px 24px 30px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}' +
+    '.ct-foot span{display:inline-flex;align-items:center;gap:8px}.ct-foot img{width:18px;height:18px}' +
+    '.ct-foot b{font-weight:600;color:#98A3C2}.ct-foot a{color:#98A3C2;text-decoration:none;margin-left:14px}.ct-foot a:hover{color:#E8ECF8}' +
+    '[data-mode="light"] .ct-foot{border-top-color:#E4E7EC;color:#8A93A6}[data-mode="light"] .ct-foot b,[data-mode="light"] .ct-foot a{color:#5B6475}[data-mode="light"] .ct-foot a:hover{color:#1A1F2B}' +
+    '@media print{.hubnav,.ct-foot{display:none!important}}' +
     (fade && !vt ? '@keyframes hubIn{from{opacity:0}to{opacity:1}}@media(prefers-reduced-motion:no-preference){body>*:not(.hubnav):not(script):not(style){animation:hubIn .5s ease-out both}}' : '');
 
   var style = document.createElement('style');
@@ -150,6 +156,17 @@
       '</div>' +
     '</div>';
   me.parentNode.insertBefore(nav, me);
+  if (!sticky) {
+    var addFoot = function () {
+      if (document.querySelector('.ct-foot')) return;
+      var f = document.createElement('footer'); f.className = 'ct-foot';
+      f.innerHTML = '<div><span><img src="' + root + 'shared/brand/logo-96.png" alt=""><b>CodeTantra Reports</b></span>' +
+        '<span>Files are read in your browser and never uploaded.</span>' +
+        '<span><a href="' + root + 'tests/index.html">Tests</a><a href="' + root + 'courses/index.html">Courses</a></span></div>';
+      document.body.appendChild(f);
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addFoot); else addFoot();
+  }
   applyMode(document.documentElement.getAttribute('data-mode') || 'dark');   // fills the toggle's icon
   nav.querySelector('.hub-mode').addEventListener('click', function () {
     setMode(document.documentElement.getAttribute('data-mode') === 'light' ? 'dark' : 'light');
