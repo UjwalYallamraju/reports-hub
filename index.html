@@ -15,11 +15,12 @@
 <link rel="stylesheet" href="shared/hub.css">
 <link rel="stylesheet" href="shared/home.css">
 <link rel="stylesheet" href="shared/light.css">
+<link rel="stylesheet" href="shared/fx.css">
 <script>(function(d){if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim-ready');setTimeout(function(){if(!d.dataset.animOk)d.classList.remove('anim-ready')},3000)}})(document.documentElement)</script>
 </head>
 <body>
 <script src="shared/hub-nav.js" data-root="./" data-section="" data-sticky="on" data-fade="off"></script>
-<div class="aurora" aria-hidden="true"><i></i><i></i><i></i><div class="grid"></div></div>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i><div class="grid"></div><canvas class="dust"></canvas></div>
 
 <main>
   <section class="hx">
@@ -39,7 +40,7 @@
 
       <div class="demo" data-reveal="hero">
       <div class="orbit" id="orbit" aria-hidden="true">
-        <div class="ring r2"></div><div class="ring r1"></div><div class="glow"></div><div class="wave"></div><div class="wave w2"></div>
+        <div class="rays"></div><div class="ring r2"></div><div class="ring r1"></div><div class="glow"></div><canvas class="embers"></canvas><div class="wave"></div><div class="wave w2"></div>
         <div class="sun"><div class="sun-in"><img src="shared/brand/logo-hero.png" alt="" width="200" height="200"></div></div>
         <div class="fc k1"><div class="inner"><div class="lab"><span>Pass rate</span><span>+12</span></div><b><span data-demo="83" data-suffix="%">83%</span></b>
           <svg class="spark" width="120" height="26" viewBox="0 0 120 26"><path class="spk" d="M2 22 L18 19 L32 20 L46 14 L60 15 L74 10 L88 11 L102 6 L118 3" fill="none" stroke="#5FE0BF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
@@ -161,5 +162,6 @@
 <script src="shared/home.js"></script>
 <script src="shared/detect.js"></script>
 <script src="shared/smartdrop.js"></script>
+<script src="shared/fx.js"></script>
 </body>
 </html>

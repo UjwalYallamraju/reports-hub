@@ -151,3 +151,34 @@ h1,h2,h3{font-family:Sora,Inter,system-ui,sans-serif;letter-spacing:-.02em;margi
 
 /* opt in to page-to-page transitions early, from the <head> (hub-nav.js styles the animation) */
 @view-transition{navigation:auto}
+
+/* ---------- Tests / Courses: hero deck and tool-card previews ---------- */
+.ph-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:40px;align-items:center}
+.fx-deck{position:relative;height:250px}
+.fc2{position:absolute;border-radius:16px;background:rgba(18,26,48,.85);border:1px solid var(--line2);
+  box-shadow:0 24px 60px -24px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  animation:fcFloat 6s ease-in-out infinite alternate;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.fc2 .in{padding:14px 16px}
+.fc2 .l{display:block;font-size:12.5px;color:var(--muted)}
+.fc2 b{display:block;font:700 26px/1.1 Sora,Inter,sans-serif;color:var(--blue-ink);margin:2px 0 6px}
+.fc2 b.g{color:var(--gold,#FFC94D)}.fc2 b.m{color:var(--mint-ink)}
+.fc2 b small{font:500 13px Inter,sans-serif;color:var(--muted)}
+.fc2 svg{display:block;width:100%;height:auto}
+.fc2.d1{left:0;top:6px;width:200px;rotate:-4deg;--fl:-8px;z-index:2}
+.fc2.d2{right:0;top:40px;width:250px;rotate:3deg;--fl:10px;animation-delay:-2s;z-index:1}
+.fc2.d3{left:70px;bottom:0;width:180px;rotate:-1deg;--fl:-6px;animation-delay:-4s;z-index:3;border-color:rgba(255,201,77,.35);box-shadow:0 24px 60px -24px rgba(0,0,0,.85),0 0 30px -12px rgba(242,140,40,.6)}
+@keyframes fcFloat{to{translate:0 var(--fl)}}
+.tool-viz{position:absolute;top:22px;right:22px;width:170px;opacity:.95;pointer-events:none}
+.tool-viz svg{display:block;width:100%;height:auto}
+/* tool cards: a light runs round the edge on hover */
+@property --fxb{syntax:"<angle>";initial-value:0deg;inherits:false}
+.tool:not(.soon)::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:conic-gradient(from var(--fxb),transparent 0 65%,color-mix(in srgb,var(--accent) 95%,white) 80%,rgba(255,201,77,.9) 88%,transparent 96%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:fxSpinB 3.5s linear infinite}
+.tool:not(.soon):hover::after{opacity:1}
+@keyframes fxSpinB{to{--fxb:360deg}}
+@media(max-width:900px){.ph-grid{grid-template-columns:minmax(0,1fr)}.fx-deck{display:none}}
+@media(max-width:600px){.tool-viz{position:static;width:150px;margin-bottom:-4px}}
+@media(prefers-reduced-motion:reduce){.fc2,.tool:not(.soon)::after{animation:none}}
+.fc2.d2 .l{text-align:right}

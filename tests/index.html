@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/hub.css">
 <link rel="stylesheet" href="../shared/light.css">
+<link rel="stylesheet" href="../shared/fx.css">
 <script>(function(d){if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim-ready');setTimeout(function(){if(!d.dataset.animOk)d.classList.remove('anim-ready')},3000)}})(document.documentElement)</script>
 </head>
 <body class="tests-page">
@@ -20,14 +21,18 @@
 <div class="ambient" aria-hidden="true"><div class="grid"></div></div>
 <main>
   <section class="page-hero">
-    <div class="wrap">
+    <div class="wrap ph-grid">
+      <div>
       <a class="crumb" href="../index.html" data-reveal="hero"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>CodeTantra Reports</a>
       <h1 data-reveal="hero">Test <span class="grad">reports</span></h1>
       <p class="lede" data-reveal="hero">Pick the report that matches the file you exported. Each one builds the analysis in your browser and gives you a PDF to share.</p>
     </div>
+      <div class="fx-deck" aria-hidden="true" data-fx-viz data-reveal="hero"><div class="fc2 d1"><div class="in"><span class="l">Pass rate</span><b>83%</b><svg viewBox="0 0 120 30" fill="none" stroke-width="2.5" stroke-linecap="round"><path class="vline" d="M2 26 L18 22 L32 23 L46 16 L60 17 L74 11 L88 12 L102 6 L118 3" stroke="#5FE0BF"/></svg></div></div><div class="fc2 d2"><div class="in"><span class="l">Cleared every section</span><svg viewBox="0 0 170 58"><rect class="vb" x="2.0" y="42.4" width="17.2" height="15.6" rx="3" fill="#FF6B6B"/><rect class="vb" x="23.2" y="36.2" width="17.2" height="21.8" rx="3" fill="#FF6B6B"/><rect class="vb" x="44.5" y="28.9" width="17.2" height="29.1" rx="3" fill="#5FE0BF"/><rect class="vb" x="65.8" y="25.8" width="17.2" height="32.2" rx="3" fill="#5FE0BF"/><rect class="vb" x="87.0" y="21.6" width="17.2" height="36.4" rx="3" fill="#5FE0BF"/><rect class="vb" x="108.2" y="17.4" width="17.2" height="40.6" rx="3" fill="#5FE0BF"/><rect class="vb" x="129.5" y="13.3" width="17.2" height="44.7" rx="3" fill="#5FE0BF"/><rect class="vb" x="150.8" y="10.2" width="17.2" height="47.8" rx="3" fill="#5FE0BF"/><line class="vcut" x1="0" x2="170" y1="29.4" y2="29.4" stroke="#FFC94D" stroke-width="2" stroke-dasharray="5 4"/></svg></div></div><div class="fc2 d3"><div class="in"><span class="l">Qualified</span><b class="g">53<small> / 150</small></b></div></div></div>
+    </div>
   </section>
   <section class="wrap tools">
     <a class="tool" href="single-tests-report.html" data-reveal="scroll">
+      <div class="tool-viz" aria-hidden="true" data-fx-viz><svg viewBox="0 0 170 58"><rect class="vb" x="2.0" y="48.6" width="13.0" height="9.4" rx="3" fill="#8FA9FF"/><rect class="vb" x="19.0" y="42.4" width="13.0" height="15.6" rx="3" fill="#8FA9FF"/><rect class="vb" x="36.0" y="36.2" width="13.0" height="21.8" rx="3" fill="#8FA9FF"/><rect class="vb" x="53.0" y="29.4" width="13.0" height="28.6" rx="3" fill="#8FA9FF"/><rect class="vb" x="70.0" y="17.4" width="13.0" height="40.6" rx="3" fill="#8FA9FF"/><rect class="vb" x="87.0" y="8.6" width="13.0" height="49.4" rx="3" fill="#8FA9FF"/><rect class="vb" x="104.0" y="20.6" width="13.0" height="37.4" rx="3" fill="#8FA9FF"/><rect class="vb" x="121.0" y="27.8" width="13.0" height="30.2" rx="3" fill="#8FA9FF"/><rect class="vb" x="138.0" y="39.3" width="13.0" height="18.7" rx="3" fill="#8FA9FF"/><rect class="vb" x="155.0" y="46.6" width="13.0" height="11.4" rx="3" fill="#8FA9FF"/></svg></div>
       <div class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/></svg></div>
       <span class="tag">One test</span>
       <h2>Single test report</h2>
@@ -39,6 +44,7 @@
       <span class="go">Open single test report <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
     <a class="tool" href="group-tests-report.html" data-reveal="scroll">
+      <div class="tool-viz" aria-hidden="true" data-fx-viz><svg viewBox="0 0 170 58" fill="none" stroke-width="3" stroke-linecap="round"><path class="vline" d="M4 44 C30 40 40 22 64 26 S100 40 122 22 S150 10 166 12" stroke="#8FA9FF"/><path class="vline" d="M4 50 C28 50 44 38 66 40 S104 30 124 34 S152 26 166 24" stroke="#5FE0BF"/></svg></div>
       <div class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></div>
       <span class="tag">Many tests</span>
       <h2>Group-wise tests report</h2>
@@ -50,6 +56,7 @@
       <span class="go">Open group-wise report <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
     <a class="tool" href="section-report.html" data-reveal="scroll">
+      <div class="tool-viz" aria-hidden="true" data-fx-viz><svg viewBox="0 0 170 58"><rect class="vh" x="0" y="4" width="150" height="11" rx="5.5" fill="#8FA9FF"/><rect class="vh" x="0" y="23" width="112" height="11" rx="5.5" fill="#5FE0BF"/><rect class="vh" x="0" y="42" width="74" height="11" rx="5.5" fill="#FFC94D"/></svg></div>
       <div class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
       <span class="tag">Sections</span>
       <h2>Section-wise test analysis</h2>
@@ -61,6 +68,7 @@
       <span class="go">Open section-wise analysis <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
     <a class="tool" href="sectional-cutoff-report.html" data-reveal="scroll">
+      <div class="tool-viz" aria-hidden="true" data-fx-viz><svg viewBox="0 0 170 58"><rect class="vb" x="2.0" y="42.4" width="14.9" height="15.6" rx="3" fill="#FF6B6B"/><rect class="vb" x="20.9" y="38.2" width="14.9" height="19.8" rx="3" fill="#FF6B6B"/><rect class="vb" x="39.8" y="31.0" width="14.9" height="27.0" rx="3" fill="#5FE0BF"/><rect class="vb" x="58.7" y="26.8" width="14.9" height="31.2" rx="3" fill="#5FE0BF"/><rect class="vb" x="77.6" y="23.7" width="14.9" height="34.3" rx="3" fill="#5FE0BF"/><rect class="vb" x="96.4" y="21.6" width="14.9" height="36.4" rx="3" fill="#5FE0BF"/><rect class="vb" x="115.3" y="17.4" width="14.9" height="40.6" rx="3" fill="#5FE0BF"/><rect class="vb" x="134.2" y="14.3" width="14.9" height="43.7" rx="3" fill="#5FE0BF"/><rect class="vb" x="153.1" y="11.2" width="14.9" height="46.8" rx="3" fill="#5FE0BF"/><line class="vcut" x1="0" x2="170" y1="32.0" y2="32.0" stroke="#FFC94D" stroke-width="2" stroke-dasharray="5 4"/></svg></div>
       <div class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-8"/><path d="M3 21h18"/><path d="M14 8h6v6"/></svg></div>
       <span class="tag">Company mocks</span>
       <h2>Sectional cut-off report</h2>
@@ -76,5 +84,6 @@
 <footer class="foot"><div class="wrap"><span>CodeTantra Reports</span><span>Files are read in your browser and never uploaded to a server.</span></div></footer>
 <script src="../shared/vendor/anime.umd.min.js"></script>
 <script src="../shared/hub.js"></script>
+<script src="../shared/fx.js"></script>
 </body>
 </html>

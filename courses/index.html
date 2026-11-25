@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/hub.css">
 <link rel="stylesheet" href="../shared/light.css">
+<link rel="stylesheet" href="../shared/fx.css">
 <script>(function(d){if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim-ready');setTimeout(function(){if(!d.dataset.animOk)d.classList.remove('anim-ready')},3000)}})(document.documentElement)</script>
 </head>
 <body class="courses-page">
@@ -20,14 +21,18 @@
 <div class="ambient" aria-hidden="true"><div class="grid"></div></div>
 <main>
   <section class="page-hero">
-    <div class="wrap">
+    <div class="wrap ph-grid">
+      <div>
       <a class="crumb" href="../index.html" data-reveal="hero"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>CodeTantra Reports</a>
       <h1 data-reveal="hero">Course <span class="grad">reports</span></h1>
       <p class="lede" data-reveal="hero">Upload course completion exports to see how each section is progressing, which students are behind, and who has not started.</p>
     </div>
+      <div class="fx-deck" aria-hidden="true" data-fx-viz data-reveal="hero"><div class="fc2 d1"><div class="in"><span class="l">Average completion</span><b class="m">72%</b><svg viewBox="0 0 170 22"><rect class="vh" x="0" y="4" width="122" height="12" rx="6" fill="#19C39C"/></svg></div></div><div class="fc2 d2"><div class="in"><span class="l">By section</span><svg viewBox="0 0 200 64" fill="none" stroke-width="7" stroke-linecap="round"><g transform="translate(34,32) rotate(-90)"><circle r="26" stroke="rgba(255,255,255,.08)"/><circle class="rg" r="26" stroke="#5FE0BF" stroke-dasharray="140.5 163.4"/></g><g transform="translate(100,32) rotate(-90)"><circle r="26" stroke="rgba(255,255,255,.08)"/><circle class="rg" r="26" stroke="#19C39C" stroke-dasharray="104.6 163.4"/></g><g transform="translate(166,32) rotate(-90)"><circle r="26" stroke="rgba(255,255,255,.08)"/><circle class="rg" r="26" stroke="#FFC94D" stroke-dasharray="67.0 163.4"/></g></svg></div></div><div class="fc2 d3"><div class="in"><span class="l">Not started</span><b class="g">16<small> courses</small></b></div></div></div>
+    </div>
   </section>
   <section class="wrap tools">
     <a class="tool" href="insights/index.html" data-reveal="scroll">
+      <div class="tool-viz" aria-hidden="true" data-fx-viz><svg viewBox="0 0 200 64" fill="none" stroke-width="7" stroke-linecap="round"><g transform="translate(34,32) rotate(-90)"><circle r="26" stroke="rgba(255,255,255,.08)"/><circle class="rg" r="26" stroke="#5FE0BF" stroke-dasharray="140.5 163.4"/></g><g transform="translate(100,32) rotate(-90)"><circle r="26" stroke="rgba(255,255,255,.08)"/><circle class="rg" r="26" stroke="#19C39C" stroke-dasharray="104.6 163.4"/></g><g transform="translate(166,32) rotate(-90)"><circle r="26" stroke="rgba(255,255,255,.08)"/><circle class="rg" r="26" stroke="#FFC94D" stroke-dasharray="67.0 163.4"/></g></svg></div>
       <div class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l10-4 10 4-10 4z"/><path d="M6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
       <span class="tag">Completion</span>
       <h2>Course progress insights</h2>
@@ -48,5 +53,6 @@
 <footer class="foot"><div class="wrap"><span>CodeTantra Reports</span><span>Files are read in your browser and never uploaded to a server.</span></div></footer>
 <script src="../shared/vendor/anime.umd.min.js"></script>
 <script src="../shared/hub.js"></script>
+<script src="../shared/fx.js"></script>
 </body>
 </html>

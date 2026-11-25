@@ -125,6 +125,51 @@
     }, {passive: true});
   }
 
+  /* ---------- embers off the sun, and dust with depth behind the page (canvas) ---------- */
+  const light = () => document.documentElement.getAttribute('data-mode') === 'light';
+  const loopCanvas = (cv, setup, draw) => {
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    let w = 0, h = 0, dpr = 1, on = true, raf = 0, state = null;
+    const size = () => { dpr = Math.min(2, devicePixelRatio || 1); w = cv.clientWidth; h = cv.clientHeight; cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); state = setup(w, h, state); };
+    const tick = t => { raf = 0; if (!on || document.hidden) return; ctx.clearRect(0, 0, w, h); draw(ctx, w, h, state, t); raf = requestAnimationFrame(tick); };
+    size(); addEventListener('resize', size);
+    new IntersectionObserver(es => { on = es[0].isIntersecting; if (on && !raf) raf = requestAnimationFrame(tick); }).observe(cv);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && on && !raf) raf = requestAnimationFrame(tick); });
+  };
+  // embers: rise from the sun's disc and drift outwards, fading
+  loopCanvas(orbit && orbit.querySelector('.embers'), (w, h, s) => s || {p: []}, (ctx, w, h, s) => {
+    const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.16;
+    if (s.p.length < 46 && Math.random() < 0.5) {
+      const a = Math.random() * Math.PI * 2;
+      s.p.push({x: cx + Math.cos(a) * R, y: cy + Math.sin(a) * R, vx: Math.cos(a) * (0.25 + Math.random() * 0.5), vy: Math.sin(a) * (0.25 + Math.random() * 0.5) - 0.15, life: 0, max: 90 + Math.random() * 110, r: 0.8 + Math.random() * 2});
+    }
+    ctx.globalCompositeOperation = light() ? 'source-over' : 'lighter';
+    s.p = s.p.filter(q => {
+      q.life++; q.x += q.vx; q.y += q.vy; q.vx *= 0.995; q.vy = q.vy * 0.995 - 0.004;
+      const k = 1 - q.life / q.max; if (k <= 0) return false;
+      const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r * 4);
+      g.addColorStop(0, `rgba(255,${180 + (q.r * 20 | 0)},90,${(0.85 * k).toFixed(3)})`); g.addColorStop(1, 'rgba(242,140,40,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, q.r * 4, 0, 6.283); ctx.fill();
+      return true;
+    });
+  });
+  // dust: three depths of slow particles; nearer ones move more as you scroll
+  loopCanvas(document.querySelector('.aurora .dust'), (w, h) => {
+    const p = [];
+    for (let i = 0; i < Math.round(w * h / 16000); i++) { const z = Math.random(); p.push({x: Math.random() * w, y: Math.random() * h, z, r: 0.6 + z * 1.8, s: 0.05 + z * 0.25, ph: Math.random() * 6.28}); }
+    return {p};
+  }, (ctx, w, h, s, t) => {
+    const sy = scrollY, L = light();
+    for (const q of s.p) {
+      q.y -= q.s; if (q.y < -10) { q.y = h + 10; q.x = Math.random() * w; }
+      const y = ((q.y - sy * q.z * 0.35) % (h + 20) + h + 20) % (h + 20) - 10;
+      const a = (0.25 + 0.55 * q.z) * (0.6 + 0.4 * Math.sin(t / 900 + q.ph));
+      ctx.fillStyle = L ? `rgba(90,110,180,${(a * 0.35).toFixed(3)})` : `rgba(200,215,255,${(a * 0.6).toFixed(3)})`;
+      ctx.beginPath(); ctx.arc(q.x, y, q.r, 0, 6.283); ctx.fill();
+    }
+  });
+
   /* ---------- tile mini charts and timeline, when they scroll into view ---------- */
   const play = el => {
     const q = s => [...el.querySelectorAll(s)];

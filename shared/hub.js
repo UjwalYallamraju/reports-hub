@@ -108,7 +108,9 @@
     const shown = pending.filter(t => t.getBoundingClientRect().top < limit);
     if (!shown.length) return;
     pending = pending.filter(t => !shown.includes(t));
-    animate(shown, {opacity: [0, 1], translateY: [34, 0], scale: [0.97, 1], duration: 900, delay: stagger(110), ease: 'outExpo'});
+    // rise out of a soft blur; inline styles are cleared afterwards so hover effects (fx.js tilt) own the transform
+    animate(shown, {opacity: [0, 1], translateY: [40, 0], scale: [0.96, 1], filter: ['blur(10px)', 'blur(0px)'], duration: 1000, delay: stagger(110), ease: 'outExpo',
+      onComplete: () => shown.forEach(t => { t.style.transform = ''; t.style.filter = ''; })});
     const meters = shown.flatMap(t => [...t.querySelectorAll('.meter i')]);
     if (meters.length) animate(meters, {width: [0, el => el.style.width], duration: 1300, delay: stagger(140, {start: 350}), ease: 'outExpo'});
     if (!pending.length) { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); }
