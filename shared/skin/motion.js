@@ -264,73 +264,19 @@
   /* ---------- 5. wrong file? point to the right tool ----------
      Every file dropped or chosen here is read just far enough to see its header row. When it is
      clearly a different kind of export, a friendly card names it and links to the tool that reads it. */
-  var base = me.src.replace(/shared\/skin\/motion\.js(\?.*)?$/, '');
-  var TOOLS = {
-    single: ['Single test report', 'tests/single-tests-report.html'],
-    group: ['Group-wise tests report', 'tests/group-tests-report.html'],
-    section: ['Section-wise test analysis', 'tests/section-report.html'],
-    cutoff: ['Sectional cut-off report', 'tests/sectional-cutoff-report.html'],
-    course: ['Course progress insights', 'courses/insights/index.html']
-  };
-  var KIND = {
-    single: {what: 'a single test export', why: 'one total score per student', go: ['single']},
-    group: {what: 'a group tests export', why: 'several tests side by side', go: ['group']},
-    section: {what: 'a sectional test export', why: 'marks for each section and a total', go: ['section', 'cutoff']},
-    course: {what: 'a course progress export', why: 'completion for each course', go: ['course']}
-  };
-  var path = location.pathname;
-  var here = /single-tests-report/.test(path) ? 'single' : /group-tests-report/.test(path) ? 'group'
-    : /sectional-cutoff-report/.test(path) ? 'cutoff' : /section-report/.test(path) ? 'section' : /\/insights\//.test(path) ? 'course' : '';
-  var READS = {single: ['single', 'section'], group: ['group'], section: ['section'], cutoff: ['section'], course: ['course']}[here];
-
-  function classify(rows, name) {
-    var hdr = null;
-    for (var i = 0; i < rows.length && !hdr; i++) {
-      var r = rows[i] || [], strs = r.filter(function (c) { return typeof c === 'string' && c.trim(); });
-      if (strs.length >= 3 && strs.some(function (s) { return /name/i.test(s); })) hdr = r;
-    }
-    if (!hdr) return null;
-    var H = hdr.map(function (c) { return String(c == null ? '' : c).trim(); }).filter(Boolean);
-    var isMark = function (h) { return /\(\s*\d+(\.\d+)?\s*(m|marks?)?\s*\)\s*$/i.test(h); };
-    var marks = H.filter(isMark), total = marks.filter(function (h) { return /^total\b/i.test(h); });
-    var parts = marks.filter(function (h) { return !/^total\b/i.test(h); });
-    var tests = parts.filter(function (h) { return /^\d+\s*-\s*\S/.test(h); });
-    var courses = H.filter(function (h) { return /^\d+\s*-\s*\S/.test(h) && !isMark(h); });
-    if (H.some(function (h) { return /created\s*time|password/i.test(h); })) return 'course';
-    if (courses.length && !marks.length) return 'course';
-    if (tests.length && !total.length) return 'group';
-    if (parts.length >= 2) return 'section';
-    if (total.length) return 'single';
-    if (/attempted/i.test(name || '') || (H.some(function (h) { return /^groups?$/i.test(h); }) && H.some(function (h) { return /name/i.test(h); }))) return 'single';
-    return null;
-  }
-  var xlsxLoading = null;
-  function needXLSX() {
-    if (window.XLSX) return Promise.resolve(window.XLSX);
-    if (!xlsxLoading) xlsxLoading = new Promise(function (ok, no) {
-      var s = document.createElement('script');
-      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-      s.onload = function () { window.XLSX ? ok(window.XLSX) : no(); }; s.onerror = no;
-      document.head.appendChild(s);
-    });
-    return xlsxLoading;
-  }
-  function sniff(file) {
-    return file.arrayBuffer().then(function (buf) {
-      return needXLSX().then(function (X) {
-        var wb = X.read(buf, {type: 'array', sheetRows: 15});
-        var ws = wb.Sheets[wb.SheetNames[0]];
-        return classify(X.utils.sheet_to_json(ws, {header: 1, raw: true, defval: null}), file.name);
-      });
-    }).catch(function () { return null; });
-  }
+  // recognising exports lives in shared/detect.js (also used by the home page's smart drop)
+  var D = window.CTDetect, base = D ? D.base : '';
+  var TOOLS = {}, KIND = D ? D.KIND : {}, here = D ? D.here : '';
+  if (D) Object.keys(D.TOOLS).forEach(function (k) { TOOLS[k] = [D.TOOLS[k].name, D.TOOLS[k].path]; });
+  var READS = D ? {single: ['single', 'section'], group: ['group'], section: ['section'], cutoff: ['section'], course: ['course']}[here] : null;
+  var sniff = D ? D.sniff : null;
   var hint = null, sniffRun = 0;
   function closeHint() { if (hint) { var h = hint; hint = null; h.remove(); } }
   function check2(files) {
     if (!READS || !files || !files.length) return;
     var run = ++sniffRun;
     closeHint();
-    var list = [].slice.call(files, 0, 4).filter(function (f) { return /\.(xlsx|xls|csv)$/i.test(f.name); });
+    var list = [].slice.call(files, 0, 4);
     Promise.all(list.map(sniff)).then(function (kinds) {
       if (run !== sniffRun) return;
       for (var i = 0; i < kinds.length; i++) {
@@ -362,7 +308,6 @@
     document.addEventListener('change', function (e) { var t = e.target; if (t && t.type === 'file') check2(t.files); }, true);
     document.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) check2(e.dataTransfer.files); }, true);
   }
-  window.__ctClassify = classify; // used by the test suite
 
   new MutationObserver(function () { if (!queued) { queued = true; requestAnimationFrame(check); } })
     .observe(document.body, {childList: true, subtree: true, characterData: true});

@@ -92,3 +92,6 @@
 @keyframes ctZ{0%{opacity:0;transform:translate(0,8px) scale(.7)}25%{opacity:.9}100%{opacity:0;transform:translate(16px,-26px) scale(1.15)}}
 [data-mode="light"] .ct-sleepy i{color:#3366FF}
 @media (prefers-reduced-motion:reduce){.ct-sleepy img,.ct-sleepy .face,.ct-sleepy i{animation:none}.ct-sleepy i:nth-of-type(1){opacity:.7;transform:translate(6px,-6px)}}
+
+/* opt in to page-to-page transitions early, from the <head> (hub-nav.js styles the animation) */
+@view-transition{navigation:auto}

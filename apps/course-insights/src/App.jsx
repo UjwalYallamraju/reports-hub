@@ -1067,6 +1067,14 @@ export default function CourseInsightsApp() {
                   />
                 </div>
 
+                <div className="ct-sample">
+                  <span>No file handy?</span>
+                  <button type="button" onClick={() => window.CTDetect && window.CTDetect.samples("course")}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17l-1.9-5.3L5 10l5.1-1.7z" /><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" /></svg>
+                    Try it with sample data
+                  </button>
+                </div>
+
                 {/* Dedicated password-not-set dropzone. Separate from the box above
                     so a password export that isn't being detected/rendered correctly
                     through the combined uploader can be dropped here instead — this

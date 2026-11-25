@@ -65,6 +65,12 @@
   applyMode(wantedMode());
   // page-to-page transitions (Chrome, Edge, Safari 18.2+); other browsers keep the gentle fade
   var vt = 'onpagereveal' in window;
+  // a transition that is cut short (another navigation, a quick history change) is harmless: keep it quiet
+  var hush = function (t) { if (t) [t.ready, t.finished, t.updateCallbackDone].forEach(function (pr) { if (pr && pr.catch) pr.catch(function () {}); }); };
+  if (vt) {
+    addEventListener('pagereveal', function (e) { hush(e.viewTransition); window.__ctVT = e.viewTransition || null; });
+    addEventListener('pageswap', function (e) { hush(e.viewTransition); });
+  }
 
   var css =
     '.hubnav{all:initial;display:block;position:' + (sticky ? 'sticky' : 'relative') + ';top:0;z-index:50;' +

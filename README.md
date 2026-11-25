@@ -24,13 +24,18 @@ Works for any company's mock test. Type the company name on the page; it is used
 
 ## Handy features
 
+- **Smart drop (home page):** drop any export on the home page. `shared/detect.js` recognises it from the header row
+  and opens the right tool with the file already loaded (handed over through IndexedDB in this browser; never uploaded).
+  Sectional exports ask which report; unknown files ask which tool.
+- **Try it with sample data:** every tool has a button under its upload box that loads the demo files in
+  `shared/samples/` (made-up students, `example.edu` emails).
 - **Search (Ctrl+K or /):** jump to any page or tool, run the current page's download buttons, or switch light/dark.
 - **Light / dark mode:** the sun/moon button in the top bar. Remembered per browser; `?mode=light` previews it.
   On tool pages the dark skin sheets (`shared/skin/*.css`) are switched off, so each tool's own light design shows.
   PDFs are the same in both modes.
 - **Page transitions:** the top bar and sun stay put while pages slide (Chrome, Edge, Safari 18.2+).
 - **Wrong file?** Each tool peeks at the header row of a dropped file; if it is a different kind of export,
-  a card names it and links to the tool that reads it (`shared/skin/motion.js`, section 5).
+  a card names it and links to the tool that reads it (`shared/detect.js` + `shared/skin/motion.js`).
 - **Time of day:** the sun's colour follows the clock; `?tod=night` (morning, midday, evening) previews it.
 
 ## Folder layout

@@ -61,6 +61,30 @@
 
   <div class="wrap"><div class="ticker" role="region" aria-label="What the reports include"><div class="vp"><div class="track"><ul class="grp"><li class="chip sun"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></i>PDF reports in one click</li><li class="chip blue"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M2 13h20" /></svg></i>Sectional cut-offs for any company</li><li class="chip mint"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></i>Growth across mock tests</li><li class="chip violet"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 3v4M12 9v2M12 13v2"/></svg></i>One PDF per group, zipped</li><li class="chip mint"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></i>Excel summaries</li><li class="chip sun"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 11l4 4M21 11l-4 4"/></svg></i>Students below each cut-off</li><li class="chip blue"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg></i>Not-attempted follow-up lists</li><li class="chip violet"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5A8.5 8.5 0 0 1 20.5 12H12z"/></svg></i>Course completion by section</li><li class="chip mint"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></i>Files never leave your browser</li></ul><ul class="grp" aria-hidden="true"><li class="chip sun"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></i>PDF reports in one click</li><li class="chip blue"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M2 13h20" /></svg></i>Sectional cut-offs for any company</li><li class="chip mint"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></i>Growth across mock tests</li><li class="chip violet"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 3v4M12 9v2M12 13v2"/></svg></i>One PDF per group, zipped</li><li class="chip mint"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></i>Excel summaries</li><li class="chip sun"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 11l4 4M21 11l-4 4"/></svg></i>Students below each cut-off</li><li class="chip blue"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg></i>Not-attempted follow-up lists</li><li class="chip violet"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5A8.5 8.5 0 0 1 20.5 12H12z"/></svg></i>Course completion by section</li><li class="chip mint"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></i>Files never leave your browser</li></ul></div></div></div></div>
 
+  <section class="band sd-band" aria-labelledby="h-drop">
+    <div class="wrap">
+      <div class="sd" id="sd" data-state="idle" data-reveal="scroll">
+        <input type="file" id="sdIn" multiple accept=".xlsx,.xls,.csv" hidden>
+        <div class="sd-main">
+          <span class="sd-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><g class="arr"><path d="M12 18v-6.5M9.2 14.2 12 11.4l2.8 2.8"/></g></svg></span>
+          <div class="sd-txt">
+            <h2 id="h-drop">Not sure which tool? Drop the export here.</h2>
+            <p class="sd-msg" aria-live="polite"><span class="sd-say">We recognise the file and open the right report with it already loaded.</span> <button type="button" class="sd-browse">Choose a file</button> <button type="button" class="sd-stay" hidden>Cancel</button></p>
+            <div class="sd-bar" aria-hidden="true"><i></i></div>
+          </div>
+        </div>
+        <div class="sd-tools" role="group" aria-label="Reports this can open">
+          <button type="button" data-k="single"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Single test</button>
+          <button type="button" data-k="group"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/></svg>Group-wise</button>
+          <button type="button" data-k="section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h11M4 18h7"/></svg>Section-wise</button>
+          <button type="button" data-k="cutoff"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M2 13h20"/></svg>Sectional cut-off</button>
+          <button type="button" data-k="course" class="c"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></svg>Course insights</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="sd-over" aria-hidden="true"><div><img src="shared/brand/logo-hero.png" alt=""><b>Drop to open the right report</b><span>The file stays in your browser</span></div></div>
+
   <section class="band" aria-labelledby="h-tools">
     <div class="wrap">
       <div class="band-head" data-reveal="scroll"><div><h2 id="h-tools">Five tools, one place</h2><p>Each one reads the export exactly as it comes from CodeTantra. No formatting, no copy-paste.</p></div></div>
@@ -135,5 +159,7 @@
 <script src="shared/vendor/anime.umd.min.js"></script>
 <script src="shared/hub.js"></script>
 <script src="shared/home.js"></script>
+<script src="shared/detect.js"></script>
+<script src="shared/smartdrop.js"></script>
 </body>
 </html>

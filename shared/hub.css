@@ -148,3 +148,6 @@ h1,h2,h3{font-family:Sora,Inter,system-ui,sans-serif;letter-spacing:-.02em;margi
   .board{padding:14px 12px 10px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* opt in to page-to-page transitions early, from the <head> (hub-nav.js styles the animation) */
+@view-transition{navigation:auto}
