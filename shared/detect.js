@@ -183,7 +183,7 @@
       var css = document.createElement('style');
       css.textContent =
         '.ct-sample{display:flex;justify-content:center;align-items:center;gap:8px;margin:12px 0 0;font:500 13.5px/1.4 Inter,system-ui,sans-serif;color:#98A3C2}' +
-        '.ct-sample button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font-weight:600;color:#FFC94D;background:rgba(242,140,40,.12);box-shadow:inset 0 0 0 1px rgba(242,140,40,.38);transition:background .2s,transform .2s}' +
+        '.ct-sample button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:8px;font-weight:600;color:#FFC94D;background:rgba(242,140,40,.12);box-shadow:inset 0 0 0 1px rgba(242,140,40,.38);transition:background .2s,transform .2s}' +
         '.ct-sample button:hover{background:rgba(242,140,40,.2);transform:translateY(-1px)}' +
         '.ct-sample button:focus-visible{outline:2px solid #FFC94D;outline-offset:2px}' +
         '.ct-sample svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
@@ -195,7 +195,7 @@
         if (!z || !z.parentNode || (z.nextElementSibling && z.nextElementSibling.classList.contains('ct-sample'))) return;
         var row = document.createElement('div');
         row.className = 'ct-sample';
-        row.innerHTML = '<span>No file handy?</span><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17l-1.9-5.3L5 10l5.1-1.7z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Try it with sample data</button>';
+        row.innerHTML = '<button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 13h5M10 17h5"/></svg>Try it with sample data</button>';
         row.querySelector('button').addEventListener('click', function () { samples(here); });
         z.parentNode.insertBefore(row, z.nextSibling);
       };

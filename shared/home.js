@@ -1,32 +1,11 @@
 /* CodeTantra Reports: home page motion (anime.js v4). Loaded after hub.js.
-   The sun system enters, cards float and lean toward the pointer, tool tiles play their
-   mini charts as they scroll into view, and the timeline line draws itself in. */
+   The sun system plays a short demo, tool tiles play their mini charts once as they
+   scroll into view, and the timeline lights its three steps once. Nothing follows the pointer. */
 (() => {
   'use strict';
   const A = window.anime;
   const motion = !!A && !matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // pointer glow on tiles (works without motion too; CSS draws it)
-  document.querySelectorAll('.tile').forEach(t => t.addEventListener('pointermove', e => {
-    const r = t.getBoundingClientRect();
-    t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-    t.style.setProperty('--my', (e.clientY - r.top) + 'px');
-  }));
-  // greeting that follows the clock (the sun's colour follows html[data-tod], set by hub-nav.js)
-  const kicker = document.querySelector('.hx .kicker');
-  const greet = () => {
-    if (!kicker) return;
-    const f = (/[?&]tod=(\w+)/.exec(location.search) || [])[1];
-    const h = {morning: 8, midday: 14, evening: 18, night: 22}[f] ?? new Date().getHours();
-    const msg = h >= 5 && h < 12 ? ['Good morning', 'ready for this week\u2019s results?']
-      : h >= 12 && h < 17 ? ['Good afternoon', 'let\u2019s turn exports into reports']
-      : h >= 17 && h < 21 ? ['Good evening', 'ready for this week\u2019s results?']
-      : ['Working late?', 'reports in a minute, then rest'];
-    const text = msg[0] + ' \u00b7 ' + msg[1];
-    const node = [...kicker.childNodes].find(n => n.nodeType === 3 && n.data.trim());
-    if (node && node.data !== text) node.data = text;
-  };
-  greet(); setInterval(greet, 5 * 60 * 1000);
 
   if (!motion) return;
   const {animate, stagger, svg: S} = A;
@@ -109,49 +88,8 @@
       loop(false);
     })(true);
 
-    // lean toward the pointer (smoothed)
-    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
-    const step = () => {
-      cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
-      orbit.style.setProperty('--px', cx.toFixed(3)); orbit.style.setProperty('--py', cy.toFixed(3));
-      raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.002 ? requestAnimationFrame(step) : 0;
-    };
-    addEventListener('pointermove', e => {
-      if (e.pointerType !== 'mouse') return;
-      const r = orbit.getBoundingClientRect();
-      tx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (innerWidth / 2)));
-      ty = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (innerHeight / 2)));
-      if (!raf) raf = requestAnimationFrame(step);
-    }, {passive: true});
   }
 
-  /* ---------- dust with depth behind the page (canvas) ---------- */
-  const light = () => document.documentElement.getAttribute('data-mode') === 'light';
-  const loopCanvas = (cv, setup, draw) => {
-    if (!cv) return;
-    const ctx = cv.getContext('2d');
-    let w = 0, h = 0, dpr = 1, on = true, raf = 0, state = null;
-    const size = () => { dpr = Math.min(2, devicePixelRatio || 1); w = cv.clientWidth; h = cv.clientHeight; cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); state = setup(w, h, state); };
-    const tick = t => { raf = 0; if (!on || document.hidden) return; ctx.clearRect(0, 0, w, h); draw(ctx, w, h, state, t); raf = requestAnimationFrame(tick); };
-    size(); addEventListener('resize', size);
-    new IntersectionObserver(es => { on = es[0].isIntersecting; if (on && !raf) raf = requestAnimationFrame(tick); }).observe(cv);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden && on && !raf) raf = requestAnimationFrame(tick); });
-  };
-  // dust: three depths of slow particles; nearer ones move more as you scroll
-  loopCanvas(document.querySelector('.aurora .dust'), (w, h) => {
-    const p = [];
-    for (let i = 0; i < Math.round(w * h / 16000); i++) { const z = Math.random(); p.push({x: Math.random() * w, y: Math.random() * h, z, r: 0.6 + z * 1.8, s: 0.05 + z * 0.25, ph: Math.random() * 6.28}); }
-    return {p};
-  }, (ctx, w, h, s, t) => {
-    const sy = scrollY, L = light();
-    for (const q of s.p) {
-      q.y -= q.s; if (q.y < -10) { q.y = h + 10; q.x = Math.random() * w; }
-      const y = ((q.y - sy * q.z * 0.35) % (h + 20) + h + 20) % (h + 20) - 10;
-      const a = (0.25 + 0.55 * q.z) * (0.6 + 0.4 * Math.sin(t / 900 + q.ph));
-      ctx.fillStyle = L ? `rgba(90,110,180,${(a * 0.35).toFixed(3)})` : `rgba(200,215,255,${(a * 0.6).toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(q.x, y, q.r, 0, 6.283); ctx.fill();
-    }
-  });
 
   /* ---------- tile mini charts and timeline, when they scroll into view ---------- */
   const play = el => {
@@ -165,7 +103,7 @@
       animate(c, {strokeDasharray: ['0 163.4', full], duration: 1300, delay: 300 + i * 150, ease: 'outExpo'});
     });
   };
-  // a comet runs along the timeline; each step lights up as it passes. Paused off screen.
+  // a light runs along the timeline once; each step lights up as it passes
   function runComet(tl) {
     const line = tl.querySelector('.line'), comet = tl.querySelector('.comet');
     const steps = [...tl.querySelectorAll('.st')];
@@ -194,8 +132,6 @@
         });
         await wait(dur);
       }
-      await wait(2600);
-      loop();
     })();
   }
 

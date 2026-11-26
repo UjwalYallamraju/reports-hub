@@ -2,7 +2,7 @@
 :root{
   --bg:#0B1020; --surface:#121A30; --ink:#E8ECF8; --muted:#98A3C2; --rule:#232C48;
   --primary:#4F7CFF; --on-primary:#FFFFFF; --primary-soft:rgba(79,124,255,.15); --focus:#8FA9FF;
-  --c1:#5B83FF; --c2:#19C39C; --c3:#F2B254; --c4:#FF6B6B; --c5:#A98BFF; --c6:#8A93A6;
+  --c1:#5B83FF; --c2:#19C39C; --c3:#F2B254; --c4:#FF6B6B; --c5:#38C4E0; --c6:#8A93A6;
   --b-ex:#19C39C; --b-good:#6CCB9F; --b-avg:#F2B254; --b-low:#FF6B6B;
   --serif:Sora,Inter,system-ui,sans-serif; --sans:Inter,"Segoe UI",system-ui,sans-serif;
   --radius:14px;

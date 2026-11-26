@@ -1,23 +1,6 @@
 /* CodeTantra Reports: styles for shared/fx.js (every page, both modes). */
 
-/* soft light following the pointer (dark mode) */
-.fx-light{position:fixed;left:0;top:0;width:700px;height:700px;border-radius:50%;pointer-events:none;z-index:0;opacity:0;transition:opacity .6s;
-  background:radial-gradient(circle,rgba(120,150,255,.08),rgba(242,140,40,.04) 35%,transparent 65%);will-change:transform}
-.fx-light.on{opacity:1}
-[data-mode="light"] .fx-light{display:none}
-
-/* spotlight inside cards */
-.fx-glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;z-index:0;
-  background:radial-gradient(360px circle at var(--x,50%) var(--y,50%),rgba(143,169,255,.13),rgba(242,140,40,.05) 40%,transparent 70%)}
-.fx-glow.on{opacity:1}
-[data-mode="light"] .fx-glow{background:radial-gradient(360px circle at var(--x,50%) var(--y,50%),rgba(51,102,255,.07),rgba(242,140,40,.04) 40%,transparent 70%)}
-.fx-tilting{will-change:transform;z-index:2}
-
-/* ripple */
-.fx-ripple{position:absolute;border-radius:50%;pointer-events:none;background:currentColor;opacity:.22;transform:scale(0);animation:fxRipple .65s cubic-bezier(.2,.8,.2,1) forwards;z-index:0}
-@keyframes fxRipple{to{transform:scale(1);opacity:0}}
-
-/* tool pages: living aurora behind the page */
+/* tool pages: a slow, soft colour background behind the page */
 .fx-aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .fx-aurora i{position:absolute;border-radius:50%;opacity:.34;will-change:transform}  /* soft radial gradients: no blur filter, cheap to animate */
 .fx-aurora i:nth-child(1){width:60vmax;height:60vmax;left:-20vmax;top:-28vmax;background:radial-gradient(circle,rgba(43,75,214,.9) 0%,rgba(43,75,214,.35) 35%,transparent 68%);animation:fxD1 28s ease-in-out infinite alternate}
@@ -36,15 +19,5 @@
 .fx-tool[data-mode="light"]{background:#F6F8FC!important}
 .fx-tool .cip-shell{background:transparent!important}
 
-/* tool pages: a shine runs across the header when a report opens */
-.ct-bar.fx-shine{position:relative;overflow:hidden}
-.ct-bar.fx-shine::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:40%;pointer-events:none;
-  background:linear-gradient(100deg,transparent,rgba(255,201,77,.22),rgba(143,169,255,.25),transparent);animation:fxShine 1.4s cubic-bezier(.4,0,.2,1) .2s both}
-@keyframes fxShine{to{left:110%}}
-/* KPI cards: a lift and a coloured edge glow on hover */
-.fx-tool .kpi,.fx-tool .kp{transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
-.fx-tool .kpi:hover,.fx-tool .kp:hover{box-shadow:0 18px 40px -22px rgba(79,124,255,.9),0 0 0 1px rgba(143,169,255,.35)}
-[data-mode="light"].fx-tool .kpi:hover,[data-mode="light"].fx-tool .kp:hover{box-shadow:0 18px 36px -22px rgba(51,102,255,.55),0 0 0 1px rgba(51,102,255,.2)}
-
-@media (prefers-reduced-motion:reduce){.fx-aurora i{animation:none}.fx-ripple{display:none}.ct-bar.fx-shine::after{display:none}}
-@media print{.fx-light,.fx-glow,.fx-ripple,.fx-aurora{display:none!important}}
+@media (prefers-reduced-motion:reduce){.fx-aurora i{animation:none}}
+@media print{.fx-aurora{display:none!important}}

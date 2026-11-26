@@ -49,21 +49,20 @@
 .trust svg{color:var(--mint-ink);flex:none}
 
 /* the sun system */
-.orbit{position:relative;aspect-ratio:1/1;width:100%;max-width:560px;margin-inline:auto;--px:0;--py:0}
+.orbit{position:relative;aspect-ratio:1/1;width:100%;max-width:560px;margin-inline:auto}
 .orbit .ring{position:absolute;inset:var(--in);border-radius:50%;border:1px dashed rgba(255,255,255,.14)}
 .orbit .ring.r1{--in:20%}
 .orbit .ring.r2{--in:6%;border-style:solid;border-color:rgba(255,255,255,.07)}
 .orbit .ring.r2::after{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--sun)}
 .orbit .r2{animation:spin 40s linear infinite}
 .orbit .glow{position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle,var(--glow-a),var(--glow-b) 45%,transparent 70%);filter:blur(10px);animation:pulse 4.5s ease-in-out infinite}
-.orbit .sun{position:absolute;z-index:4;left:50%;top:50%;width:36%;max-width:200px;transform:translate(-50%,-50%) translate(calc(var(--px)*6px),calc(var(--py)*6px));filter:drop-shadow(0 0 30px var(--sun-shadow))}
+.orbit .sun{position:absolute;z-index:4;left:50%;top:50%;width:36%;max-width:200px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 30px var(--sun-shadow))}
 .orbit .sun img{display:block;width:100%;height:auto;filter:var(--sun-tint);animation:spin 60s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{50%{transform:scale(1.08);opacity:.85}}
 
 .fc{position:absolute;padding:12px 14px;border-radius:14px;background:rgba(18,26,48,.82);border:1px solid var(--line2);box-shadow:0 20px 50px -20px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:12.5px;color:var(--muted);
-  translate:calc(var(--px)*var(--d,14)*1px) calc(var(--py)*var(--d,14)*1px)}
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:12.5px;color:var(--muted);}
 .fc b{display:block;font:700 22px/1.1 Sora,Inter,sans-serif;color:var(--ink);margin-top:2px}
 .fc .inner{will-change:transform}
 .fc.k1{left:-2%;top:10%;--d:22}
@@ -79,16 +78,15 @@
 .spark{margin-top:6px}
 
 /* ---------- ticker ---------- */
-.ticker{position:relative;overflow:hidden;border-radius:999px;padding:10px 0;border:1px solid var(--line);background:linear-gradient(90deg,rgba(79,124,255,.06),rgba(255,255,255,.025) 40%,rgba(242,140,40,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 18px 50px -30px rgba(0,0,0,.9)}
+.ticker{position:relative;overflow:hidden;border-radius:16px;padding:10px 0;border:1px solid var(--line);background:linear-gradient(90deg,rgba(79,124,255,.06),rgba(255,255,255,.025) 40%,rgba(242,140,40,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 18px 50px -30px rgba(0,0,0,.9)}
 .ticker .vp{overflow:hidden;margin-inline:10px;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
 .ticker .track{display:flex;width:max-content;animation:tick 46s linear infinite}
 .ticker .grp{display:flex;gap:12px;padding:0 12px 0 0;margin:0;list-style:none}
-.chip{--c:var(--blue-ink);--cb:rgba(79,124,255,.14);display:inline-flex;align-items:center;gap:10px;padding:7px 16px 7px 7px;border-radius:999px;background:rgba(255,255,255,.035);border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-weight:500;white-space:nowrap;transition:border-color .2s,background .2s}
+.chip{--c:var(--blue-ink);--cb:rgba(79,124,255,.14);display:inline-flex;align-items:center;gap:10px;padding:7px 16px 7px 7px;border-radius:8px;background:rgba(255,255,255,.035);border:1px solid var(--line);color:var(--ink);font-size:14.5px;font-weight:500;white-space:nowrap;transition:border-color .2s,background .2s}
 .chip i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--cb);color:var(--c);flex:none}
 .chip svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .chip.sun{--c:var(--gold);--cb:rgba(242,140,40,.16)}
 .chip.mint{--c:var(--mint-ink);--cb:rgba(25,195,156,.15)}
-.chip.violet{--c:#C3A6FF;--cb:rgba(155,110,255,.16)}
 .chip:hover{border-color:var(--line2);background:rgba(255,255,255,.06)}
 .ticker:hover .track{animation-play-state:paused}
 @keyframes tick{to{transform:translateX(-50%)}}
@@ -97,15 +95,13 @@
 .bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(210px,auto);gap:18px}
 .tile{--accent:var(--blue);--accent-ink:var(--blue-ink);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;border:1px solid var(--line2);
   background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));text-decoration:none;color:inherit;transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .25s ease,box-shadow .3s ease}
-.tile::before{content:"";position:absolute;inset:0;background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--accent) 24%,transparent),transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
-.tile:hover::before{opacity:1}
 .tile:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--accent) 60%,transparent);box-shadow:0 26px 60px -26px color-mix(in srgb,var(--accent) 70%,transparent)}
 .tile.mint{--accent:var(--mint);--accent-ink:var(--mint-ink)}
 .tile.sun{--accent:var(--sun);--accent-ink:var(--gold)}
 .tile.t1{grid-column:span 4;grid-row:span 2}
 .tile.t2{grid-column:span 2;grid-row:span 2}
 .tile.t3,.tile.t4,.tile.t5{grid-column:span 2}
-.tile .tag{align-self:flex-start;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;color:var(--accent-ink);background:color-mix(in srgb,var(--accent) 15%,transparent);border:1px solid color-mix(in srgb,var(--accent) 38%,transparent)}
+.tile .tag{align-self:flex-start;font-size:12px;font-weight:600;padding:3px 10px;border-radius:6px;color:var(--accent-ink);background:color-mix(in srgb,var(--accent) 15%,transparent);border:1px solid color-mix(in srgb,var(--accent) 38%,transparent)}
 .tile h3{font-size:22px;line-height:1.15}
 .tile.t1 h3{font-size:clamp(24px,2.6vw,32px)}
 .tile p{margin:0;color:var(--muted);font-size:15px;max-width:52ch}
@@ -145,7 +141,7 @@
 .tl .st.lit .art::before{transform:scale(1.2)}
 .tl .st h3{margin:4px 0 6px}
 .tl .st p{max-width:34ch}
-.chip-t{display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--chip,var(--gold));background:var(--chip-bg,rgba(242,140,40,.12));border:1px solid currentColor;border-color:color-mix(in srgb,currentColor 35%,transparent)}
+.chip-t{display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600;color:var(--chip,var(--gold));background:var(--chip-bg,rgba(242,140,40,.12));border:1px solid currentColor;border-color:color-mix(in srgb,currentColor 35%,transparent)}
 .chip-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* the number turns into a tick once the comet has passed */
 .tl .st .n b,.tl .st .n .tick{grid-area:1/1;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s}
@@ -204,8 +200,8 @@
 .fc.pdf .ok{transition:background .3s}
 .fc.pdf.busy .ok{background:transparent;border:2px solid rgba(255,255,255,.25);border-top-color:var(--gold);animation:spin .8s linear infinite}
 .fc.pdf.busy .ok svg{opacity:0}
-.steps{display:flex;gap:6px;margin:0;padding:6px;list-style:none;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:13px;color:var(--muted)}
-.steps li{white-space:nowrap;display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;transition:background .4s,color .4s}
+.steps{display:flex;gap:6px;margin:0;padding:6px;list-style:none;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:13px;color:var(--muted)}
+.steps li{white-space:nowrap;display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:8px;transition:background .4s,color .4s}
 .steps i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 11px Inter,sans-serif;font-style:normal;background:rgba(255,255,255,.07);transition:background .4s,color .4s}
 .steps li.on{background:rgba(242,140,40,.14);color:var(--ink)}
 .steps li.on i{background:linear-gradient(135deg,#FFB547,#F28C28);color:#1A1004}
@@ -230,7 +226,6 @@
   .fc b{font-size:17px}
   .fc.donut svg{width:40px;height:40px}
   .fc.bars{width:44%;right:-2%;bottom:4%}
-  .fc.bars .lab span:last-child{display:none}
   .fc.pdf{left:14%}
 }
 @media(prefers-reduced-motion:reduce){
@@ -267,7 +262,7 @@
 .sd-bar i{display:block;height:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,var(--gold),var(--sun))}
 .sd[data-state="found"] .sd-bar{display:block}
 .sd-tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;max-width:440px}
-.sd-tools button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;font:600 13px/1 Inter,system-ui,sans-serif;
+.sd-tools button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:8px;font:600 13px/1 Inter,system-ui,sans-serif;
   color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line2);transition:color .25s,background .25s,border-color .25s,box-shadow .3s,transform .25s}
 .sd-tools button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sd-tools button:hover{color:var(--ink);border-color:rgba(143,169,255,.55);background:rgba(79,124,255,.12)}
@@ -298,30 +293,12 @@
 @media(max-width:560px){.sd{padding:22px 18px}.sd-main{align-items:flex-start;gap:14px}.sd-ic{width:50px;height:50px;border-radius:14px}.sd-ic svg{width:24px;height:24px}}
 @media(prefers-reduced-motion:reduce){.sd-ic .arr,.sd .sd-ic,.sd-tools button.on,.sd-over img{animation:none!important}}
 
-/* ---------- go big: light, depth and motion ---------- */
-/* slow-turning sun rays behind the sun */
+/* ---------- slow-turning sun rays behind the sun ---------- */
 .orbit .rays{position:absolute;inset:8%;border-radius:50%;pointer-events:none;opacity:.55;
   background:repeating-conic-gradient(from 0deg,rgba(255,201,77,.28) 0deg 4deg,transparent 4deg 18deg);
   -webkit-mask:radial-gradient(circle,#000 18%,transparent 66%);mask:radial-gradient(circle,#000 18%,transparent 66%);animation:spin 90s linear infinite}
 [data-tod="night"] .orbit .rays{opacity:.35}
 [data-tod="midday"] .orbit .rays{opacity:.7}
-/* floating dust with depth, behind the page (drawn by home.js) */
-.aurora .dust{position:absolute;inset:0;width:100%;height:100%}
-/* shimmer across the warm word */
-.hx h1 .warm{background-size:220% 100%;animation:warmShine 6s ease-in-out infinite}
-@keyframes warmShine{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.hx h1 .warm{background-image:linear-gradient(100deg,var(--gold),var(--sun) 30%,#FF7A59 50%,var(--sun) 70%,var(--gold))}
-/* the main button breathes a warm halo */
-.hx .btn.sun{animation:sunHalo 3.2s ease-in-out infinite}
-@keyframes sunHalo{50%{box-shadow:0 0 0 1px rgba(242,140,40,.5),0 16px 48px -8px rgba(242,140,40,.85),0 0 0 8px rgba(242,140,40,.08)}}
-/* closing banner: a light runs around its edge */
-@property --fxa{syntax:"<angle>";initial-value:0deg;inherits:false}
-.cta{isolation:isolate}
-.cta::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;z-index:1;
-  background:conic-gradient(from var(--fxa),transparent 0 70%,rgba(255,201,77,.9) 80%,rgba(143,169,255,.9) 88%,transparent 96%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-  animation:fxSpinA 6s linear infinite}
-@keyframes fxSpinA{to{--fxa:360deg}}
-/* bento tiles: a light edge follows the tilt */
-.tile.fx-tilting{box-shadow:0 30px 60px -30px color-mix(in srgb,var(--accent) 80%,transparent),0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}
-@media(prefers-reduced-motion:reduce){.orbit .rays,.hx h1 .warm,.hx .btn.sun,.cta::after{animation:none}.aurora .dust{display:none}}
+/* the warm words in the headline */
+.hx h1 .warm{background-image:linear-gradient(100deg,var(--gold),var(--sun) 55%,#F27A3C)}
+@media(prefers-reduced-motion:reduce){.orbit .rays{animation:none}}

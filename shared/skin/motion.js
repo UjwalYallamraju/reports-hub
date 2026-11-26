@@ -4,7 +4,7 @@
            data-count=".kpi .v"          numbers that count up at the same moment
            data-drop=".drop"></script>   upload zones that react to drag and drop
    Also shows a small spinning-sun badge while a PDF or ZIP is being built, and celebrates
-   each finished download with sparks from the button and a "Downloaded" chip.
+   each finished download with a "Downloaded" chip.
    Re-renders while typing or filtering do not replay anything; loading a new file does.
    With reduced motion: no movement, but the busy badge still appears (without spinning). */
 (function () {
@@ -27,19 +27,17 @@
       'background:linear-gradient(90deg,transparent,rgba(95,224,191,.35),rgba(143,169,255,.45),transparent)}' +
     '@keyframes ctAnts{to{stroke-dashoffset:-18}}' +
     '.ct-busy{position:fixed;right:20px;bottom:20px;z-index:9999;display:flex;align-items:center;gap:12px;padding:10px 18px 10px 10px;' +
-      'border-radius:999px;background:rgba(14,21,41,.92);border:1px solid #2E3A5E;color:#E8ECF8;font:600 14px/1.3 Inter,system-ui,sans-serif;' +
+      'border-radius:12px;background:rgba(14,21,41,.92);border:1px solid #2E3A5E;color:#E8ECF8;font:600 14px/1.3 Inter,system-ui,sans-serif;' +
       'box-shadow:0 18px 50px -18px rgba(0,0,0,.8),0 0 0 1px rgba(242,140,40,.15);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);max-width:calc(100vw - 40px)}' +
     '.ct-busy img{width:34px;height:34px;flex:none;filter:drop-shadow(0 0 10px rgba(242,140,40,.7));animation:ctSpin 2.4s linear infinite}' +
     '.ct-busy span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
     '@keyframes ctSpin{to{transform:rotate(360deg)}}' +
     '.ct-done{position:fixed;right:20px;bottom:20px;z-index:10000;display:flex;align-items:center;gap:12px;padding:10px 18px 10px 10px;' +
-      'border-radius:999px;background:rgba(10,34,30,.94);border:1px solid rgba(95,224,191,.45);color:#E8ECF8;font:600 14px/1.3 Inter,system-ui,sans-serif;' +
+      'border-radius:12px;background:rgba(10,34,30,.94);border:1px solid rgba(95,224,191,.45);color:#E8ECF8;font:600 14px/1.3 Inter,system-ui,sans-serif;' +
       'box-shadow:0 18px 50px -18px rgba(0,0,0,.8),0 0 30px -8px rgba(25,195,156,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);max-width:calc(100vw - 40px)}' +
     '.ct-done i{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#5FE0BF,#19C39C);color:#05261D;box-shadow:0 0 16px rgba(25,195,156,.7)}' +
     '.ct-done i svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}' +
     '.ct-done span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ct-done small{display:block;font-weight:500;font-size:12px;color:#98A3C2}' +
-    '.ct-spark{position:fixed;left:0;top:0;z-index:10001;pointer-events:none;border-radius:50%}' +
-    '.ct-ring{position:fixed;left:0;top:0;z-index:10001;pointer-events:none;border-radius:50%;border:2px solid rgba(255,201,77,.85);box-shadow:0 0 20px rgba(242,140,40,.6)}' +
     '.ct-hint{position:fixed;left:50%;bottom:22px;z-index:10002;width:min(560px,calc(100vw - 28px));margin-left:max(-280px,calc(-50vw + 14px));display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:18px;' +
       'background:rgba(16,23,44,.97);border:1px solid rgba(255,201,77,.4);color:#E8ECF8;font:400 14px/1.5 Inter,system-ui,sans-serif;box-shadow:0 30px 80px -24px rgba(0,0,0,.85),0 0 40px -14px rgba(242,140,40,.55)}' +
     '.ct-hint img{width:42px;height:42px;flex:none;filter:drop-shadow(0 0 10px rgba(242,140,40,.6))}' +
@@ -53,7 +51,7 @@
     '[data-mode="light"] .ct-hint p,[data-mode="light"] .ct-hint-a .keep{color:#5B6475}[data-mode="light"] .ct-hint-a .keep{border-color:#E4E7EC}' +
     '[data-mode="light"] .ct-hint-a a.alt{background:#EBF0FF;color:#2952D9;box-shadow:inset 0 0 0 1px #C9D6FF}' +
     '@media(prefers-reduced-motion:reduce){.ct-ants rect,.ct-busy img{animation:none}}' +
-    '@media print{.ct-busy,.ct-ants,.ct-scan,.ct-done,.ct-spark,.ct-ring,.ct-hint{display:none!important}}';
+    '@media print{.ct-busy,.ct-ants,.ct-scan,.ct-done,.ct-hint{display:none!important}}';
   document.head.appendChild(css);
 
   var visible = function (el) { return el.offsetParent !== null || getComputedStyle(el).position === 'fixed'; };
@@ -186,50 +184,7 @@
     if (now - burstAt > 2500) files = [];
     if (files.indexOf(name) < 0) files.push(name);
     showToast();
-    if (now - burstAt > 1500) { burstAt = now; sparks(); }
-  }
-
-  function originRect() {
-    var b = lastBtn;
-    if (b && b.isConnected && Date.now() - lastBtnAt < 120000) {
-      var r = b.getBoundingClientRect();
-      if (r.width && r.bottom > 0 && r.top < innerHeight) return r;
-    }
-    return null;
-  }
-
-  function sparks() {
-    if (!moving) return;
-    var r = originRect(), cx, cy;
-    if (r) { cx = r.left + r.width / 2; cy = r.top + r.height / 2; }
-    else { cx = innerWidth - 60; cy = innerHeight - 40; }
-    // a glow ring that hugs the button's own shape and grows out ~18px on every side
-    var ring = document.createElement('span'); ring.className = 'ct-ring';
-    var rw = r ? r.width : 48, rh = r ? r.height : 48;
-    ring.style.width = rw + 'px'; ring.style.height = rh + 'px';
-    ring.style.left = (cx - rw / 2) + 'px'; ring.style.top = (cy - rh / 2) + 'px';
-    ring.style.borderRadius = r && lastBtn ? (getComputedStyle(lastBtn).borderRadius || '12px') : '50%';
-    document.body.appendChild(ring);
-    A.animate(ring, {scaleX: [1, 1 + 36 / rw], scaleY: [1, 1 + 36 / rh], opacity: [1, 0], duration: 750, ease: 'outCubic', onComplete: function () { ring.remove(); }});
-    var cols = ['#FFC94D', '#F28C28', '#FFB547', '#5FE0BF', '#8FA9FF', '#FFFFFF'];
-    for (var i = 0; i < 30; i++) {
-      var s = document.createElement('span'); s.className = 'ct-spark';
-      var size = 5 + Math.random() * 5, ang = Math.random() * Math.PI * 2, dist = 60 + Math.random() * 100;
-      var c = cols[i % cols.length];
-      s.style.width = size + 'px'; s.style.height = (i % 3 ? size : size * 2.2) + 'px';
-      if (!(i % 3)) s.style.borderRadius = '2px';
-      s.style.background = c; s.style.boxShadow = '0 0 8px ' + c;
-      s.style.left = (cx - size / 2) + 'px'; s.style.top = (cy - size / 2) + 'px';
-      document.body.appendChild(s);
-      (function (el) {
-        A.animate(el, {
-          translateX: [0, Math.cos(ang) * dist], translateY: [0, Math.sin(ang) * dist + 30],
-          rotate: [0, (Math.random() - .5) * 540], scale: [1, 0.2], opacity: [1, 0],
-          duration: 800 + Math.random() * 600, ease: 'outExpo', onComplete: function () { el.remove(); }
-        });
-      })(s);
-    }
-    if (r && lastBtn) A.animate(lastBtn, {scale: [1, 0.95, 1.05, 1], duration: 520, ease: 'outQuad', onComplete: function () { lastBtn.style.transform = ''; }});
+    burstAt = now;
   }
 
   function showToast() {

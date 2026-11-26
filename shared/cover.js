@@ -209,7 +209,7 @@
   var KPI_COL = [C.blue, C.green, C.red, C.amber];
   // WinAnsi only (standard PDF fonts): swap anything else for a close character or drop it
   function clean(s) {
-    return String(s == null ? '' : s).replace(/[‐-‒]/g, '-').replace(/[≥]/g, '>=').replace(/[≤]/g, '<=').replace(/→/g, '->')
+    return String(s == null ? '' : s).replace(/[‐-‒]/g, '-').replace(/\s*—\s*/g, ', ').replace(/[≥]/g, '>=').replace(/[≤]/g, '<=').replace(/→/g, '->')
       .replace(/[^\x20-\x7E\xA0-\xFF–—‘’“”•…€™ŒœŠšŸŽžƒˆ˜†‡‰‹›]/g, '');
   }
   function wrap(P, s, size, bold, maxW, maxLines) {

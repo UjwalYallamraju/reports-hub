@@ -60,7 +60,6 @@
 [data-mode="light"] .chip.sun{--c:#C46A0A;--cb:#FFF1E0}
 [data-mode="light"] .chip.blue{--cb:#EBF0FF}
 [data-mode="light"] .chip.mint{--cb:#E1F5EE}
-[data-mode="light"] .chip.violet{--c:#6B46D9;--cb:#F0EBFF}
 
 /* bento tiles and timeline */
 [data-mode="light"] .tl .st .n,[data-mode="light"] .steps li.on i{color:#2A1503}
@@ -88,7 +87,7 @@
 [data-mode="light"] .sd-bar{background:#EEF1F6}
 [data-mode="light"] .sd-over{background:radial-gradient(circle at 50% 50%,rgba(242,140,40,.16),rgba(246,248,252,.9) 60%)}
 [data-mode="light"] .orbit .rays{opacity:.4;background:repeating-conic-gradient(from 0deg,rgba(242,140,40,.22) 0deg 4deg,transparent 4deg 18deg)}
-[data-mode="light"] .hx h1 .warm{background-image:linear-gradient(100deg,#F2A516,#E5761A 30%,#E0524F 50%,#E5761A 70%,#F2A516)}
+[data-mode="light"] .hx h1 .warm{background-image:linear-gradient(100deg,#E39A12,#E5761A 55%,#D9542B)}
 /* Tests / Courses deck */
 [data-mode="light"] .fc2{background:rgba(255,255,255,.95);border-color:var(--line);box-shadow:0 20px 44px -22px rgba(26,31,43,.35)}
 [data-mode="light"] .fc2 b.g{color:#C46A0A}

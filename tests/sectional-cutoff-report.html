@@ -1,4 +1,9 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Sectional cut-off report · CodeTantra Reports</title>
+<meta name="description" content="Set a cut-off for each section of a company mock test, see who qualifies and how students grow across tests, and download PDFs.">
+<meta name="theme-color" content="#0B1020">
+<link rel="icon" type="image/png" sizes="32x32" href="../shared/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="../shared/brand/favicon-64.png">
+<link rel="apple-touch-icon" href="../shared/brand/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -37,13 +42,13 @@ h1{font-size:21px;margin:0 0 2px}#ttl{outline:none;border-bottom:1px dashed tran
 .dz{display:block;border:2px dashed #B8C7F0;border-radius:10px;padding:20px;text-align:center;cursor:pointer;color:var(--mut);background:var(--card)}
 .dz:hover{border-color:var(--pri);background:#F5F8FF}.dz input{display:none}.dz b{color:var(--ink);display:block;font-size:15px}
 .fmt{margin-top:10px;font-size:12.5px;color:var(--mut)}.fmt summary{cursor:pointer;color:var(--ink);font-weight:600}.fmt ul{margin:6px 0 0;padding-left:18px}
-.chip{display:inline-block;background:var(--okbg);color:var(--ok);border-radius:99px;padding:2px 10px;margin:8px 6px 0 0;font-size:12px;font-weight:600}
+.chip{display:inline-block;background:var(--okbg);color:var(--ok);border-radius:5px;padding:2px 10px;margin:8px 6px 0 0;font-size:12px;font-weight:600}
 .tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
 th{font-weight:600;color:var(--mut);background:var(--bg);cursor:default;vertical-align:bottom}th[data-k]{cursor:pointer}
 td.c,th.c{text-align:center}tr.dr{cursor:pointer}tr.dr:hover td{background:var(--bg)}
 .lo{background:var(--badbg);color:var(--bad);font-weight:600}.gd{color:var(--ok);font-weight:600}.bd{color:var(--bad);font-weight:600}
-.b{padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:var(--okbg);color:var(--ok)}.bad{background:var(--badbg);color:var(--bad)}.wn{background:var(--wnbg);color:var(--wn)}.na{background:var(--line);color:var(--mut)}
+.b{padding:2px 8px;border-radius:5px;font-size:12px;font-weight:600}.ok{background:var(--okbg);color:var(--ok)}.bad{background:var(--badbg);color:var(--bad)}.wn{background:var(--wnbg);color:var(--wn)}.na{background:var(--line);color:var(--mut)}
 .grp{margin-top:20px}.bt{border:1px solid var(--pri);color:var(--pri);border-radius:6px;padding:0 8px;font-size:13px}.grp h3{flex-wrap:wrap;display:flex;align-items:center;gap:8px;font-size:15px}.flt{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
 input,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:7px;padding:7px 10px}
 label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--mut)}label input{width:100%}
@@ -76,7 +81,7 @@ const S={title:'',co:'',scope:'',mode:'single',tests:[],cut:{},ov:40,sel:0,q:'',
 const $=s=>document.querySelector(s),pc=(a,b)=>b?a/b*100:0,f1=x=>(Math.round(x*10)/10).toFixed(1),avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0,last=a=>a[a.length-1];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(),cut=n=>S.cut[n]??40;
-const PAL=['#3366FF','#12A87B','#E8A33D','#9B6BE0','#E0524F','#8A93A6'],pct={min:0,max:100,ticks:{callback:v=>v+'%'}};
+const PAL=['#3366FF','#12A87B','#E8A33D','#0891B2','#E0524F','#8A93A6'],pct={min:0,max:100,ticks:{callback:v=>v+'%'}};
 let CH=[];
 function chart(id,cfg){const c=$('#'+id);if(c)CH.push(new Chart(c,cfg))}
 const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}};
@@ -196,7 +201,7 @@ const tc=s=>{let f=true;return s.replace(/[A-Za-z][A-Za-z']*/g,(w,i)=>{const pre
 function titleize(){document.querySelectorAll('main h1:not(#ttl),main h2,main h3,.kp .l,main th').forEach(el=>el.childNodes.forEach(n=>{if(n.nodeType===3&&n.nodeValue.trim()){const t=n.nodeValue.trim();n.nodeValue=n.nodeValue.replace(t,tc(t))}}))}
 function render(){const z=$('#dz'),has=S.tests.length>0;z.classList.toggle('ct-drop-compact',has);z.querySelector('.ct-drop-t').textContent=has?'Drop another export to replace this one':'Drop your Excel export here';render0();titleize()}
 function render0(){CH.forEach(c=>c.destroy());CH=[];S.tests.forEach(prep);Chart.defaults.color=css('--mut');Chart.defaults.borderColor=css('--line');Chart.defaults.font.family='Inter,system-ui,sans-serif';Chart.defaults.animation=false;Chart.defaults.scale.grid.drawTicks=false;(Chart.defaults.scale.border||{}).display=false;$('#pdfbox').hidden=!S.tests.length;$('#pdfN').hidden=S.mode!=='single';if(!S.scope){const bs=[...new Set(S.tests.flatMap(t=>t.st.map(x=>x.batch)))].sort(),sb=$('#pdfb');if(sb.dataset.k!==bs.join()){sb.dataset.k=bs.join();sb.innerHTML=bs.map(b=>`<option>${esc(b)}</option>`).join('')}}
- if(!S.tests.length){$('#out').innerHTML=`<div class="card empty"><span class="ct-sleepy" aria-hidden="true"><img src="../shared/brand/logo-hero.png" alt=""><svg class="face" viewBox="0 0 100 100"><path d="M36 47q4.5 4.5 9 0M54 47q4.5 4.5 9 0"/><path d="M45.5 58q4 2.6 8 0"/></svg><i>z</i><i>z</i><i>Z</i></span><h2>Nothing to report yet</h2><p style="margin:-4px 0 12px">The sun wakes up when you drop a result sheet above.</p><p>Single test: one exam's section scores, bottlenecks, batch results and a student-wise qualification list.<br>Growth across tests: trends in qualification, sectional averages and each student's progress.<br>Files stay in your browser and are never uploaded anywhere.</p></div>`;return}
+ if(!S.tests.length){$('#out').innerHTML=`<div class="card empty"><span class="ct-sleepy" aria-hidden="true"><img src="../shared/brand/logo-hero.png" alt=""></span><h2>Nothing to report yet</h2><p style="margin:-4px 0 12px">Upload a result sheet above to see the analysis.</p><p>Single test: one exam's section scores, bottlenecks, batch results and a student-wise qualification list.<br>Growth across tests: trends in qualification, sectional averages and each student's progress.<br>Files stay in your browser and are never uploaded anywhere.</p></div>`;return}
  S.mode==='single'?single():multi()}
 document.addEventListener('input',e=>{const t=e.target,id=t.id;
  if(id==='ttl'){S.title=t.textContent.trim()}else if(id==='co'){S.co=t.value;if(!S.title){const h=$('#ttl');if(h)h.textContent=defTitle()}}else if(id==='ov'){S.ov=+t.value||0;render()}else if(id==='gl'){if(t.value==='')return;document.querySelectorAll('.cs').forEach(i=>{i.value=t.value;S.cut[i.dataset.n]=+t.value||0});render()}

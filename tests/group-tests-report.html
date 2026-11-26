@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Group-wise tests report · CodeTantra Reports</title>
+<meta name="description" content="Compare several CodeTantra tests across groups from one combined sheet, with student-wise results, PDF and Excel summaries.">
+<meta name="theme-color" content="#0B1020">
+<link rel="icon" type="image/png" sizes="32x32" href="../shared/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="../shared/brand/favicon-64.png">
+<link rel="apple-touch-icon" href="../shared/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,7 +19,7 @@
 :root{
   --bg:#FAFBFC; --surface:#FFFFFF; --ink:#1A1F2B; --muted:#5B6475; --rule:#E4E7EC;
   --primary:#3366FF; --on-primary:#FFFFFF; --primary-soft:#EBF0FF; --focus:#99B3FF;
-  --c1:#3366FF; --c2:#12A87B; --c3:#E8A33D; --c4:#E0524F; --c5:#9B6BE0; --c6:#8A93A6;
+  --c1:#3366FF; --c2:#12A87B; --c3:#E8A33D; --c4:#E0524F; --c5:#0891B2; --c6:#8A93A6;
   --b-ex:#12A87B; --b-good:#6CCB9F; --b-avg:#E8A33D; --b-low:#E0524F;
   --serif:'Instrument Sans','Segoe UI',system-ui,-apple-system,sans-serif;
   --sans:'Instrument Sans','Segoe UI',system-ui,-apple-system,sans-serif;
@@ -154,7 +159,7 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
 .h-avg{background:color-mix(in srgb,var(--b-avg) 30%,transparent)}
 .h-low{background:color-mix(in srgb,var(--b-low) 26%,transparent)}
 .abs{color:#8A93A6}
-.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 9px;border-radius:99px;background:#EEF0F3;color:var(--muted);margin-right:4px;white-space:nowrap}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:5px;background:#EEF0F3;color:var(--muted);margin-right:4px;white-space:nowrap}
 .tag.warn{background:#FCE4E3;color:#C23B38}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:0 36px}
 .two>div{min-width:0}
@@ -326,9 +331,9 @@ const toNum=v=>{
   const s=String(v).replace(/\u00a0/g,' ').trim().replace(/,/g,'');
   return /^-?\d+(\.\d+)?$/.test(s)?parseFloat(s):null;
 };
-const pc=(v,d=0)=>(v==null||Number.isNaN(v))?'\u2014':(v*100).toFixed(d)+'%';
-const n1=v=>v==null?'\u2014':String(Math.round(v*10)/10);
-const m1=v=>v==null?'\u2014':v.toFixed(1);
+const pc=(v,d=0)=>(v==null||Number.isNaN(v))?'-':(v*100).toFixed(d)+'%';
+const n1=v=>v==null?'-':String(Math.round(v*10)/10);
+const m1=v=>v==null?'-':v.toFixed(1);
 const pl=(n,w,p)=>n+' '+(n===1?w:(p||w+'s'));
 
 /* ---------- parsing ---------- */
@@ -516,7 +521,7 @@ function summarySheets(A){
     order.forEach(g=>{
       const grows=A.rows.filter(r=>r.group===g);
       if(!grows.length)return;
-      stu.push([g+' \u2014 '+pl(grows.length,'student')]);
+      stu.push([g+': '+pl(grows.length,'student')]);
       grows.forEach((r,i)=>stu.push(stuRow(r,i)));
     });
   }else{
@@ -845,7 +850,7 @@ function start(ds,name){
 }
 
 /* ---------- palettes ---------- */
-const PDF_PAL={dark:false,ink:'#1A1F2B',muted:'#5B6475',rule:'#E4E7EC',c:['#3366FF','#12A87B','#E8A33D','#E0524F','#9B6BE0','#8A93A6'],
+const PDF_PAL={dark:false,ink:'#1A1F2B',muted:'#5B6475',rule:'#E4E7EC',c:['#3366FF','#12A87B','#E8A33D','#E0524F','#0891B2','#8A93A6'],
   b:{ex:'#12A87B',good:'#6CCB9F',avg:'#E8A33D',low:'#E0524F'},font:'Helvetica, Arial, sans-serif'};
 function screenPal(){
   const s=getComputedStyle(document.documentElement),g=n=>s.getPropertyValue(n).trim();
@@ -966,7 +971,7 @@ function renderReport(){
     return;
   }
   const kpis=[[String(K.N),'','Students'],[Math.round(K.participation*100),'%','Participation'],[Math.round(K.avgPct*100),'%','Average score'],
-    [K.passPct==null?'\u2014':Math.round(K.passPct*100),K.passPct==null?'':'%','Pass rate at '+A.pass+'% or more'],[K.allAttended,'/'+K.N,'Attempted every test']];
+    [K.passPct==null?'-':Math.round(K.passPct*100),K.passPct==null?'':'%','Pass rate at '+A.pass+'% or more'],[K.allAttended,'/'+K.N,'Attempted every test']];
   const testsRows=A.tests.map((t,i)=>`<tr><td class="num">${i+1}</td><td>${esc(t.label)}<small>out of ${t.max}</small></td><td class="num">${t.appeared}</td><td class="num">${t.absent}</td><td class="num">${pc(t.part)}</td><td class="num">${m1(t.avg)}</td><td class="num ${heat(t.avgPct)}">${pc(t.avgPct)}</td><td class="num">${n1(t.median)}</td><td class="num">${n1(t.high)}</td><td class="num">${n1(t.low)}</td><td class="num">${pc(t.passPct)}</td></tr>`).join('');
   const groupRows=A.groups.map((g,i)=>`<tr><td class="num">${i+1}</td><td>${esc(g.name)}</td><td class="num">${g.n}</td><td class="num">${pc(g.part)}</td><td class="num ${heat(g.avgPct)}">${pc(g.avgPct)}</td><td class="num">${pc(g.passPct)}</td><td class="num">${g.allAttended}</td><td class="num">${g.atRisk}</td></tr>`).join('');
   const matrix=(fn)=>`<div class="scroll"><table class="tbl"><thead><tr><th class="num">S.No</th><th>Section</th>${A.tests.map(t=>`<th class="num">${esc(t.label)}</th>`).join('')}</tr></thead><tbody>${A.groups.map((g,i)=>`<tr><td class="num">${i+1}</td><td>${esc(g.name)}</td>${g.perTest.map(x=>{const v=fn(x);return `<td class="num ${heat(v)}">${pc(v)}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;

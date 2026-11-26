@@ -151,7 +151,7 @@ function parsePasswordSheetLenient(header, body, fileName) {
   const groupIdx = findColIdx(header, [/^group/i]);
   const timeIdx = findColIdx(header, [/created/i, /registered/i, /signed?\s*up/i, /date/i, /time/i]);
   if (nameIdx === -1 && emailIdx === -1) {
-    throw new Error('Could not find a "Name" or "Email" column — is this a password-not-set export?');
+    throw new Error('Could not find a "Name" or "Email" column. Is this a password-not-set export?');
   }
   const entries = body.map((r) => ({
     name: nameIdx >= 0 ? r[nameIdx] ?? "" : "",
@@ -241,7 +241,7 @@ async function parseWorkbook(file) {
     return { kind: "course", fileName: file.name, meta, courses, students };
   }
 
-  throw new Error("Unrecognized report format — expected a 'group-wise course' or 'password-not-set' export.");
+  throw new Error("Unrecognised report format. Expected a 'group-wise course' or 'password-not-set' export.");
 }
 
 function fmtPct(n) {
@@ -347,7 +347,7 @@ function BarRows({ rows, labelWidth = 200, flagThreshold }) {
                   <span style={{
                     display: "inline-flex", alignItems: "center", gap: 3,
                     background: "rgba(224,82,79,0.1)", border: `1px solid ${RUST}`, color: RUST,
-                    fontSize: 10.5, fontWeight: 600, padding: "2px 7px", borderRadius: 20,
+                    fontSize: 10.5, fontWeight: 600, padding: "2px 7px", borderRadius: 4,
                     whiteSpace: "nowrap",
                   }}>
                     <AlertTriangle size={10} /> At Risk
@@ -821,9 +821,9 @@ export default function CourseInsightsApp() {
     const contentHTML = clone.outerHTML;
     const cleanCollege = collegeName.trim();
     const escapedCollege = cleanCollege.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const docTitle = cleanCollege ? `${escapedCollege} — Course Progress Report` : "Course Progress Report";
+    const docTitle = cleanCollege ? `${escapedCollege} · Course Progress Report` : "Course Progress Report";
     const faviconHref = collegeLogo || "data:image/svg+xml," + encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="${NAVY}"/><text x="50" y="66" font-size="58" text-anchor="middle">🎓</text></svg>`
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="${NAVY}"/><circle cx="50" cy="50" r="24" fill="#F28C28"/></svg>`
     );
     const doc = `<!DOCTYPE html>
 <html>
@@ -860,7 +860,7 @@ export default function CourseInsightsApp() {
 <body>
   <div class="print-bar"><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></div>
   <div style="font-size: 12px; color: ${SLATE}; text-align: right; margin-top: -8px;" class="print-bar-hint">
-    Tip: in the print dialog — turn <strong>"Background graphics"</strong> ON (so bars/shading show up) and
+    Tip: in the print dialog, turn <strong>"Background graphics"</strong> ON (so bars/shading show up) and
     <strong>"Headers and footers"</strong> OFF (so the browser doesn't add its own date/time and file path to each page).
   </div>
   ${contentHTML}
@@ -1050,7 +1050,7 @@ export default function CourseInsightsApp() {
                   </div>
                 </div>
                 <div style={{ color: D_MUTED, fontSize: 13, lineHeight: 1.75, maxWidth: 440 }}>
-                  Upload section-wise CodeTantra course reports — individual per-section files, or one combined
+                  Upload section-wise CodeTantra course reports: individual per-section files, or one combined
                   workbook with every section stacked together. Sections are always read from each row's
                   "Groups" column, and everything compiles into a single consolidated report.
                 </div>
@@ -1082,9 +1082,8 @@ export default function CourseInsightsApp() {
                 </div>
 
                 {!courseFiles.length && <div className="ct-sample">
-                  <span>No file handy?</span>
                   <button type="button" onClick={() => window.CTDetect && window.CTDetect.samples("course")}>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17l-1.9-5.3L5 10l5.1-1.7z" /><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" /><path d="M14 3v4h4M10 13h5M10 17h5" /></svg>
                     Try it with sample data
                   </button>
                 </div>}
@@ -1335,15 +1334,13 @@ export default function CourseInsightsApp() {
           <div style={{ background: "var(--cip-card)", border: "1px solid var(--cip-line2)", borderRadius: 16, padding: "40px 32px" }}>
             <span className="ct-sleepy" aria-hidden="true">
               <img src="../../shared/brand/logo-hero.png" alt="" />
-              <svg className="face" viewBox="0 0 100 100"><path d="M36 47q4.5 4.5 9 0M54 47q4.5 4.5 9 0" /><path d="M45.5 58q4 2.6 8 0" /></svg>
-              <i>z</i><i>z</i><i>Z</i>
             </span>
             <div style={{ fontFamily: "'Sora', 'Inter', sans-serif", fontSize: 19, fontWeight: 600, color: D_TEXT, marginBottom: 8 }}>
               Nothing to report yet
             </div>
             <div style={{ fontSize: 13.5, color: D_MUTED, lineHeight: 1.75 }}>
               Upload at least one group-wise course report above to build the insights report. Every section
-              is read automatically from the "Groups" column on each row — one file per section, or a single
+              is read automatically from the "Groups" column on each row: one file per section, or a single
               combined workbook with all sections together.
             </div>
           </div>
@@ -1369,7 +1366,7 @@ export default function CourseInsightsApp() {
                 </div>
               )}
               <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 26, fontWeight: 700, color: NAVY }}>
-                Course Progress Report{insights.batches.length ? ` — ${insights.batches.join(", ")} Batch` : ""}
+                Course Progress Report{insights.batches.length ? ` · ${insights.batches.join(", ")} Batch` : ""}
               </div>
               <div style={{ fontSize: 12.5, color: SLATE, marginTop: 4 }}>
                 Generated {generatedDate} · {insights.sections.length} section{insights.sections.length !== 1 ? "s" : ""} ·
@@ -1424,7 +1421,7 @@ export default function CourseInsightsApp() {
               {insights.strongestSection && insights.weakestSection && insights.sections.length > 1 && (
                 <li>
                   <strong>{insights.strongestSection.label}</strong> leads with {fmtPct(insights.strongestSection.avgOfAvgs)} average
-                  completion, while <strong>{insights.weakestSection.label}</strong> trails at {fmtPct(insights.weakestSection.avgOfAvgs)} —
+                  completion, while <strong>{insights.weakestSection.label}</strong> trails at {fmtPct(insights.weakestSection.avgOfAvgs)},
                   a gap of {fmtPct(insights.strongestSection.avgOfAvgs - insights.weakestSection.avgOfAvgs)}.
                 </li>
               )}
@@ -1439,7 +1436,7 @@ export default function CourseInsightsApp() {
                 <li>
                   <strong>{totalAtRiskCourses}</strong> course{totalAtRiskCourses !== 1 ? " instances" : " instance"} across sections
                   {" "}(a course counted separately in each section it's enabled for) sit below the {courseRiskThreshold}% course-risk
-                  threshold — flagged with an "At Risk" badge on the course-wise charts below.
+                  threshold. They are flagged with an "At Risk" badge on the course-wise charts below.
                 </li>
               )}
               <li>
@@ -1450,14 +1447,14 @@ export default function CourseInsightsApp() {
                 <li>
                   <strong>{insights.totalPasswordIssues}</strong> student{insights.totalPasswordIssues !== 1 ? "s" : ""} across
                   {" "}{Object.keys(insights.pwBySection).length} section{Object.keys(insights.pwBySection).length !== 1 ? "s" : ""} have
-                  not set a CodeTantra password yet and likely have no recorded progress at all — flagged separately below.
+                  not set a CodeTantra password yet and likely have no recorded progress at all. They are listed separately below.
                 </li>
               )}
               {insights.totalNotApplicable > 0 && (
                 <li>
                   <strong>{insights.totalNotApplicable}</strong> student{insights.totalNotApplicable !== 1 ? "s" : ""} show
-                  {" "}"--" against every course in this report — meaning none of the uploaded courses are enabled for
-                  them — and are excluded from the completion averages above, listed separately under "No Enabled Courses."
+                  {" "}"--" against every course in this report, meaning none of the uploaded courses are enabled for
+                  them. They are excluded from the completion averages above, listed separately under "No Enabled Courses."
                 </li>
               )}
             </ul>
@@ -1558,7 +1555,7 @@ export default function CourseInsightsApp() {
                     Performance Bands by Section
                   </div>
                   <div style={{ fontSize: 12, color: SLATE, marginBottom: 14 }}>
-                    Number of students in each band, per section — each bar shows that section's own mix
+                    Number of students in each band, per section. Each bar shows that section's own mix
                   </div>
                   <StackedBandRows rows={insights.bandBySection} bands={bands} labelWidth={130} />
                 </div>
@@ -1598,7 +1595,7 @@ export default function CourseInsightsApp() {
                 style={{ background: "#fff", border: `1px solid ${PAPER_LINE}`, borderRadius: 4, padding: "18px 22px", marginBottom: 16 }}
               >
                 <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 16, fontWeight: 600, color: NAVY, marginBottom: 4 }}>
-                  Course-wise Average Completion — {sec.label}
+                  Course-wise Average Completion: {sec.label}
                 </div>
                 <div style={{ fontSize: 12, color: SLATE, marginBottom: 14 }}>
                   {sec.studentCount} students in this section · {sec.perCourse.length} course{sec.perCourse.length !== 1 ? "s" : ""} enabled
@@ -1660,7 +1657,7 @@ export default function CourseInsightsApp() {
             </div>
             {!includeStudentData && (
               <div className="no-print" style={{ fontSize: 12, color: GOLD, marginTop: 6 }}>
-                Not included in the PDF / HTML export — tick "Include student-level data in export" above to add it.
+                Not included in the PDF / HTML export. Tick "Include student-level data in export" above to add it.
               </div>
             )}
           </div>
@@ -1738,9 +1735,9 @@ export default function CourseInsightsApp() {
                                   <td style={{ fontSize: 12, color: SLATE }}>{s.id}</td>
                                   <td>{s.name}</td>
                                   <td style={{ fontSize: 12, color: NAVY_SOFT, fontWeight: 600 }}>{s.sectionLabel}</td>
-                                  <td style={{ color: cat.color, fontWeight: 600 }}>{s.avg === null ? "—" : fmtPct(s.avg)}</td>
+                                  <td style={{ color: cat.color, fontWeight: 600 }}>{s.avg === null ? "-" : fmtPct(s.avg)}</td>
                                   {cat.key === "atRisk" && (
-                                    <td style={{ fontSize: 12, color: SLATE }}>{s.notStartedCourses.join(", ") || "—"}</td>
+                                    <td style={{ fontSize: 12, color: SLATE }}>{s.notStartedCourses.join(", ") || "-"}</td>
                                   )}
                                 </tr>
                               ))}
@@ -1778,7 +1775,7 @@ export default function CourseInsightsApp() {
                     className="no-print"
                   >
                     {expandedSections[label] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                    {label} — {g.entries.length} student{g.entries.length !== 1 ? "s" : ""}
+                    {label}: {g.entries.length} student{g.entries.length !== 1 ? "s" : ""}
                   </div>
                   {expandedSections[label] === false ? null : (
                     <table className="cip-table">
