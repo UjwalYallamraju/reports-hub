@@ -52,7 +52,7 @@ a{color:var(--action)}
 .orbit .ring{border-color:var(--line2)}
 .orbit .ring.r2{border-color:var(--line)}
 .orbit .ring.r2::after{background:var(--line2);box-shadow:none}
-.orbit .r2,.orbit .sun img{animation:none}
+.orbit .r2{animation:none}
 .orbit .sun{filter:none}
 .orbit .sun img{filter:none}
 .fc{background:var(--surface);border:1px solid var(--line);color:var(--muted);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:10px}
