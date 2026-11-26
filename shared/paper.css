@@ -48,11 +48,24 @@ a{color:var(--action)}
 .trust svg{color:var(--d-green)}
 
 /* home hero: the sun at rest, report cards on paper */
-.orbit .glow,.orbit .rays,.orbit .wave{display:none}
+.orbit .glow,.orbit .rays{display:none}
 .orbit .ring{border-color:var(--line2)}
 .orbit .ring.r2{border-color:var(--line)}
-.orbit .ring.r2::after{background:var(--line2);box-shadow:none}
-.orbit .r2{animation:none}
+.orbit .ring.r2::after{background:#F28C28;box-shadow:none}
+
+/* the sun: flat lines and slow motion only (no glow, no blur) */
+.orbit .sun{--ray:rgba(242,140,40,.5);animation:sunBreathe 6s ease-in-out infinite}
+[data-mode="dark"] .orbit .sun{--ray:rgba(242,140,40,.6)}
+.orbit .sun::before,.orbit .sun::after{content:"";position:absolute;inset:6%;border-radius:50%;border:2px solid var(--ray);
+  opacity:0;pointer-events:none;z-index:-1;animation:sunRipple 6s cubic-bezier(.2,.6,.3,1) infinite}
+.orbit .sun::after{animation-delay:3s}
+.orbit .wave{box-shadow:none;border:1.5px solid var(--ray,rgba(242,140,40,.6))}
+@keyframes sunBreathe{0%,100%{scale:1}50%{scale:1.035}}
+@keyframes sunRipple{0%{opacity:0;transform:scale(.9)}12%{opacity:1}70%{opacity:.45}100%{opacity:0;transform:scale(1.75)}}
+/* the dot on the outer orbit travels round (rotate, so the intro animation's inline transform can't stop it) */
+.orbit .ring.r2{animation:orbitTurn 40s linear infinite}
+@keyframes orbitTurn{to{rotate:360deg}}
+@media(prefers-reduced-motion:reduce){.orbit .sun,.orbit .ring.r2{animation:none}.orbit .sun::before,.orbit .sun::after{display:none}}
 .orbit .sun{filter:none}
 .orbit .sun img{filter:none}
 .fc{background:var(--surface);border:1px solid var(--line);color:var(--muted);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:10px}
