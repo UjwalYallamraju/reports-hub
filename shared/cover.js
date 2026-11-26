@@ -430,7 +430,8 @@
           .then(function (e) {
             var imgs = {}; if (e[2]) imgs.sun = e[2]; if (e[3]) imgs.collegeLogo = e[3]; if (e[4]) imgs.companyLogo = e[4];
             draw(pdfPainter(lib, page, {r: e[0], b: e[1]}, imgs), sz.width, sz.height, c);
-            return doc.save();
+            doc.setProducer('CodeTantra Reports'); doc.setModificationDate(new Date());
+            return doc.save({updateMetadata: false});
           });
       });
     });

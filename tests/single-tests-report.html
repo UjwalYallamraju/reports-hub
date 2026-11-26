@@ -56,6 +56,7 @@ aside{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;min-width:0}
 .file-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .linkbtn{background:none;border:0;color:var(--accent);cursor:pointer;padding:4px;font-size:13px;font-weight:600}
 .linkbtn:hover{text-decoration:underline}
+.start-over{display:block;margin-top:10px;padding:4px 0;color:var(--ink2);font-weight:500}
 .add-file{display:block;position:relative;font-size:13px;color:var(--accent);font-weight:600;cursor:pointer;margin-top:4px}
 .add-file input{position:absolute;opacity:0;width:1px;height:1px}
 .add-file:focus-within{outline:3px solid #EBC3A8;outline-offset:2px}
@@ -124,7 +125,8 @@ tr:hover td{background:#F1EEE7}
 @media (max-width:600px){.rsn{grid-template-columns:minmax(0,1fr) 80px}.rsn b{grid-column:1/-1;order:3}}
 @media (max-width:980px){
   .layout{grid-template-columns:minmax(0,1fr)}
-  aside{position:static}
+  aside{position:static;display:contents}            /* phones and tablets: files, then the report, then settings */
+  #p-files{order:0} .main{order:1} #p-details,#p-dl{order:2}
   .kpis{grid-template-columns:repeat(2,1fr)}
   .filters{grid-template-columns:1fr}
   main{padding:18px}
@@ -187,6 +189,7 @@ const state = {
   meta: {college: '', batch: '', testName: '', date: '', max: 20, pass: 10, preparedBy: ''},
   opts: {below: true, notAtt: true, scorecard: true},
   sort: {key: 'avg', dir: -1},
+  ssort: {key: 'group', dir: 1},
   filter: {q: '', group: '', status: 'all', limit: 100},
   A: null
 };
@@ -323,15 +326,18 @@ async function ingest(file) {
   if (iTotal >= 0) {
     const iStart = findCol(head, /start time/i), iPassed = findCol(head, /^passed$/i), iStatus = findCol(head, /^status$/i);
     const maxM = /\(\s*(\d+(?:\.\d+)?)\s*M?\s*\)/i.exec(head[iTotal]);
-    const recs = [];
-    let minPassed = Infinity;
+    // A student can appear more than once (for example after a re-attempt): keep their higher score.
+    const byId = new Map();
+    let minPassed = Infinity, dupes = 0;
     for (const r of body) {
-      const id = cellStr(r[iId]); if (!id || seen.has(id)) continue; seen.add(id);
-      const score = Number(r[iTotal]); if (isNaN(score)) continue;
-      recs.push({id, name: cellStr(r[iName]), email: cellStr(r[iEmail]), group: cellStr(r[iGroup]) || 'Unassigned', start: cellStr(r[iStart]), score, status: cellStr(r[iStatus])});
+      const id = cellStr(r[iId]); if (!id) continue;
+      const score = Number(r[iTotal]); if (r[iTotal] === null || r[iTotal] === '' || isNaN(score)) continue;
+      const rec = {id, name: cellStr(r[iName]), email: cellStr(r[iEmail]), group: cellStr(r[iGroup]) || 'Unassigned', start: cellStr(r[iStart]), score, status: cellStr(r[iStatus])};
+      const prev = byId.get(id);
+      if (prev) { dupes++; if (score > prev.score) byId.set(id, rec); } else byId.set(id, rec);
       if (iPassed >= 0 && String(r[iPassed]).toLowerCase() === 'true') minPassed = Math.min(minPassed, score);
     }
-    return {kind: 'att', recs, max: maxM ? +maxM[1] : null, pass: isFinite(minPassed) ? minPassed : null};
+    return {kind: 'att', recs: [...byId.values()], dupes, max: maxM ? +maxM[1] : null, pass: isFinite(minPassed) ? minPassed : null};
   }
   const iAct = findCol(head, /last activity$/i);
   const recs = [];
@@ -377,7 +383,7 @@ async function handleFiles(fileList) {
   // 1. A new Attempted file. Anything from a different test is cleared so two tests never mix.
   if (att) {
     const prev = state.files.att, sameTest = !!(prev && prev.key && prev.key === att.key);
-    state.att = att.res.recs; state.files.att = {name: att.file.name, count: att.res.recs.length, key: att.key};
+    state.att = att.res.recs; state.files.att = {name: att.file.name, count: att.res.recs.length, key: att.key, dupes: att.res.dupes || 0};
     if (att.res.max) state.meta.max = att.res.max;
     state.meta.pass = att.res.pass ?? Math.ceil(state.meta.max * 0.5);
     if (!sameTest) {
@@ -426,10 +432,27 @@ function bandDefs(max, pass) {
     {key: 'lo', label: `Below pass (0-${Math.max(0, Math.ceil(pass) - 1)})`, test: s => s < pass, color: '#B3261E'}
   ];
 }
-function makeBins(scores, max) {
-  const M = Math.floor(max), size = M <= 30 ? 1 : Math.ceil((M + 1) / 20), bins = [];
-  for (let lo = 0; lo <= M; lo += size) { const hi = Math.min(lo + size - 1, M); bins.push({lo, hi, label: lo === hi ? String(lo) : `${lo}-${hi}`, count: 0}); }
-  scores.forEach(s => { const i = Math.min(bins.length - 1, Math.max(0, Math.floor(s / size))); bins[i].count++; });
+// Score ranges for the "how scores are spread" chart. One edge always sits exactly on the pass mark,
+// so every range is wholly at or above it (green) or wholly below it (red). Ranges are [lo, hi); the
+// top range is closed at the maximum mark. Labels name the whole marks inside each range.
+function makeBins(scores, max, pass) {
+  const M = Math.max(1, max), size = M <= 30 ? 1 : Math.ceil((Math.floor(M) + 1) / 20), P = Math.min(Math.max(pass, 0), M), edges = [];
+  for (let e = P; e > 0; e -= size) edges.unshift(e);
+  if (edges[0] !== 0) edges.unshift(0);
+  let e = P + size;
+  for (; e <= M; e += size) edges.push(e);
+  edges.push(e);                                    // first edge past the maximum: the top range ends at M
+  const bins = [];
+  for (let i = 0; i < edges.length - 1; i++) {
+    const lo = edges[i], last = i === edges.length - 2, hi = last ? M : edges[i + 1];
+    const a = Math.ceil(lo), b = last ? Math.floor(hi) : Math.ceil(hi) - 1;
+    bins.push({lo, hi, last, label: b < a ? num(lo) : b === a ? String(a) : `${a}-${b}`, count: 0});
+  }
+  scores.forEach(s => {
+    let i = bins.findIndex(b => s >= b.lo && (s < b.hi || b.last));
+    if (i < 0) i = s < 0 ? 0 : bins.length - 1;
+    bins[i].count++;
+  });
   return bins;
 }
 function stats(att, na, max, pass) {
@@ -444,20 +467,23 @@ function stats(att, na, max, pass) {
     avg, avgPct: max ? avg / max * 100 : 0, median, hi: n ? scores[n - 1] : 0, lo: n ? scores[0] : 0,
     passCount, below: n - passCount, passRate: n ? passCount / n * 100 : 0,
     full, fullPct: n ? full / n * 100 : 0,
-    bins: makeBins(scores, max), bands: bandDefs(max, pass).map(b => ({...b, count: scores.filter(b.test).length})), reasons
+    bins: makeBins(scores, max, pass), bands: bandDefs(max, pass).map(b => ({...b, count: scores.filter(b.test).length})), reasons
   };
 }
 function reanalyze() {
   if (!state.att.length) { state.A = null; return; }
   const {max, pass} = state.meta;
-  const keys = [...new Set([...state.att.map(a => a.group), ...state.na.map(a => a.group)])].sort(cmpNat);
+  // A student listed in both files has a score, so they count as attempted, not twice.
+  const attIds = new Set(state.att.map(a => a.id)), na = state.na.filter(a => !attIds.has(a.id));
+  const keys = [...new Set([...state.att.map(a => a.group), ...na.map(a => a.group)])].sort(cmpNat);
   const groups = keys.map(key => {
-    const att = state.att.filter(a => a.group === key), na = state.na.filter(a => a.group === key);
-    return {key, label: groupLabel(key), att, na, st: stats(att, na, max, pass)};
+    const att = state.att.filter(a => a.group === key), gna = na.filter(a => a.group === key);
+    return {key, label: groupLabel(key), att, na: gna, st: stats(att, gna, max, pass)};
   });
   const ranked = groups.filter(g => g.st.n > 0).sort((a, b) => b.st.avg - a.st.avg);
   ranked.forEach((g, i) => { g.rank = i + 1; });
-  state.A = {all: stats(state.att, state.na, max, pass), groups, nRanked: ranked.length, hasNA: !!state.files.na};
+  const rankOf = new Map(rankStudents(state.att).map(a => [a.id, a.rank]));
+  state.A = {all: stats(state.att, na, max, pass), groups, na, rankOf, overlap: state.na.length - na.length, nRanked: ranked.length, hasNA: !!state.files.na};
 }
 function rankStudents(list) {
   const s = [...list].sort((a, b) => b.score - a.score || cmpNat(a.name, b.name));
@@ -650,25 +676,41 @@ function groupTableHTML(A) {
   const body = rows.map((g, gi) => `<tr><td class="l">${gi + 1}</td>${cols.map(c => `<td class="${c.left ? 'l' : ''}">${c.f ? c.f(g) : esc(c.v(g))}</td>`).join('')}</tr>`).join('');
   return `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
 }
+const SCOLS = [
+  {k: 'id', l: 'Member ID', left: true},
+  {k: 'name', l: 'Name', left: true},
+  {k: 'group', l: 'Group', left: true},
+  {k: 'score', l: 'Score'},
+  {k: 'pct', l: 'Score %'},
+  {k: 'rank', l: 'Rank'},
+  {k: 'status', l: 'Result', left: true}
+];
 function studentRows() {
-  const {pass} = state.meta;
-  const rows = state.att.map(a => ({id: a.id, name: a.name, group: a.group, score: a.score, status: a.score >= pass ? 'Passed' : 'Below pass'}));
-  state.na.forEach(a => rows.push({id: a.id, name: a.name, group: a.group, score: null, status: 'Not attempted'}));
-  const {q, group, status} = state.filter, ql = q.trim().toLowerCase();
+  const {pass, max} = state.meta, rankOf = state.A.rankOf;
+  const rows = state.att.map(a => ({id: a.id, name: a.name, group: a.group, score: a.score, pct: max ? a.score / max * 100 : 0, rank: rankOf.get(a.id), status: a.score >= pass ? 'Passed' : 'Below pass'}));
+  state.A.na.forEach(a => rows.push({id: a.id, name: a.name, group: a.group, score: null, pct: null, rank: null, status: 'Not attempted'}));
+  const {q, group, status} = state.filter, ql = q.trim().toLowerCase(), {key, dir} = state.ssort;
+  const byName = (a, b) => cmpNat(a.group, b.group) || cmpNat(a.name, b.name);
   return rows.filter(r => (!group || r.group === group) && (status === 'all' || r.status === status) && (!ql || r.id.toLowerCase().includes(ql) || r.name.toLowerCase().includes(ql)))
-    .sort((a, b) => cmpNat(a.group, b.group) || cmpNat(a.name, b.name));
+    .sort((a, b) => {
+      if (key === 'group') return byName(a, b) * dir;
+      const x = a[key], y = b[key];
+      if (x === null || y === null) return x === y ? byName(a, b) : x === null ? 1 : -1;   // not attempted always last
+      return (typeof x === 'string' ? cmpNat(x, y) : x - y) * dir || byName(a, b);
+    });
 }
 function studentsHTML() {
-  const rows = studentRows(), {limit} = state.filter, max = state.meta.max;
-  const body = rows.slice(0, limit).map((r, ri) => `<tr><td>${ri + 1}</td><td class="l">${esc(r.id)}</td><td class="l">${esc(r.name)}</td><td class="l">${esc(groupLabel(r.group))}</td><td>${r.score === null ? '-' : num(r.score) + '/' + max}</td><td class="l"><span class="pill ${r.status === 'Passed' ? 'p' : r.status === 'Below pass' ? 'f' : 'n'}">${r.status}</span></td></tr>`).join('');
-  return `<p class="hint">${rows.length} students match.</p><div class="tablewrap"><table><thead><tr><th>S.No</th><th class="l">Member ID</th><th class="l">Name</th><th class="l">Group</th><th>Score</th><th class="l">Result</th></tr></thead><tbody>${body || '<tr><td colspan="6" class="l">No students match these filters.</td></tr>'}</tbody></table></div>${rows.length > limit ? `<div class="more"><button class="btn alt" id="more">Show more</button></div>` : ''}`;
+  const rows = studentRows(), {limit} = state.filter, max = state.meta.max, {key, dir} = state.ssort;
+  const head = '<th>S.No</th>' + SCOLS.map(c => `<th class="${c.left ? 'l' : ''}" aria-sort="${c.k === key ? (dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-ssort="${c.k}">${c.l}${c.k === key ? (dir > 0 ? ' ▲' : ' ▼') : ''}</button></th>`).join('');
+  const body = rows.slice(0, limit).map((r, ri) => `<tr><td>${ri + 1}</td><td class="l">${esc(r.id)}</td><td class="l">${esc(r.name)}</td><td class="l">${esc(groupLabel(r.group))}</td><td>${r.score === null ? '-' : num(r.score) + '/' + num(max)}</td><td>${r.pct === null ? '-' : pct(r.pct)}</td><td>${r.rank ?? '-'}</td><td class="l"><span class="pill ${r.status === 'Passed' ? 'p' : r.status === 'Below pass' ? 'f' : 'n'}">${r.status}</span></td></tr>`).join('');
+  return `<p class="hint">${rows.length} students match. Select a column heading to sort. Rank is across all groups.</p><div class="tablewrap"><table><thead><tr>${head}</tr></thead><tbody>${body || '<tr><td colspan="8" class="l">No students match these filters.</td></tr>'}</tbody></table></div>${rows.length > limit ? `<div class="more"><button class="btn alt" id="more">Show more</button></div>` : ''}`;
 }
 
 function renderLanding() {
   $('#app').innerHTML = `
   <section class="landing">
-    <h1>Turn a test export into a report your SPOCs can act on.</h1>
-    <p class="sub">Add the Attempted and Not Attempted Excel files from the same test. You get group-wise insights and PDF reports ready to share.</p>
+    <h1>Single test report</h1>
+    <p class="sub">Add the Attempted and Not Attempted Excel files from one test. You get pass rates and score bands for each group, a college summary PDF and one PDF per group.</p>
     <label class="drop ct-drop" id="drop"><input type="file" id="fileInput" multiple accept=".xlsx,.csv"><span class="ct-drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><g class="arr"><path d="M12 18v-6.5M9.2 14.2 12 11.4l2.8 2.8"/></g></svg></span><strong class="ct-drop-t">Drop your Excel exports here</strong><span class="ct-drop-s">or <u>click to browse</u></span><span class="ct-drop-fmt"><i>.xlsx</i><i>.csv</i></span><span class="ct-drop-note">Add the Attempted and Not Attempted files together</span></label>
     <ul class="needs">
       <li><b>Attempted file</b> has each student's score. Required.</li>
@@ -677,19 +719,27 @@ function renderLanding() {
     <div class="err" id="err" role="alert"></div>
   </section>`;
 }
+function fileNotes() {
+  const n = [], d = state.files.att && state.files.att.dupes, o = state.A && state.A.overlap;
+  if (d) n.push(`${d} repeated ${d === 1 ? 'row' : 'rows'} in the Attempted file: each student's higher score is used.`);
+  if (o) n.push(`${o} ${o === 1 ? 'student is' : 'students are'} in both files and ${o === 1 ? 'is' : 'are'} counted as attempted.`);
+  return n.length ? `<p class="hint">${n.map(esc).join(' ')}</p>` : '';
+}
 function renderShell() {
   const m = state.meta, A = state.A;
   const fileRow = (label, f, kind) => f ? `<div class="file-row"><div class="nm"><b>${label}</b><small>${esc(f.name)} · ${f.count} rows</small></div><button class="linkbtn" data-remove="${kind}">Remove</button></div>` : '';
   $('#app').innerHTML = `
   <div class="layout">
     <aside>
-      <div class="panel">
+      <div class="panel" id="p-files">
         <h2>Files</h2>
         ${fileRow('Attempted', state.files.att, 'att')}${fileRow('Not attempted', state.files.na, 'na')}
         <label class="add-file"><input type="file" id="fileInput" multiple accept=".xlsx,.csv">${state.files.na ? 'Replace files' : 'Add the Not Attempted file'}</label>
+        ${fileNotes()}
+        <button class="linkbtn start-over" id="start-over">Start over with another test</button>
         <div class="err" id="err" role="alert"></div>
       </div>
-      <div class="panel">
+      <div class="panel" id="p-details">
         <h2>Report details</h2>
         <label class="f">College name<input type="text" id="m-college" value="${esc(m.college)}" placeholder="Shown at the top of every report"></label>
         <label class="f">Test name<input type="text" id="m-testName" value="${esc(m.testName)}"></label>
@@ -698,12 +748,12 @@ function renderShell() {
           <label class="f">Test date<input type="date" id="m-date" value="${esc(m.date)}"></label>
         </div>
         <div class="two">
-          <label class="f">Maximum marks<input type="number" id="m-max" min="1" step="any" value="${m.max}"></label>
+          <label class="f">Maximum marks<input type="number" id="m-max" min="1" step="any" value="${m.max}" title="At least 1"></label>
           <label class="f">Pass mark<input type="number" id="m-pass" min="0" step="any" value="${m.pass}"></label>
         </div>
         <label class="f">Prepared by (optional)<input type="text" id="m-preparedBy" value="${esc(m.preparedBy)}"></label>
       </div>
-      <div class="panel">
+      <div class="panel" id="p-dl">
         <h2>Download reports</h2>
         <label class="chk"><input type="checkbox" id="o-below" ${state.opts.below ? 'checked' : ''}><span>List students below the pass mark</span></label>
         ${A.hasNA ? `<label class="chk"><input type="checkbox" id="o-notAtt" ${state.opts.notAtt ? 'checked' : ''}><span>List students who did not attempt</span></label>` : ''}
@@ -861,8 +911,8 @@ class Report {
     this.line(x0, base, x0 + CW, base, C.line, 0.8);
     const pi = bins.findIndex(b => b.lo >= pass);
     if (pi > 0) {
-      const lx = x0 + pi * bw; this.line(lx, base, lx, base + ch + 14, C.navy, 0.8, [3, 2]);
-      this.text('Pass mark ' + num(pass), lx + 4, base + ch + 8, {size: 7.5, font: this.b, color: C.navy});
+      const lx = x0 + pi * bw; this.line(lx, base, lx, base + ch + 20, C.navy, 0.8, [3, 2]);   // label sits above the tallest bar's count
+      this.text('Pass mark ' + num(pass), lx + 4, base + ch + 15, {size: 7.5, font: this.b, color: C.navy});
     }
     this.y -= h + 4;
     this.rect(PM, this.y - 8, 8, 8, C.pass); this.text('At or above pass mark', PM + 12, this.y - 7, {size: 8, color: C.grey});
@@ -971,7 +1021,7 @@ class Report {
       p.drawText(this.fit(this.footerLeft, 7.5, this.f, CW - 70), {x: PM, y: 22, size: 7.5, font: this.f, color: hex(C.grey)});
       const t = `Page ${i + 1} of ${n}`; p.drawText(t, {x: PM + CW - this.f.widthOfTextAtSize(t, 7.5), y: 22, size: 7.5, font: this.f, color: hex(C.grey)});
     });
-    this.doc.setTitle(clean(title)); this.doc.setProducer('Test Report Desk'); this.doc.setCreator('Test Report Desk');
+    const now = new Date(); this.doc.setTitle(clean(title)); this.doc.setProducer('CodeTantra Reports'); this.doc.setCreator('CodeTantra Reports'); this.doc.setCreationDate(now); this.doc.setModificationDate(now);
   }
 }
 
@@ -992,7 +1042,7 @@ function pdfKpis(A, s, isGroup) {
 
 async function buildPdf(groupKey) {
   const A = state.A, m = state.meta, {max, pass} = m, g = groupKey ? A.groups.find(x => x.key === groupKey) : null;
-  const s = g ? g.st : A.all, attList = g ? g.att : state.att, naList = g ? g.na : state.na;
+  const s = g ? g.st : A.all, attList = g ? g.att : state.att, naList = g ? g.na : A.na;
   const testName = m.testName || 'Test', scopeName = g ? `Group ${g.label}` : 'All groups';
   const title = `${testName} - ${g ? g.label + ' ' : ''}Performance Report`;
   const generated = new Date(); const gen = `${generated.getDate()} ${MONTHS[generated.getMonth()]} ${generated.getFullYear()}`;
@@ -1111,7 +1161,7 @@ async function buildPdf(groupKey) {
     });
   }
   R.finish(title);
-  return await R.doc.save();
+  return await R.doc.save({updateMetadata: false});
 }
 
 /* ------------------------------------------------------------------ zip (store only) */
@@ -1148,7 +1198,7 @@ function makeXlsx(sheets) {
   add('_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>');
   add('xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>' + sheets.map((sh, i) => `<sheet name="${xmlEsc(sh.name.replace(/[\[\]:*?\/\\]/g, ' ').slice(0, 31))}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join('') + '</sheets></workbook>');
   add('xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + sheets.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('') + `<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`);
-  add('xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEBF0FF"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>');
+  add('xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1EEE7"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>');
   sheets.forEach((sh, i) => {
     const widths = [];
     sh.rows.forEach(r => r.forEach((v, c) => { widths[c] = Math.min(48, Math.max(widths[c] || 8, String(v ?? '').length + 2)); }));
@@ -1184,7 +1234,7 @@ function excelSummary() {
   const sheets = [{name: 'Summary', rows: sum, boldCol0: true}, {name: 'Groups', rows: groups, freeze: true}, {name: 'Students', rows: studs, freeze: true}];
   if (A.hasNA) {
     const na = [['Member ID', 'Name', 'Email', 'Group', 'Last activity']];
-    [...state.na].sort((a, b) => cmpNat(a.group, b.group) || cmpNat(a.name, b.name)).forEach(a => na.push([a.id, a.name, a.email, groupLabel(a.group), a.reason]));
+    [...A.na].sort((a, b) => cmpNat(a.group, b.group) || cmpNat(a.name, b.name)).forEach(a => na.push([a.id, a.name, a.email, groupLabel(a.group), a.reason]));
     sheets.push({name: 'Not attempted', rows: na, freeze: true});
   }
   return makeXlsx(sheets);
@@ -1235,7 +1285,9 @@ document.addEventListener('input', e => {
   if (!t.id || !t.id.startsWith('m-')) return;
   const k = t.id.slice(2);
   if (k === 'max' || k === 'pass') {
-    const v = parseFloat(t.value); if (!(v >= 0)) return;
+    const v = parseFloat(t.value);
+    if (!(v >= (k === 'max' ? 1 : 0))) { t.setAttribute('aria-invalid', 'true'); return; }
+    t.removeAttribute('aria-invalid');
     state.meta[k] = v; reanalyze(); renderMain();
   } else { state.meta[k] = t.value; remember(k, t.value.trim()); if (k === 'testName' || k === 'college' || k === 'batch' || k === 'date') renderMainTitle(); }
 });
@@ -1246,7 +1298,14 @@ function renderMainTitle() {
 }
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
-  if (t.dataset.sort) { const k = t.dataset.sort; state.sort = {key: k, dir: state.sort.key === k ? -state.sort.dir : (k === 'label' ? 1 : -1)}; $('#gtable').innerHTML = groupTableHTML(state.A); }
+  if (t.dataset.ssort) { const k = t.dataset.ssort; state.ssort = {key: k, dir: state.ssort.key === k ? -state.ssort.dir : (['score', 'pct'].includes(k) ? -1 : 1)}; $('#stbl').innerHTML = studentsHTML(); }
+  else if (t.dataset.sort) { const k = t.dataset.sort; state.sort = {key: k, dir: state.sort.key === k ? -state.sort.dir : (k === 'label' ? 1 : -1)}; $('#gtable').innerHTML = groupTableHTML(state.A); }
+  else if (t.id === 'start-over') {
+    state.att = []; state.na = []; state.files = {att: null, na: null}; state.A = null;
+    Object.assign(state.meta, {batch: '', testName: '', date: '', max: 20, pass: 10});
+    state.filter = {q: '', group: '', status: 'all', limit: 100}; state.ssort = {key: 'group', dir: 1};
+    render(); window.scrollTo(0, 0);
+  }
   else if (t.dataset.remove) { state.files[t.dataset.remove] = null; state[t.dataset.remove] = []; if (!state.files.att) { state.att = []; state.na = []; state.files.na = null; } reanalyze(); render(); }
   else if (t.id === 'more') { state.filter.limit += 200; $('#stbl').innerHTML = studentsHTML(); }
   else if (t.id === 'dl-all') withBusy(t, async say => { say('Building the college summary...'); const b = await buildPdf(null); download(new Blob([b], {type: 'application/pdf'}), `${baseName()}_College_Summary.pdf`); });
