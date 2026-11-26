@@ -15,7 +15,7 @@
 <style>
 :root{
   --ink:#1C1F26; --ink2:#5E6470; --muted:#686D76; --paper:#F7F5F0; --card:#FFFFFF; --line:#E3E0D8;
-  --pass:#2E7D5B; --pass2:#7FB59A; --amber:#B7791F; --fail:#B3261E; --accent:#C2410C; --data:#2F5D8A; --accent-ink:#FFFFFF;
+  --pass:#2E7D5B; --pass2:#7FB59A; --amber:#B7791F; --fail:#B3261E; --accent:#C2410C; --data:#2F5D8A; --track:#D6D2C8; --accent-ink:#FFFFFF;
   --radius:10px;
 }
 *{box-sizing:border-box}
@@ -112,6 +112,7 @@ tr:hover td{background:#F1EEE7}
 .more .btn{display:inline-block;width:auto;padding:8px 18px}
 .warnnote{font-size:13px;color:#7A5410;background:#F7EEDC;border:1px solid #E5D2A6;border-radius:8px;padding:8px 12px}
 
+.sec svg.key{display:block;width:360px;max-width:100%;height:auto;margin:2px 0 14px}
 .gchart{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;margin-top:6px}
 .gchart h3{font-size:15px;margin:0 0 2px}
 .gchart p.cap{margin:0 0 8px}
@@ -637,30 +638,37 @@ function groupQualityHTML(A) {
   </div></div>`;
 }
 function boxSVG(rows, max, pass) {
-  const W = 720, labW = 130, valW = 112, rh = 30, top = 24, bottom = 26, x0 = labW + 12, x1 = W - valW;
-  const H = top + rows.length * rh + bottom, X = v => x0 + (x1 - x0) * Math.min(1, Math.max(0, v / max));
+  const W = 720, labW = 118, valW = 92, rh = 38, top = 30, bottom = 28, x0 = labW + 16, x1 = W - valW;
+  const n = rows.length, H = top + n * rh + 10 + bottom, X = v => x0 + (x1 - x0) * Math.min(1, Math.max(0, v / max));
+  const yOf = i => top + i * rh + (rows[i].all ? 10 : 0), chartB = top + n * rh + 10;
   let g = '';
+  // the area below the pass mark, lightly tinted, with the pass mark itself
+  if (pass > 0 && pass <= max) {
+    g += `<rect x="${x0}" y="${top - 8}" width="${(X(pass) - x0).toFixed(1)}" height="${chartB - top + 8}" fill="var(--fail)" fill-opacity=".06"/>`;
+  }
   [0, 0.25, 0.5, 0.75, 1].forEach(f => {
     const x = X(max * f).toFixed(1);
-    g += `<line x1="${x}" x2="${x}" y1="${top - 6}" y2="${H - bottom}" stroke="var(--line)"/><text x="${x}" y="${H - 8}" text-anchor="middle" font-size="12" fill="var(--muted)">${num(max * f)}</text>`;
-  });
-  rows.forEach((r, i) => {
-    const b = r.box, cy = top + i * rh + rh / 2, lab = r.label.length > 18 ? r.label.slice(0, 17) + '…' : r.label;
-    g += `<g><title>${esc(r.label)}: lowest ${num(b.min)}, middle half ${num(b.q1)} to ${num(b.q3)}, median ${num(b.med)}, highest ${num(b.max)} (${b.n} attempted)</title>`
-      + `<text x="${labW}" y="${cy + 4.5}" text-anchor="end" font-size="12.5" fill="var(--ink)"${r.all ? ' font-weight="700"' : ''}>${esc(lab)}</text>`
-      + `<line x1="${X(b.min).toFixed(1)}" x2="${X(b.max).toFixed(1)}" y1="${cy}" y2="${cy}" stroke="var(--ink2)" stroke-width="1.5"/>`
-      + `<line x1="${X(b.min).toFixed(1)}" x2="${X(b.min).toFixed(1)}" y1="${cy - 6}" y2="${cy + 6}" stroke="var(--ink2)" stroke-width="1.5"/>`
-      + `<line x1="${X(b.max).toFixed(1)}" x2="${X(b.max).toFixed(1)}" y1="${cy - 6}" y2="${cy + 6}" stroke="var(--ink2)" stroke-width="1.5"/>`
-      + `<rect x="${X(b.q1).toFixed(1)}" y="${cy - 9}" width="${Math.max(2, X(b.q3) - X(b.q1)).toFixed(1)}" height="18" rx="3" fill="var(--data)" fill-opacity=".22" stroke="var(--data)" stroke-width="1.5"/>`
-      + `<line x1="${X(b.med).toFixed(1)}" x2="${X(b.med).toFixed(1)}" y1="${cy - 9}" y2="${cy + 9}" stroke="var(--ink)" stroke-width="3"/>`
-      + `<text x="${x1 + 12}" y="${cy + 4.5}" font-size="12.5" fill="var(--ink)"><tspan font-weight="600">${num(b.med)}</tspan><tspan fill="var(--muted)"> median</tspan></text></g>`;
+    g += `<line x1="${x}" x2="${x}" y1="${top - 8}" y2="${chartB}" stroke="var(--line)" stroke-dasharray="2 4"/><text x="${x}" y="${H - 8}" text-anchor="middle" font-size="12" fill="var(--muted)">${num(max * f)}</text>`;
   });
   if (pass > 0 && pass <= max) {
     const px = X(pass).toFixed(1);
-    g += `<line x1="${px}" x2="${px}" y1="${top - 10}" y2="${H - bottom}" stroke="var(--fail)" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${px}" y="${top - 13}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--fail)">Pass mark ${num(pass)}</text>`;
+    g += `<line x1="${px}" x2="${px}" y1="${top - 8}" y2="${chartB}" stroke="var(--fail)" stroke-width="1.5" stroke-dasharray="4 3"/>`
+      + `<text x="${px}" y="${top - 14}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--fail)">Pass mark ${num(pass)}</text>`;
   }
+  rows.forEach((r, i) => {
+    const b = r.box, cy = yOf(i) + rh / 2, lab = r.label.length > 16 ? r.label.slice(0, 15) + '…' : r.label;
+    if (r.all) g += `<line x1="0" x2="${W}" y1="${yOf(i) - 4}" y2="${yOf(i) - 4}" stroke="var(--line)"/>`;
+    const q1 = X(b.q1), q3 = X(b.q3);
+    g += `<g><title>${esc(r.label)}: lowest ${num(b.min)}, middle half ${num(b.q1)} to ${num(b.q3)}, median ${num(b.med)}, highest ${num(b.max)} (${b.n} attempted)</title>`
+      + `<text x="0" y="${cy + 4.5}" font-size="13" fill="var(--ink)" font-weight="${r.all ? 700 : 500}">${esc(lab)}</text>`
+      + `<line x1="${X(b.min).toFixed(1)}" x2="${X(b.max).toFixed(1)}" y1="${cy}" y2="${cy}" stroke="var(--track)" stroke-width="4" stroke-linecap="round"/>`
+      + `<rect x="${q1.toFixed(1)}" y="${cy - 7}" width="${Math.max(6, q3 - q1).toFixed(1)}" height="14" rx="7" fill="var(--data)"/>`
+      + `<circle cx="${X(b.med).toFixed(1)}" cy="${cy}" r="7" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"/>`
+      + `<text x="${W}" y="${cy + 4.5}" text-anchor="end" font-size="13" fill="var(--ink)"><tspan font-weight="700">${num(b.med)}</tspan><tspan fill="var(--muted)" font-size="12"> median</tspan></text></g>`;
+  });
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Score spread by group">${g}</svg>`;
 }
+const SPREAD_KEY = `<svg class="key" viewBox="0 0 360 18" aria-hidden="true"><line x1="2" x2="40" y1="9" y2="9" stroke="var(--track)" stroke-width="4" stroke-linecap="round"/><text x="48" y="13" font-size="12" fill="var(--ink2)">Lowest to highest</text><rect x="160" y="2" width="34" height="14" rx="7" fill="var(--data)"/><text x="202" y="13" font-size="12" fill="var(--ink2)">Middle half</text><circle cx="290" cy="9" r="6" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"/><text x="302" y="13" font-size="12" fill="var(--ink2)">Median</text></svg>`;
 function boxRows(A) {
   return A.groups.filter(g => g.st.box).sort((a, b) => b.st.box.med - a.st.box.med || cmpNat(a.label, b.label))
     .map(g => ({label: g.label, box: g.st.box})).concat([{label: 'All groups', box: A.all.box, all: true}]);
@@ -668,7 +676,7 @@ function boxRows(A) {
 function spreadHTML(A) {
   if (A.groups.filter(g => g.st.n).length < 2) return '';
   const {max, pass} = state.meta;
-  return `<div class="sec"><h2>Score spread by group</h2><p class="cap">Each row is one group, ordered by median. The line runs from the lowest to the highest score, the box holds the middle half of students, and the dark mark is the median. A narrow box means the group scored consistently.</p>${boxSVG(boxRows(A), max, pass)}<div class="legend"><span><i style="background:var(--data);opacity:.45"></i>Middle half of students</span><span><i style="background:var(--ink)"></i>Median</span><span><i style="background:var(--fail)"></i>Pass mark</span></div></div>`;
+  return `<div class="sec"><h2>Score spread by group</h2><p class="cap">Each row is one group, ordered by median. A short blue bar means the group scored consistently; the shaded area is below the pass mark.</p>${SPREAD_KEY}${boxSVG(boxRows(A), max, pass)}</div>`;
 }
 function bandsHTML(s) {
   const n = s.n || 1;
@@ -1018,28 +1026,32 @@ class Report {
     if (ref != null) { this.text(ref.label, PM, this.y - 8, {size: 8, color: C.grey}); this.y -= 14; }
   }
   boxes(rows, max, pass) {
-    const rh = 17, labW = 96, valW = 70, x0 = PM + labW + 8, x1 = PM + CW - valW, X = v => x0 + (x1 - x0) * Math.min(1, Math.max(0, v / max));
-    this.ensure(rh * Math.min(rows.length, 6) + 44);
-    const ink2 = '#5E6470', boxFill = '#DCE4EE';
-    let startY = this.y - 12;
-    if (pass > 0 && pass <= max) this.text('Pass mark ' + num(pass), X(pass), this.y - 8, {size: 7.5, font: this.b, color: C.fail, align: 'center'});
-    this.y -= 12;
-    rows.forEach(r => {
-      if (this.y - rh < PM + 30) { this.newPage(); startY = this.y; }
-      const b = r.box, cy = this.y - rh / 2;
-      this.text(this.fit(r.label, 8.5, r.all ? this.b : this.f, labW), PM, cy - 3, {size: 8.5, font: r.all ? this.b : this.f});
-      this.line(X(b.min), cy, X(b.max), cy, ink2, 0.9);
-      this.line(X(b.min), cy - 3.5, X(b.min), cy + 3.5, ink2, 0.9);
-      this.line(X(b.max), cy - 3.5, X(b.max), cy + 3.5, ink2, 0.9);
-      this.rect(X(b.q1), cy - 5.5, Math.max(1, X(b.q3) - X(b.q1)), 11, boxFill, {border: C.accent, bw: 0.8});
-      this.line(X(b.med), cy - 5.5, X(b.med), cy + 5.5, C.ink, 2);
-      this.text(`${num(b.med)} median`, x1 + 8, cy - 3, {size: 8, color: C.grey});
-      this.y -= rh;
+    const rh = 20, labW = 90, valW = 64, x0 = PM + labW + 10, x1 = PM + CW - valW, X = v => x0 + (x1 - x0) * Math.min(1, Math.max(0, v / max));
+    const hasPass = pass > 0 && pass <= max, track = '#D6D2C8', tint = '#F8ECEA', total = rows.length * rh + 6;
+    this.ensure(total + 62);                                   // key, pass label, rows and axis stay on one page
+    // key
+    this.line(PM + 2, this.y - 6, PM + 22, this.y - 6, track, 2.5); this.text('Lowest to highest', PM + 28, this.y - 9, {size: 7.5, color: C.grey});
+    this.rect(PM + 112, this.y - 10, 20, 8, C.accent); this.text('Middle half', PM + 138, this.y - 9, {size: 7.5, color: C.grey});
+    this.page.drawCircle({x: PM + 196, y: this.y - 6, size: 3.6, color: hex('#FFFFFF'), borderColor: hex(C.ink), borderWidth: 1.4});
+    this.text('Median', PM + 204, this.y - 9, {size: 7.5, color: C.grey});
+    this.y -= 22;
+    if (hasPass) this.text('Pass mark ' + num(pass), X(pass), this.y - 2, {size: 7.5, font: this.b, color: C.fail, align: 'center'});
+    this.y -= 8;
+    const top = this.y, bottom = this.y - total;
+    if (hasPass) this.rect(x0, bottom, X(pass) - x0, top - bottom, tint);
+    [0, 0.25, 0.5, 0.75, 1].forEach(f => { this.line(X(max * f), bottom, X(max * f), top, C.line, 0.5, [1.5, 2.5]); this.text(num(max * f), X(max * f), bottom - 9, {size: 7, color: C.grey, align: 'center'}); });
+    if (hasPass) this.line(X(pass), bottom, X(pass), top, C.fail, 0.8, [3, 2]);
+    rows.forEach((r, i) => {
+      const cy = top - i * rh - rh / 2 - (r.all ? 6 : 0), b = r.box;
+      if (r.all) this.line(PM, cy + rh / 2 + 2, PM + CW, cy + rh / 2 + 2, C.line, 0.5);
+      this.text(this.fit(r.label, 8.8, r.all ? this.b : this.f, labW), PM, cy - 3, {size: 8.8, font: r.all ? this.b : this.f});
+      this.line(X(b.min), cy, X(b.max), cy, track, 2.5);
+      this.rect(X(b.q1), cy - 4, Math.max(3, X(b.q3) - X(b.q1)), 8, C.accent);
+      this.page.drawCircle({x: X(b.med), y: cy, size: 3.8, color: hex('#FFFFFF'), borderColor: hex(C.ink), borderWidth: 1.4});
+      this.text(num(b.med), PM + CW - 32, cy - 3, {size: 8.8, font: this.b, align: 'right'});
+      this.text('median', PM + CW, cy - 3, {size: 7.5, color: C.grey, align: 'right'});
     });
-    if (pass > 0 && pass <= max) this.line(X(pass), this.y + 2, X(pass), startY + 2, C.fail, 0.8, [3, 2]);
-    [0, 0.25, 0.5, 0.75, 1].forEach(f => this.text(num(max * f), X(max * f), this.y - 9, {size: 7, color: C.grey, align: 'center'}));
-    this.y -= 16;
-    this.text('Line: lowest to highest score.  Box: middle half of students.  Dark mark: median.', PM, this.y - 6, {size: 7.5, color: C.grey}); this.y -= 16;
+    this.y = bottom - 22;
   }
   table(cols, rows, o = {}) {
     const origRows = rows; let off = 0;
@@ -1159,7 +1171,7 @@ async function buildPdf(groupKey) {
       R.heading('Score bands by group', 'Share of each group\'s attempted students in each score band, ordered by pass rate.', 130);
       R.stackedBars(gq.map(x => ({label: x.label, segs: x.st.bands.map(b => ({key: b.key, color: b.color, frac: b.count / x.st.n}))})), s.bands);
       if (gq.length > 1) {
-        R.heading('Score spread by group', 'Each row is one group, ordered by median. A narrow box means the group scored consistently.', 130);
+        R.heading('Score spread by group', 'Each row is one group, ordered by median. A short blue bar means the group scored consistently; the shaded area is below the pass mark.', 130);
         R.boxes(boxRows(A), max, pass);
       }
     }
@@ -1173,7 +1185,7 @@ async function buildPdf(groupKey) {
     cmp.push(['Full marks (share of attempts)', pct(s.fullPct), pct(o.fullPct), d(s.fullPct, o.fullPct, ' pts')]);
     R.table([{label: 'Measure', w: 235}, {label: g.label, w: 90, align: 'right'}, {label: 'All groups', w: 90, align: 'right'}, {label: 'Difference', w: 100, align: 'right'}], cmp, {rh: 17, style: (row) => { const neg = row[3].startsWith('-') && row[3] !== '-0.0' && !/^-0\.0/.test(row[3]); return {cells: {3: {color: neg ? C.fail : C.pass, bold: true}}}; }});
     if (s.box && A.all.box) {
-      R.heading('Score spread', `How ${g.label}'s scores are spread compared with all groups.`, 90);
+      R.heading('Score spread', `How ${g.label}'s scores are spread compared with all groups. The shaded area is below the pass mark.`, 90);
       R.boxes([{label: g.label, box: s.box}, {label: 'All groups', box: A.all.box, all: true}], max, pass);
     }
   }

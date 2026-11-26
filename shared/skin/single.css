@@ -1,7 +1,7 @@
 /* Single test report: dark skin. */
 :root{
   --ink:#ECEAE4; --ink2:#A3A7AE; --muted:#878C94; --paper:#15171C; --card:#1C1F25; --line:#2C3038;
-  --pass:#6DBE95; --pass2:#4C8F6E; --amber:#D9A441; --fail:#E2716A; --accent:#F08A4B; --data:#7FA6CF; --accent-ink:#15171C;
+  --pass:#6DBE95; --pass2:#4C8F6E; --amber:#D9A441; --fail:#E2716A; --accent:#F08A4B; --data:#7FA6CF; --track:#4A4F58; --accent-ink:#15171C;
   --radius:14px;
 }
 .top{background:#1C1F25;border-bottom:1px solid var(--line)}
