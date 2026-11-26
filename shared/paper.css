@@ -1,0 +1,162 @@
+/* CodeTantra Reports: "Report paper" colour system for the landing pages (Home, Tests, Courses,
+   Privacy, Terms). Loaded last, after hub.css and home.css, and replaces their look in both modes.
+   IDEA    the site looks like the report it makes: warm paper, near-black ink, quiet data colours.
+   RULES   burnt orange marks only things you can click; green, red and amber mean pass, fail and
+           borderline; no gradients, glows or coloured backdrops; cards have a 1px border and no shadow.
+   MODES   paper by default; html[data-mode="dark"] is charcoal with warm off-white ink. */
+:root,[data-mode="light"]{
+  color-scheme:light;
+  --bg:#F7F5F0; --surface:#FFFFFF; --surface2:#F1EEE7; --panel:#FFFFFF; --panel2:#F1EEE7;
+  --line:#E3E0D8; --line2:#D6D2C8;
+  --ink:#1C1F26; --muted:#5E6470; --dim:#686D76;
+  --action:#C2410C; --action-hover:#A8380A; --on-action:#FFFFFF; --action-soft:#FBEDE4; --action-line:#EBC3A8;
+  --d-blue:#2F5D8A; --d-green:#2E7D5B; --d-green-ink:#25664A; --d-green-soft:#E4EFE8; --d-amber:#B7791F; --d-amber-ink:#8F5E12; --d-red:#B3261E; --d-grey:#A3A7AE;
+  /* old token names used by hub.css and home.css */
+  --blue:var(--d-blue); --blue-ink:var(--action); --mint:var(--d-green); --mint-ink:var(--d-green-ink); --amber:var(--d-amber); --red:var(--d-red);
+  --gold:var(--action); --sun:var(--action);
+  --glow-blue:none; --glow-mint:none;
+}
+[data-mode="dark"]{
+  color-scheme:dark;
+  --bg:#15171C; --surface:#1C1F25; --surface2:#23262D; --panel:#1C1F25; --panel2:#23262D;
+  --line:#2C3038; --line2:#3A3F48;
+  --ink:#ECEAE4; --muted:#A3A7AE; --dim:#878C94;
+  --action:#F08A4B; --action-hover:#F4A06E; --on-action:#15171C; --action-soft:#2A2018; --action-line:#5A3A24;
+  --d-blue:#7FA6CF; --d-green:#6DBE95; --d-green-ink:#6DBE95; --d-green-soft:#1D2A23; --d-amber:#D9A441; --d-amber-ink:#D9A441; --d-red:#E2716A; --d-grey:#5C6169;
+}
+
+body{background:var(--bg);color:var(--ink)}
+::selection{background:var(--action-soft);color:var(--ink)}
+a{color:var(--action)}
+:focus-visible{outline-color:var(--action)}
+
+/* no backdrops: plain paper */
+.ambient,.aurora,.fx-aurora{display:none!important}
+
+/* headline words and labels in plain ink */
+.grad,.hx h1 .warm{background:none!important;-webkit-background-clip:initial;background-clip:initial;color:var(--ink)}
+.kicker{background:var(--surface);border-color:var(--line);color:var(--muted);box-shadow:none}
+.kicker .dot,.kicker .sun-dot{background:var(--d-green);box-shadow:none}
+
+/* buttons: one solid action colour, a quiet secondary */
+.btn{border-radius:8px;box-shadow:none!important}
+.btn:hover{transform:none}
+.btn.sun,.btn.blue,.btn.mint{background:var(--action);color:var(--on-action);border-color:var(--action)}
+.btn.sun:hover,.btn.blue:hover,.btn.mint:hover{background:var(--action-hover);border-color:var(--action-hover)}
+.btn.ghost{background:var(--surface);border:1px solid var(--line2);color:var(--ink)}
+.btn.ghost:hover{background:var(--surface2);border-color:var(--line2)}
+.trust svg{color:var(--d-green)}
+
+/* home hero: the sun at rest, report cards on paper */
+.orbit .glow,.orbit .rays,.orbit .wave{display:none}
+.orbit .ring{border-color:var(--line2)}
+.orbit .ring.r2{border-color:var(--line)}
+.orbit .ring.r2::after{background:var(--line2);box-shadow:none}
+.orbit .r2,.orbit .sun img{animation:none}
+.orbit .sun{filter:none}
+.orbit .sun img{filter:none}
+.fc{background:var(--surface);border:1px solid var(--line);color:var(--muted);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:10px}
+.fc b{color:var(--ink)}
+.fc.k1 b{color:var(--d-green)}
+.fc.k2 b{color:var(--ink)}
+.fc .lab{color:var(--muted)}
+.fc .bars-fill,.fc .fb{fill:var(--d-blue)}
+.fc .dn{stroke:var(--d-green)}
+.fc .dn-track{stroke:var(--surface2)}
+.fc.pdf{color:var(--ink)}
+.fc.pdf .ok{background:var(--d-green);color:var(--surface)}
+.fc.pdf.busy .ok{border-color:var(--line2);border-top-color:var(--ink)}
+.orbit .xl{background:var(--surface);border:1px solid var(--line);box-shadow:none;color:var(--ink);border-radius:10px}
+.orbit .xl .xi{background:#1D6F42;color:#FFFFFF}
+.orbit .xl small{color:var(--muted)}
+.steps{background:var(--surface);border-color:var(--line);color:var(--muted)}
+.steps i{background:var(--surface2);color:var(--muted)}
+.steps li.on{background:var(--surface2);color:var(--ink)}
+.steps li.on i{background:var(--ink);color:var(--surface)}
+.steps li.done i{background:var(--d-green-soft);color:var(--d-green-ink)}
+
+/* feature strip */
+.ticker{background:var(--surface);border-color:var(--line);box-shadow:none;border-radius:10px}
+.chip{background:var(--bg);border-color:var(--line);color:var(--ink)}
+.chip:hover{background:var(--bg);border-color:var(--line2)}
+.chip i,.chip.sun i,.chip.mint i,.chip.blue i{background:var(--surface2);color:var(--muted)}
+
+/* smart drop */
+.sd{border:1.5px dashed var(--line2);background:var(--surface);box-shadow:none!important;border-radius:12px}
+.sd:hover{border-color:var(--action)}
+.sd-ic{background:var(--surface2);border:1px solid var(--line);color:var(--ink);box-shadow:none;border-radius:10px}
+.sd:hover .sd-ic{transform:none}
+.sd-browse{color:var(--action)}
+.sd-browse:focus-visible,.sd-stay:focus-visible,.sd-tools button:focus-visible{outline-color:var(--action)}
+.sd-bar{background:var(--surface2)}
+.sd-bar i{background:var(--action)}
+.sd-tools button{background:var(--surface);border:1px solid var(--line2);color:var(--muted);box-shadow:none;transform:none}
+.sd-tools button:hover{background:var(--surface2);border-color:var(--line2);color:var(--ink)}
+.sd-tools button.on,.sd[data-state="unknown"] .sd-tools button.on{background:var(--action);border-color:var(--action);color:var(--on-action);box-shadow:none;transform:none;animation:none}
+.sd[data-state="found"],.sd[data-state="choose"]{border-color:var(--action)}
+.sd[data-state="found"] .sd-ic,.sd[data-state="choose"] .sd-ic{background:var(--action-soft);border-color:var(--action-line);color:var(--action)}
+.sd-over{background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:none;backdrop-filter:none}
+.sd-over>div{border-color:var(--action);background:var(--surface);border-radius:14px}
+.sd-over img{filter:none;animation:none}
+
+/* tool tiles on the home page */
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:none}
+.tile:hover{transform:none;border-color:var(--line2);box-shadow:none}
+.tile .tag,.tag{color:var(--muted);background:var(--surface2);border:1px solid var(--line)}
+.tile .open,.go{color:var(--action)}
+
+/* three steps */
+.tl .line{background:var(--line2);box-shadow:none;opacity:1}
+.tl .comet{display:none}
+.tl .st{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:none}
+.tl .st.lit,.tl .st:nth-child(4).lit,.tl .st:nth-child(5).lit{background:var(--surface);border-color:var(--line2);box-shadow:none;transform:none}
+.tl .st .n{background:var(--ink);color:var(--surface);box-shadow:none;border-radius:8px}
+.tl .st .n::after{display:none}
+.tl .st.done .n{background:var(--d-green);box-shadow:none}
+.tl .st .n .tick{stroke:var(--surface)}
+.tl .st .art::before{display:none}
+.tl .st,.tl .st:nth-child(4),.tl .st:nth-child(5){--chip:var(--muted);--chip-bg:var(--surface2)}
+.chip-t{border-color:var(--line)}
+.ill.i1 .tray{stroke:var(--muted);animation:none}
+.ill.i1 .doc rect{fill:var(--surface2);stroke:var(--muted)}
+.ill.i1 .doc path{stroke:var(--dim)}
+.ill.i2 .base{stroke:var(--line2)}
+.ill.i2 .b,.ill.i2 .b2{fill:var(--d-blue)}
+.ill.i2 .b4{fill:var(--d-green)}
+.ill.i3 .pdf{fill:var(--d-green-soft);stroke:var(--d-green)}
+.ill.i3 .pl{stroke:var(--d-green)}
+.ill.i3 .arr{stroke:var(--d-green)}
+.ill.i3 .ok circle{fill:var(--d-green)}
+.ill.i3 .ok path{stroke:var(--surface)}
+
+/* closing call to action */
+.cta{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:none}
+
+/* Tests and Courses pages */
+.panel,.tool,.list a,.meters,.step,.board{background:var(--surface);border-color:var(--line);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.tool{border-radius:12px}
+.panel:hover,.tool:hover{transform:none;border-color:var(--line2);box-shadow:none}
+.icon,.tool .icon{color:var(--ink);background:var(--surface2);border:1px solid var(--line);box-shadow:none;border-radius:10px}
+.tool em{background:var(--surface2);color:var(--ink)}
+.tool.soon{background:transparent}
+.fc2{background:var(--surface);border:1px solid var(--line);box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:10px}
+.fc2 .l{color:var(--muted)}
+.fc2 b{color:var(--d-green)}
+.fc2 b.g{color:var(--ink)}
+.fc2 b.m{color:var(--d-green)}
+.fc2.d3{border-color:var(--line)}
+
+/* data colours inside the small illustrative charts (set as attributes in the pages) */
+[data-c="blue"]{fill:var(--d-blue)}
+[data-c="green"]{fill:var(--d-green)}
+[data-c="amber"]{fill:var(--d-amber)}
+[data-c="red"]{fill:var(--d-red)}
+[data-c="track"]{stroke:var(--surface2)}
+[data-s="blue"]{stroke:var(--d-blue)}
+[data-s="green"]{stroke:var(--d-green)}
+[data-s="amber"]{stroke:var(--d-amber)}
+[data-s="red"]{stroke:var(--d-red)}
+
+.foot{border-top-color:var(--line);color:var(--dim)}
+.foot nav a{color:var(--muted)}
+.foot nav a:hover{color:var(--ink)}

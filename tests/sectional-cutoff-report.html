@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Sectional cut-off report · CodeTantra Reports</title>
 <meta name="description" content="Set a cut-off for each section of a company mock test, see who qualifies and how students grow across tests, and download PDFs.">
-<meta name="theme-color" content="#0B1020">
+<meta name="theme-color" content="#F7F5F0">
 <link rel="icon" type="image/png" sizes="32x32" href="../shared/brand/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="../shared/brand/favicon-64.png">
 <link rel="apple-touch-icon" href="../shared/brand/apple-touch-icon.png">
@@ -12,8 +12,7 @@
 <style>
 /* Sectional cut-off report: works with any company's mock test result sheet.
    Section columns are detected from headers like "Coding (20M)", "Coding (20)" or "Coding (20 Marks)". */
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#FAFBFC;--card:#fff;--ink:#1A1F2B;--mut:#5B6475;--line:#E4E7EC;--pri:#3366FF;--ok:#0F936C;--bad:#D6403D;--wn:#B97A12;--okbg:#E3F6EF;--badbg:#FDEDEC;--wnbg:#FDF3DF}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F131B;--card:#171C27;--ink:#E9ECF3;--mut:#9AA3B6;--line:#2B3242;--pri:#8AA8FF;--ok:#4FD1A1;--bad:#FF7B86;--wn:#F0B550;--okbg:#12362D;--badbg:#44202A;--wnbg:#40320F}}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#F7F5F0;--card:#fff;--ink:#1C1F26;--mut:#5E6470;--line:#E3E0D8;--pri:#C2410C;--dblue:#2F5D8A;--ok:#2E7D5B;--bad:#B3261E;--wn:#B7791F;--okbg:#E4EFE8;--badbg:#F6E3E1;--wnbg:#F7EEDC}
 :root[data-theme="dark"]{--bg:#0F131B;--card:#171C27;--ink:#E9ECF3;--mut:#9AA3B6;--line:#2B3242;--pri:#8AA8FF;--ok:#4FD1A1;--bad:#FF7B86;--wn:#F0B550;--okbg:#12362D;--badbg:#44202A;--wnbg:#40320F}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -22,7 +21,7 @@ header{background:var(--card);color:var(--ink);border-bottom:1px solid var(--lin
 header .wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
 header b{font-size:17px;display:block;line-height:1.2}header small{color:var(--mut);font-size:12px}
 .home{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--line);border-radius:6px;color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:600;white-space:nowrap}
-.home:hover{background:#EBF0FF;border-color:var(--pri)}
+.home:hover{background:#FBEDE4;border-color:var(--pri)}
 nav{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:3px;margin-left:auto}
 nav button{border:0;background:none;color:var(--mut);padding:7px 16px;border-radius:7px;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer}
 nav button.on{background:var(--pri);color:#fff}
@@ -32,15 +31,15 @@ main{padding:20px 18px 60px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:16px}
 h1{font-size:21px;margin:0 0 2px}#ttl{outline:none;border-bottom:1px dashed transparent;cursor:text}#ttl:hover,#ttl:focus{border-bottom-color:var(--mut)}h2{font-size:16px;margin:0 0 4px}h3{font-size:15px;margin:0 0 6px}
 .m{color:var(--mut);font-size:12.5px}small{font-size:11.5px;color:var(--mut);font-weight:400}
-.rh{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-left:5px solid var(--pri)}
+.rh{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-left:5px solid var(--ink)}
 .g{display:grid;gap:14px;margin-bottom:16px}.k{grid-template-columns:repeat(auto-fit,minmax(165px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr))}
 .g .card{margin:0}
 .kp .v{font-size:27px;font-weight:700;line-height:1.2}.kp .l{color:var(--mut);font-size:12.5px;font-weight:500}.kp .s{font-size:12px;color:var(--mut)}
-.kp.ok{border-top:3px solid var(--ok)}.kp.bad{border-top:3px solid var(--bad)}.kp.wn{border-top:3px solid var(--wn)}.kp.pr{border-top:3px solid var(--pri)}
+.kp.ok{border-top:3px solid var(--ok)}.kp.bad{border-top:3px solid var(--bad)}.kp.wn{border-top:3px solid var(--wn)}.kp.pr{border-top:3px solid var(--ink)}
 .ins{border-left:5px solid var(--ok)}.ins ul{margin:6px 0 0;padding-left:18px}.ins li{margin:5px 0}
 .ch{position:relative;height:270px}
-.dz{display:block;border:2px dashed #B8C7F0;border-radius:10px;padding:20px;text-align:center;cursor:pointer;color:var(--mut);background:var(--card)}
-.dz:hover{border-color:var(--pri);background:#F5F8FF}.dz input{display:none}.dz b{color:var(--ink);display:block;font-size:15px}
+.dz{display:block;border:2px dashed #EBC3A8;border-radius:10px;padding:20px;text-align:center;cursor:pointer;color:var(--mut);background:var(--card)}
+.dz:hover{border-color:var(--pri);background:#F1EEE7}.dz input{display:none}.dz b{color:var(--ink);display:block;font-size:15px}
 .fmt{margin-top:10px;font-size:12.5px;color:var(--mut)}.fmt summary{cursor:pointer;color:var(--ink);font-weight:600}.fmt ul{margin:6px 0 0;padding-left:18px}
 .chip{display:inline-block;background:var(--okbg);color:var(--ok);border-radius:5px;padding:2px 10px;margin:8px 6px 0 0;font-size:12px;font-weight:600}
 .tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}
@@ -81,7 +80,7 @@ const S={title:'',co:'',scope:'',mode:'single',tests:[],cut:{},ov:40,sel:0,q:'',
 const $=s=>document.querySelector(s),pc=(a,b)=>b?a/b*100:0,f1=x=>(Math.round(x*10)/10).toFixed(1),avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0,last=a=>a[a.length-1];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(),cut=n=>S.cut[n]??40;
-const PAL=['#3366FF','#12A87B','#E8A33D','#0891B2','#E0524F','#8A93A6'],pct={min:0,max:100,ticks:{callback:v=>v+'%'}};
+const PAL=['#2F5D8A','#2E7D5B','#B7791F','#4F7C82','#B3261E','#8A8F98'],pct={min:0,max:100,ticks:{callback:v=>v+'%'}};
 let CH=[];
 function chart(id,cfg){const c=$('#'+id);if(c)CH.push(new Chart(c,cfg))}
 const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}};
@@ -150,10 +149,10 @@ function single(){const t=S.tests[S.sel],s=stats(t),B=[...new Set(t.st.map(x=>x.
  <div class="card"><h2>Students below sectional cutoff</h2><div class="m">Section-wise lists of attempted students who scored under the minimum, lowest scores first. Each section is split by batch. A student below more than one cutoff appears in each of those tables.</div><div id="sb"></div></div>`;
 
  const m=s.sec.map(x=>x.n),lb=m.map(n=>n.split(' ')),ovp=pc(S.ov,t.max),OL=['Qualified','Sectional fail','Below overall cutoff','Not attempted'],OC=[css('--ok'),css('--wn'),css('--bad'),css('--mut')];
- chart('c1',{type:'bar',data:{labels:m,datasets:[{label:'Average score %',data:s.sec.map(x=>x.avg),backgroundColor:css('--pri'),borderRadius:4,barThickness:24,vals:true,cutv:m.map(cut)}]},options:{...base,indexAxis:'y',layout:{padding:{right:40}},plugins:{legend:{display:false}},scales:{x:pct,y:hx}}});
+ chart('c1',{type:'bar',data:{labels:m,datasets:[{label:'Average score %',data:s.sec.map(x=>x.avg),backgroundColor:css('--dblue'),borderRadius:4,barThickness:24,vals:true,cutv:m.map(cut)}]},options:{...base,indexAxis:'y',layout:{padding:{right:40}},plugins:{legend:{display:false}},scales:{x:pct,y:hx}}});
  chart('c2',{type:'bar',data:{labels:lb,datasets:[{label:'% clearing cutoff',data:s.sec.map(x=>x.pass),backgroundColor:s.sec.map(x=>x.pass<50?css('--bad'):x.pass<75?css('--wn'):css('--ok')),borderRadius:4,maxBarThickness:46,vals:true}]},options:{...base,layout:{padding:{top:18}},plugins:{legend:{display:false}},scales:{y:pct,x:{...hx,ticks:tk}}}});
  const bins=Array(10).fill(0);s.a.forEach(x=>bins[Math.min(9,Math.floor(x.pct/10))]++);
- chart('c3',{type:'bar',data:{labels:bins.map((_,i)=>i*10+'-'+(i+1)*10+'%'),datasets:[{label:'Students',data:bins,backgroundColor:bins.map((_,i)=>i*10+10<=ovp?css('--bad'):i*10<ovp?css('--wn'):css('--pri')),borderRadius:4,vals:true,fmt:v=>String(v)}]},options:{...base,layout:{padding:{top:18}},plugins:{legend:{display:false}},scales:{x:{...hx,ticks:{maxRotation:0}},y:{ticks:{precision:0}}}}});
+ chart('c3',{type:'bar',data:{labels:bins.map((_,i)=>i*10+'-'+(i+1)*10+'%'),datasets:[{label:'Students',data:bins,backgroundColor:bins.map((_,i)=>i*10+10<=ovp?css('--bad'):i*10<ovp?css('--wn'):css('--dblue')),borderRadius:4,vals:true,fmt:v=>String(v)}]},options:{...base,layout:{padding:{top:18}},plugins:{legend:{display:false}},scales:{x:{...hx,ticks:{maxRotation:0}},y:{ticks:{precision:0}}}}});
  const oc=OL.map(n=>t.st.filter(x=>lab(x)[1]===n).length);
  chart('c4',{type:'doughnut',data:{labels:OL.map((n,i)=>`${n}: ${oc[i]} (${f1(pc(oc[i],s.enr))}%)`),datasets:[{data:oc,backgroundColor:OC,borderColor:css('--card'),borderWidth:2}]},options:{...base,cutout:'58%',plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:12}}}}}});
  chart('c5',{type:'bar',data:{labels:B,datasets:OL.map((n,i)=>({label:n,data:B.map(b=>t.st.filter(x=>x.batch===b&&lab(x)[1]===n).length),backgroundColor:OC[i],seg:true}))},options:{...base,indexAxis:'y',layout:{padding:{right:56}},scales:{x:{stacked:true,ticks:{precision:0}},y:{stacked:true,grid:{display:false}}}}});
@@ -229,8 +228,8 @@ async function pdf(scope,na){
 }
 function buildPdf(na){
  const{jsPDF}=window.jspdf,doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true}),PW=297,PH=210,M=12,CW=PW-2*M,TOP=20,BOT=PH-14;
- const NAVY=[51,102,255],MUT=[91,100,117],INK=[26,31,43],KC={ok:[15,147,108],bad:[214,64,61],wn:[185,122,18],pr:[51,102,255]};
- const TH={ok:[[227,246,239],KC.ok],bad:[[253,237,236],KC.bad],wn:[[253,243,223],KC.wn],na:[[228,231,236],MUT]};
+ const NAVY=[28,31,38],MUT=[94,100,112],INK=[28,31,38],KC={ok:[46,125,91],bad:[179,38,30],wn:[183,121,31],pr:[28,31,38]};
+ const TH={ok:[[228,239,232],KC.ok],bad:[[246,227,225],KC.bad],wn:[[247,238,220],KC.wn],na:[[227,224,216],MUT]};
  const cl=s=>String(s||'').replace(/[▲▼]\s?/g,'').replace(/[^\x00-\xFF]/g,'').replace(/[ \t]+/g,' ').trim();
  const jpg=cv=>{const c=document.createElement('canvas');c.width=cv.width;c.height=cv.height;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(cv,0,0);return c.toDataURL('image/jpeg',.8)};
  let ttl='',y=TOP,gen='Generated '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
@@ -250,7 +249,7 @@ function buildPdf(na){
   return{content:c.textContent.split('\n').map(cl).join('\n'),styles:st}};
  const tab=(tb,o={})=>{const R=[...tb.rows].filter(r=>!r.classList.contains('dt')),x=o.x??M,w=o.w||CW;
   doc.autoTable({head:[[...R[0].cells].map(c=>cellDef(c,1))],body:R.slice(1).map(r=>[...r.cells].map(c=>cellDef(c))),startY:o.y??y,margin:{top:TOP,bottom:PH-BOT,left:x,right:PW-x-w},tableWidth:w,columnStyles:o.cs||(o.first?{0:{cellWidth:14}}:{}),theme:'grid',
-   styles:{font:'helvetica',fontSize:8,cellPadding:1.6,lineColor:[228,231,236],lineWidth:.15,textColor:INK,overflow:'linebreak',valign:'middle',minCellHeight:o.mh||0},headStyles:{fillColor:NAVY,textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[247,248,250]}});
+   styles:{font:'helvetica',fontSize:8,cellPadding:1.6,lineColor:[227,224,216],lineWidth:.15,textColor:INK,overflow:'linebreak',valign:'middle',minCellHeight:o.mh||0},headStyles:{fillColor:NAVY,textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[241,238,231]}});
   return doc.lastAutoTable.finalY};
  const row=its=>{const gap=6,cw=(CW-gap)/2;let est=0;its.forEach(i=>est=Math.max(est,i.cv?cw*i.cv.height/i.cv.width+9:i.tb.rows.length*6.5+12));need(Math.min(est,120));
   let bot=y;its.forEach((it,i)=>{const x=M+i*(cw+gap);txt(it.t,x,y+3,10.5,'bold',INK);const yy=y+6.5;
@@ -278,12 +277,12 @@ function buildPdf(na){
    doc.setDrawColor(...NAVY);doc.setLineWidth(.5);doc.line(M,y,M+CW,y);y+=8}
   else if(k.contains('k')){const cs=[...el.querySelectorAll('.kp')],n=cs.length,gap=4,w=(CW-gap*(n-1))/n,h=25;need(h+6);
    cs.forEach((c,i)=>{const x=M+i*(w+gap),col=KC[['ok','bad','wn','pr'].find(q=>c.classList.contains(q))]||KC.pr;
-    doc.setFillColor(255,255,255);doc.setDrawColor(215,222,233);doc.setLineWidth(.25);doc.roundedRect(x,y,w,h,1.5,1.5,'FD');doc.setFillColor(...col);doc.rect(x+.3,y,w-.6,1.3,'F');
+    doc.setFillColor(255,255,255);doc.setDrawColor(214,210,200);doc.setLineWidth(.25);doc.roundedRect(x,y,w,h,1.5,1.5,'FD');doc.setFillColor(...col);doc.rect(x+.3,y,w-.6,1.3,'F');
     txt(cl(c.querySelector('.l').textContent),x+3,y+7,7.6,'normal',MUT);txt(cl(c.querySelector('.v').textContent),x+3,y+15,16,'bold',INK);
     doc.setFont('helvetica','normal');doc.setFontSize(6.8);doc.setTextColor(...MUT);doc.text(doc.splitTextToSize(cl(c.querySelector('.s').textContent),w-5).slice(0,2),x+3,y+20)});y+=h+8}
   else if(k.contains('ins')){const li=[...el.querySelectorAll('li')].map(l=>cl(l.textContent));doc.setFontSize(9.5);
    const Ls=li.map(t=>doc.splitTextToSize(t,CW-14)),hh=Ls.reduce((a,l)=>a+l.length*4.4+2.2,0)+13;need(hh);
-   doc.setFillColor(235,248,243);doc.roundedRect(M,y,CW,hh,1.5,1.5,'F');doc.setFillColor(...KC.ok);doc.rect(M,y,1.4,hh,'F');
+   doc.setFillColor(228,239,232);doc.roundedRect(M,y,CW,hh,1.5,1.5,'F');doc.setFillColor(...KC.ok);doc.rect(M,y,1.4,hh,'F');
    txt('Key Insights',M+6,y+7,11.5,'bold',INK);let yy=y+14;
    Ls.forEach(L=>{doc.setFillColor(...NAVY);doc.circle(M+7.5,yy-1.2,.7,'F');doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(...INK);doc.text(L,M+11,yy);yy+=L.length*4.4+2.2});y+=hh+8}
   else if(k.contains('g2')){const its=[...el.children].map(c=>({t:cl((c.querySelector('h3')||{}).textContent),cv:c.querySelector('canvas'),tb:c.querySelector('table')}));
@@ -298,7 +297,7 @@ function buildPdf(na){
  const n=doc.getNumberOfPages();
  for(let i=1;i<=n;i++){doc.setPage(i);doc.setFillColor(...NAVY);doc.rect(0,0,PW,10,'F');doc.setFont('helvetica','bold');doc.setFontSize(9.5);txt(doc.splitTextToSize(ttl,PW-2*M-50)[0],M,6.5,9.5,'bold',[255,255,255]);
   doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.text(na?'':S.mode==='single'?'Single Test Report':'Growth and Trend Report',PW-M,6.5,{align:'right'});
-  doc.setDrawColor(215,222,233);doc.setLineWidth(.2);doc.line(M,PH-10,PW-M,PH-10);txt(gen,M,PH-5.5,8,'normal',MUT);doc.text('Page '+i+' of '+n,PW-M,PH-5.5,{align:'right'})}
+  doc.setDrawColor(214,210,200);doc.setLineWidth(.2);doc.line(M,PH-10,PW-M,PH-10);txt(gen,M,PH-5.5,8,'normal',MUT);doc.text('Page '+i+' of '+n,PW-M,PH-5.5,{align:'right'})}
  return doc}
 $('#pdf').onclick=()=>pdf();$('#pdfB').onclick=()=>pdf($('#pdfb').value);$('#pdfN').onclick=()=>pdf('',true);
 document.addEventListener('keydown',e=>{if(e.target.id==='ttl'&&e.key==='Enter'){e.preventDefault();e.target.blur()}});

@@ -1,46 +1,46 @@
 /* Group-wise tests report: dark skin. Charts read these variables, so they follow too. */
 :root{
-  --bg:#0B1020; --surface:#121A30; --ink:#E8ECF8; --muted:#98A3C2; --rule:#232C48;
-  --primary:#4F7CFF; --on-primary:#FFFFFF; --primary-soft:rgba(79,124,255,.15); --focus:#8FA9FF;
-  --c1:#5B83FF; --c2:#19C39C; --c3:#F2B254; --c4:#FF6B6B; --c5:#38C4E0; --c6:#8A93A6;
-  --b-ex:#19C39C; --b-good:#6CCB9F; --b-avg:#F2B254; --b-low:#FF6B6B;
+  --bg:#15171C; --surface:#1C1F25; --ink:#ECEAE4; --muted:#A3A7AE; --rule:#2C3038;
+  --primary:#F08A4B; --on-primary:#15171C; --primary-soft:rgba(240,138,75,.15); --focus:#F08A4B;
+  --c1:#7FA6CF; --c2:#6DBE95; --c3:#D9A441; --c4:#E2716A; --c5:#7FB3B8; --c6:#8A8F98;
+  --b-ex:#6DBE95; --b-good:#4C8F6E; --b-avg:#D9A441; --b-low:#E2716A;
   --serif:Sora,Inter,system-ui,sans-serif; --sans:Inter,"Segoe UI",system-ui,sans-serif;
   --radius:14px;
 }
-.topbar{background:rgba(18,26,48,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.topbar{background:#1C1F25}
 .jump a{color:var(--ct-muted)}
 .home{border-color:var(--ct-line2);border-radius:10px}
-.btn{background:transparent;color:var(--ct-blue-ink);border-color:rgba(79,124,255,.55);border-radius:11px;transition:transform .2s ease,background .2s ease}
-.topbar .btn{background:transparent;color:var(--ct-blue-ink);border-color:rgba(79,124,255,.55)}
-.btn.primary{background:linear-gradient(135deg,#4F7CFF,#3A5DE0);color:#fff;border-color:transparent;box-shadow:var(--ct-glow)}
+.btn{background:transparent;color:var(--ct-blue-ink);border-color:rgba(240,138,75,.55);border-radius:8px;transition:transform .2s ease,background .2s ease}
+.topbar .btn{background:transparent;color:var(--ct-blue-ink);border-color:rgba(240,138,75,.55)}
+.btn.primary{background:#F08A4B;color:#15171C;border-color:transparent;box-shadow:none}
 .btn:hover{transform:translateY(-1px)}
 
-h1{background:linear-gradient(100deg,#E8ECF8 30%,#8FA9FF 70%,#5FE0BF);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1{background:none;color:#ECEAE4}
 #report h1,#rpTitle{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--ink)}
-.drop{background:rgba(18,26,48,.6);border-color:#3A4A7A;border-radius:18px;transition:background .2s,border-color .2s,box-shadow .3s}
-.drop:hover,.drop.over{box-shadow:var(--ct-glow)}
-.err{border-color:rgba(255,107,107,.4);background:var(--ct-red-soft);color:var(--ct-red-ink)}
-.sheet svg{filter:drop-shadow(0 18px 40px rgba(0,0,0,.6))}
+.drop{background:rgba(28,31,37,.6);border-color:#3A3F48;border-radius:12px;transition:background .2s,border-color .2s,box-shadow .3s}
+.drop:hover,.drop.over{box-shadow:none}
+.err{border-color:rgba(226,113,106,.4);background:var(--ct-red-soft);color:var(--ct-red-ink)}
+.sheet svg{filter:none}
 
-.panel,section.blk,.kpi,.empty{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),var(--surface);box-shadow:0 18px 50px -30px rgba(0,0,0,.8)}
+.panel,section.blk,.kpi,.empty{background:var(--surface);box-shadow:none}
 .field input[type=text],.field select,.tools input[type=search]{background:var(--ct-field);border-color:var(--ct-line2);color:var(--ct-ink)}
-.field input[type=text]:focus,.field select:focus,.tools input[type=search]:focus{box-shadow:0 0 0 3px rgba(79,124,255,.25);outline:none}
+.field input[type=text]:focus,.field select:focus,.tools input[type=search]:focus{box-shadow:0 0 0 3px rgba(240,138,75,.25);outline:none}
 .hint,.facts dt,.tbl small,.abs{color:var(--ct-dim)}
 .logo-thumb{background:#fff}
 .link-btn{color:var(--ct-blue-ink)}
 
-.kpi{border-left-width:3px;border-left-color:var(--ct-blue)}
+.kpi{border-left-width:3px;border-left-color:#ECEAE4}
 .kpi .v{font-family:Sora,Inter,sans-serif}
 .obs li{border-bottom-color:var(--rule)}
-.tbl th{background:#18203A;color:var(--ct-muted)}
+.tbl th{background:#202329;color:var(--ct-muted)}
 .tbl td{border-bottom-color:var(--rule)}
-.tbl tr:hover td{background:rgba(79,124,255,.07)}
-.tbl tr.grp td,.tbl tr.grp:hover td{background:rgba(79,124,255,.12)}
+.tbl tr:hover td{background:rgba(255,255,255,.03)}
+.tbl tr.grp td,.tbl tr.grp:hover td{background:#23262D}
 .tbl th button:hover{color:var(--ct-blue-ink)}
-.h-ex{background:rgba(25,195,156,.24)}
+.h-ex{background:rgba(109,190,149,.24)}
 .h-good{background:rgba(108,203,159,.16)}
-.h-avg{background:rgba(242,178,84,.20)}
-.h-low{background:rgba(255,107,107,.20)}
-.tag{background:#1E2746;color:var(--ct-muted)}
+.h-avg{background:rgba(217,164,65,.20)}
+.h-low{background:rgba(226,113,106,.20)}
+.tag{background:#262A31;color:var(--ct-muted)}
 .tag.warn{background:var(--ct-red-soft);color:var(--ct-red-ink)}
-.toast{background:#E8ECF8;color:#0B1020}
+.toast{background:#ECEAE4;color:#15171C}

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Group-wise tests report · CodeTantra Reports</title>
 <meta name="description" content="Compare several CodeTantra tests across groups from one combined sheet, with student-wise results, PDF and Excel summaries.">
-<meta name="theme-color" content="#0B1020">
+<meta name="theme-color" content="#F7F5F0">
 <link rel="icon" type="image/png" sizes="32x32" href="../shared/brand/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="../shared/brand/favicon-64.png">
 <link rel="apple-touch-icon" href="../shared/brand/apple-touch-icon.png">
@@ -17,10 +17,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
-  --bg:#FAFBFC; --surface:#FFFFFF; --ink:#1A1F2B; --muted:#5B6475; --rule:#E4E7EC;
-  --primary:#3366FF; --on-primary:#FFFFFF; --primary-soft:#EBF0FF; --focus:#99B3FF;
-  --c1:#3366FF; --c2:#12A87B; --c3:#E8A33D; --c4:#E0524F; --c5:#0891B2; --c6:#8A93A6;
-  --b-ex:#12A87B; --b-good:#6CCB9F; --b-avg:#E8A33D; --b-low:#E0524F;
+  --bg:#F7F5F0; --surface:#FFFFFF; --ink:#1C1F26; --muted:#5E6470; --rule:#E3E0D8;
+  --primary:#C2410C; --on-primary:#FFFFFF; --primary-soft:#FBEDE4; --focus:#EBC3A8;
+  --c1:#2F5D8A; --c2:#2E7D5B; --c3:#B7791F; --c4:#B3261E; --c5:#4F7C82; --c6:#8A8F98;
+  --b-ex:#2E7D5B; --b-good:#7FB59A; --b-avg:#B7791F; --b-low:#B3261E;
   --serif:'Instrument Sans','Segoe UI',system-ui,-apple-system,sans-serif;
   --sans:'Instrument Sans','Segoe UI',system-ui,-apple-system,sans-serif;
   --radius:10px;
@@ -46,7 +46,7 @@ button,input,select{font:inherit;color:inherit}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:.2px;white-space:nowrap;color:var(--ink)}
 .brand svg{flex:none}
 .jump{display:flex;gap:4px;margin-left:12px;overflow-x:auto;scrollbar-width:none}
-.jump a{padding:6px 12px;border-radius:6px;color:#5B6475;text-decoration:none;font-size:14px;white-space:nowrap}
+.jump a{padding:6px 12px;border-radius:6px;color:#5E6470;text-decoration:none;font-size:14px;white-space:nowrap}
 .jump a:hover{color:var(--ink);background:var(--primary-soft)}
 .topbar .spacer{flex:1}
 .home{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--rule);border-radius:6px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap;flex:none}
@@ -67,13 +67,13 @@ button,input,select{font:inherit;color:inherit}
 .intro{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:64px;align-items:center;padding-top:56px;padding-bottom:72px}
 .intro h1{font-size:34px;max-width:15em}
 .lede{font-size:16px;color:var(--muted);margin-top:12px;max-width:34em}
-.drop{margin-top:26px;border:2px dashed #B8C7F0;border-radius:14px;background:var(--surface);padding:44px 36px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;transition:border-color .15s,background .15s}
+.drop{margin-top:26px;border:2px dashed #EBC3A8;border-radius:14px;background:var(--surface);padding:44px 36px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;transition:border-color .15s,background .15s}
 .drop:hover,.drop.over{border-color:var(--primary);background:var(--primary-soft)}
 .drop strong{font-size:20px;font-weight:700}
 .drop .sub{color:var(--muted);font-size:14px}
 .drop .btn{margin-top:6px}
 .fine{margin-top:14px;font-size:13.5px;color:var(--muted);max-width:40em}
-.err{margin-top:16px;padding:10px 14px;border:1px solid #F5C2C0;background:#FDEDEC;color:#B3302D;border-radius:8px;font-size:14.5px}
+.err{margin-top:16px;padding:10px 14px;border:1px solid #E8BDB9;background:#F6E3E1;color:#9E2A23;border-radius:8px;font-size:14.5px}
 details.format{margin-top:22px;border-top:1px solid var(--rule);padding-top:14px}
 details.format summary{cursor:pointer;font-weight:600}
 details.format ul{margin:12px 0 0;padding-left:20px;color:var(--muted);font-size:14.5px;display:grid;gap:6px}
@@ -92,7 +92,7 @@ details.format code{font:500 13px/1.4 ui-monospace,Menlo,Consolas,monospace;back
 .panel h2:first-child{padding-top:0}
 .field{display:grid;gap:5px}
 .field label,.field .lab{font-size:13px;font-weight:500;color:var(--muted)}
-.field input[type=text],.field select{width:100%;padding:8px 10px;border:1px solid #D5DAE1;border-radius:8px;background:#fff;min-height:40px;font-size:14px}
+.field input[type=text],.field select{width:100%;padding:8px 10px;border:1px solid #D6D2C8;border-radius:8px;background:#fff;min-height:40px;font-size:14px}
 .field input[type=text]:focus,.field select:focus{border-color:var(--primary)}
 .range{display:flex;align-items:center;gap:12px}
 .range input{flex:1;accent-color:var(--primary)}
@@ -101,7 +101,7 @@ details.format code{font:500 13px/1.4 ui-monospace,Menlo,Consolas,monospace;back
 .check input{margin-top:3px;accent-color:var(--primary);width:16px;height:16px;flex:none}
 .actions{display:grid;gap:10px}
 .panel hr{border:0;border-top:1px solid var(--rule);margin:4px 0;width:100%}
-.hint{font-size:12.5px;color:#8A93A6;line-height:1.4}
+.hint{font-size:12.5px;color:#686D76;line-height:1.4}
 .logo-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .logo-thumb{height:32px;width:auto;max-width:110px;object-fit:contain;border:1px solid var(--rule);border-radius:6px;background:var(--surface);padding:3px}
 .link-btn{background:none;border:0;padding:4px 2px;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer}
@@ -116,7 +116,7 @@ details.format code{font:500 13px/1.4 ui-monospace,Menlo,Consolas,monospace;back
 .rp-head h1{font-size:26px;margin-top:4px;max-width:24em}
 .facts{display:flex;flex-wrap:wrap;gap:8px 36px;margin-top:14px}
 .facts div{display:grid}
-.facts dt{font-size:12.5px;color:#8A93A6}
+.facts dt{font-size:12.5px;color:#686D76}
 .facts dd{margin:0;font-weight:600}
 dl.facts{margin:14px 0 0}
 .kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
@@ -129,9 +129,9 @@ section.blk>h2{font-size:18px}
 section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46em}
 .sub-h{font-size:15px;margin:26px 0 6px}
 .obs{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:0;max-width:52em}
-.obs li{display:grid;grid-template-columns:14px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid #EEF0F3}
+.obs li{display:grid;grid-template-columns:14px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid #F1EEE7}
 .obs li:last-child{border-bottom:0}
-.obs li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--primary);margin-top:8px}
+.obs li::before{content:"";width:9px;height:9px;border-radius:50%;background:#5E6470;margin-top:8px}
 .obs li.good::before{background:var(--b-ex)}
 .obs li.warn::before{background:var(--b-low)}
 .chart{position:relative;height:320px;margin-top:16px}
@@ -139,13 +139,13 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
 .chart.short{height:260px}
 .scroll{overflow-x:auto;margin-top:10px;-webkit-overflow-scrolling:touch}
 .tbl{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
-.tbl th{font-weight:600;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);background:#F7F8FA;white-space:nowrap;font-size:13px;vertical-align:bottom}
-.tbl td{padding:8px 10px;border-bottom:1px solid #EEF0F3;white-space:nowrap}
+.tbl th{font-weight:600;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);background:#F1EEE7;white-space:nowrap;font-size:13px;vertical-align:bottom}
+.tbl td{padding:8px 10px;border-bottom:1px solid #F1EEE7;white-space:nowrap}
 .tbl .num{text-align:right}
 .tbl th.num{text-align:right}
 .tbl td.name{white-space:normal;min-width:180px}
-.tbl small{color:#8A93A6;font-size:12px;margin-left:4px}
-.tbl tr:hover td{background:#F7F8FA}
+.tbl small{color:#686D76;font-size:12px;margin-left:4px}
+.tbl tr:hover td{background:#F1EEE7}
 .tbl tr.grp td{background:var(--primary-soft);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--rule);border-top:1px solid var(--rule)}
 .tbl tr.grp:hover td{background:var(--primary-soft)}
 .grp-count{font-weight:500;color:var(--muted);margin-left:10px;font-size:12.5px}
@@ -158,15 +158,15 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
 .h-good{background:color-mix(in srgb,var(--b-good) 30%,transparent)}
 .h-avg{background:color-mix(in srgb,var(--b-avg) 30%,transparent)}
 .h-low{background:color-mix(in srgb,var(--b-low) 26%,transparent)}
-.abs{color:#8A93A6}
-.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:5px;background:#EEF0F3;color:var(--muted);margin-right:4px;white-space:nowrap}
-.tag.warn{background:#FCE4E3;color:#C23B38}
+.abs{color:#686D76}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:5px;background:#F1EEE7;color:var(--muted);margin-right:4px;white-space:nowrap}
+.tag.warn{background:#F6E3E1;color:#9E2A23}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:0 36px}
 .two>div{min-width:0}
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:12px}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 .tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.tools input[type=search]{padding:8px 10px;border:1px solid #D5DAE1;border-radius:8px;background:#fff;min-width:240px;min-height:40px;font-size:14px}
+.tools input[type=search]{padding:8px 10px;border:1px solid #D6D2C8;border-radius:8px;background:#fff;min-width:240px;min-height:40px;font-size:14px}
 .tools .count{color:var(--muted);font-size:14px}
 .empty{padding:24px;border:1px dashed var(--rule);border-radius:8px;color:var(--muted);margin-top:16px;background:var(--surface)}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:8px;font-size:14px;z-index:50;max-width:calc(100vw - 32px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
@@ -239,23 +239,23 @@ section.blk>.lead{color:var(--muted);margin-top:4px;font-size:14px;max-width:46e
   <figure class="sheet" aria-hidden="true">
     <svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
       <rect width="320" height="420" rx="4" fill="#fff"/>
-      <rect width="320" height="74" rx="4" fill="#1A1F2B"/><rect y="60" width="320" height="14" fill="#1A1F2B"/>
+      <rect width="320" height="74" rx="4" fill="#1C1F26"/><rect y="60" width="320" height="14" fill="#1C1F26"/>
       <rect x="20" y="20" width="70" height="6" rx="3" fill="#fff" opacity=".6"/>
       <rect x="20" y="36" width="190" height="11" rx="3" fill="#fff"/>
       <rect x="20" y="53" width="120" height="6" rx="3" fill="#fff" opacity=".6"/>
-      <g fill="#EEF0F6"><rect x="20" y="90" width="280" height="42"/></g>
-      <g fill="#3366FF"><rect x="30" y="99" width="30" height="12" rx="2"/><rect x="86" y="99" width="30" height="12" rx="2"/><rect x="142" y="99" width="30" height="12" rx="2"/><rect x="198" y="99" width="30" height="12" rx="2"/><rect x="254" y="99" width="30" height="12" rx="2"/></g>
-      <g fill="#9AA1B5"><rect x="30" y="118" width="38" height="4" rx="2"/><rect x="86" y="118" width="38" height="4" rx="2"/><rect x="142" y="118" width="38" height="4" rx="2"/><rect x="198" y="118" width="38" height="4" rx="2"/><rect x="254" y="118" width="38" height="4" rx="2"/></g>
-      <g fill="#E0524F"><circle cx="26" cy="152" r="3"/><circle cx="26" cy="168" r="3"/></g><g fill="#12A87B"><circle cx="26" cy="184" r="3"/></g>
-      <g fill="#C9CEDB"><rect x="36" y="150" width="220" height="4" rx="2"/><rect x="36" y="166" width="250" height="4" rx="2"/><rect x="36" y="182" width="190" height="4" rx="2"/></g>
-      <rect x="20" y="206" width="90" height="8" rx="2" fill="#151B2B"/>
-      <line x1="20" y1="222" x2="300" y2="222" stroke="#D9DDE6"/><line x1="20" y1="290" x2="300" y2="290" stroke="#D9DDE6"/><line x1="20" y1="256" x2="300" y2="256" stroke="#D9DDE6"/>
-      <g fill="#3366FF"><rect x="44" y="246" width="30" height="44"/><rect x="102" y="240" width="30" height="50"/><rect x="160" y="232" width="30" height="58"/><rect x="218" y="238" width="30" height="52"/></g>
-      <polyline points="59,236 117,230 175,226 233,240" fill="none" stroke="#E0524F" stroke-width="2.4"/>
-      <g fill="#E0524F"><circle cx="59" cy="236" r="3"/><circle cx="117" cy="230" r="3"/><circle cx="175" cy="226" r="3"/><circle cx="233" cy="240" r="3"/></g>
-      <rect x="20" y="312" width="280" height="14" fill="#EEF0F6"/>
+      <g fill="#F1EEE7"><rect x="20" y="90" width="280" height="42"/></g>
+      <g fill="#2F5D8A"><rect x="30" y="99" width="30" height="12" rx="2"/><rect x="86" y="99" width="30" height="12" rx="2"/><rect x="142" y="99" width="30" height="12" rx="2"/><rect x="198" y="99" width="30" height="12" rx="2"/><rect x="254" y="99" width="30" height="12" rx="2"/></g>
+      <g fill="#A3A7AE"><rect x="30" y="118" width="38" height="4" rx="2"/><rect x="86" y="118" width="38" height="4" rx="2"/><rect x="142" y="118" width="38" height="4" rx="2"/><rect x="198" y="118" width="38" height="4" rx="2"/><rect x="254" y="118" width="38" height="4" rx="2"/></g>
+      <g fill="#B3261E"><circle cx="26" cy="152" r="3"/><circle cx="26" cy="168" r="3"/></g><g fill="#2E7D5B"><circle cx="26" cy="184" r="3"/></g>
+      <g fill="#D6D2C8"><rect x="36" y="150" width="220" height="4" rx="2"/><rect x="36" y="166" width="250" height="4" rx="2"/><rect x="36" y="182" width="190" height="4" rx="2"/></g>
+      <rect x="20" y="206" width="90" height="8" rx="2" fill="#1C1F26"/>
+      <line x1="20" y1="222" x2="300" y2="222" stroke="#E3E0D8"/><line x1="20" y1="290" x2="300" y2="290" stroke="#E3E0D8"/><line x1="20" y1="256" x2="300" y2="256" stroke="#E3E0D8"/>
+      <g fill="#2F5D8A"><rect x="44" y="246" width="30" height="44"/><rect x="102" y="240" width="30" height="50"/><rect x="160" y="232" width="30" height="58"/><rect x="218" y="238" width="30" height="52"/></g>
+      <polyline points="59,236 117,230 175,226 233,240" fill="none" stroke="#B3261E" stroke-width="2.4"/>
+      <g fill="#B3261E"><circle cx="59" cy="236" r="3"/><circle cx="117" cy="230" r="3"/><circle cx="175" cy="226" r="3"/><circle cx="233" cy="240" r="3"/></g>
+      <rect x="20" y="312" width="280" height="14" fill="#F1EEE7"/>
       <g><rect x="20" y="332" width="280" height="12" fill="#E6F1D9"/><rect x="20" y="346" width="280" height="12" fill="#FBEFCB"/><rect x="20" y="360" width="280" height="12" fill="#F7D5CE"/><rect x="20" y="374" width="280" height="12" fill="#E6F1D9"/></g>
-      <g fill="#5B6478"><rect x="26" y="317" width="60" height="4" rx="2"/><rect x="26" y="336" width="90" height="4" rx="2"/><rect x="26" y="350" width="70" height="4" rx="2"/><rect x="26" y="364" width="100" height="4" rx="2"/><rect x="26" y="378" width="80" height="4" rx="2"/></g>
+      <g fill="#5E6470"><rect x="26" y="317" width="60" height="4" rx="2"/><rect x="26" y="336" width="90" height="4" rx="2"/><rect x="26" y="350" width="70" height="4" rx="2"/><rect x="26" y="364" width="100" height="4" rx="2"/><rect x="26" y="378" width="80" height="4" rx="2"/></g>
     </svg>
     <figcaption>Layout of the PDF: summary, test-wise results, section comparison and student lists.</figcaption>
   </figure>
@@ -539,9 +539,9 @@ function statusText(r){
 function buildPdf(jsPDF,A,cfg,img){
   const doc=new jsPDF({unit:'mm',format:'a4',compress:true});
   const W=210,H=297,M=14,CW=182,TOP=24,BOT=281,MM=0.3528;
-  const INK=[26,31,43],MUTED=[91,100,117],RULE=[228,231,236],PRI=[51,102,255],HEAD=[247,248,250];
-  const TINT={ex:[208,240,227],good:[226,245,236],avg:[252,237,212],low:[249,214,213]};
-  const DOT={good:[15,147,108],warn:[224,82,79],info:PRI};
+  const INK=[28,31,38],MUTED=[94,100,112],RULE=[227,224,216],PRI=[47,93,138],HEAD=[241,238,231];
+  const TINT={ex:[228,239,232],good:[236,243,239],avg:[247,238,220],low:[246,227,225]};
+  const DOT={good:[46,125,91],warn:[179,38,30],info:PRI};
   const T=s=>String(s==null?'':s).replace(/[\u2013\u2014\u2212]/g,'-').replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/\u2026/g,'..').replace(/\u00a0/g,' ').replace(/[^\x20-\x7E\u00A1-\u00FF]/g,'');
   const K=A.kpi;
   let y=0;
@@ -632,10 +632,10 @@ function buildPdf(jsPDF,A,cfg,img){
   else if(logo){by+=9;}
   font('times','bold',16);tc([255,255,255]);doc.text(tlines,M,by+3,{lineHeightFactor:1.15});
   by+=3+(tlines.length-1)*7.4+8;
-  font('helvetica','normal',9.5);tc([201,214,255]);
+  font('helvetica','normal',9.5);tc([214,210,200]);
   const bits=[cfg.batch?('Batch '+cfg.batch):'',cfg.scope,pl(K.T,'test'),pl(K.N,'student')].filter(Boolean);
   doc.text(T(bits.join('   |   ')),M,by);
-  font('helvetica','normal',8.5);tc([201,214,255]);
+  font('helvetica','normal',8.5);tc([214,210,200]);
   doc.text(T('Generated '+cfg.date),W-M,10,{align:'right'});
   y=bandH+9;
 
@@ -648,7 +648,7 @@ function buildPdf(jsPDF,A,cfg,img){
     [K.allAttended+'/'+K.N,'Attempted every test']
   ];
   const kw=CW/5;
-  fc([245,247,249]);doc.rect(M,y,CW,26,'F');
+  fc([241,238,231]);doc.rect(M,y,CW,26,'F');
   dc(INK);doc.setLineWidth(0.6);doc.line(M,y,W-M,y);
   kp.forEach((k,i)=>{
     const x=M+i*kw;
@@ -850,8 +850,8 @@ function start(ds,name){
 }
 
 /* ---------- palettes ---------- */
-const PDF_PAL={dark:false,ink:'#1A1F2B',muted:'#5B6475',rule:'#E4E7EC',c:['#3366FF','#12A87B','#E8A33D','#E0524F','#0891B2','#8A93A6'],
-  b:{ex:'#12A87B',good:'#6CCB9F',avg:'#E8A33D',low:'#E0524F'},font:'Helvetica, Arial, sans-serif'};
+const PDF_PAL={dark:false,ink:'#1C1F26',muted:'#5E6470',rule:'#E3E0D8',c:['#2F5D8A','#2E7D5B','#B7791F','#B3261E','#4F7C82','#8A8F98'],
+  b:{ex:'#2E7D5B',good:'#7FB59A',avg:'#B7791F',low:'#B3261E'},font:'Helvetica, Arial, sans-serif'};
 function screenPal(){
   const s=getComputedStyle(document.documentElement),g=n=>s.getPropertyValue(n).trim();
   const dark=s.colorScheme.includes('dark')&&!s.colorScheme.includes('light dark');
@@ -912,7 +912,7 @@ function baseOpts(pal,pdf,extra={}){
 const pctFmt=v=>v+'%';
 function cfgTrend(A,pal,pdf){
   return {type:'bar',data:{labels:A.tests.map(t=>t.label),datasets:[
-    {type:'bar',label:'Average score',data:A.tests.map(t=>t.avgPct==null?null:Math.round(t.avgPct*100)),backgroundColor:pal.c[0],borderRadius:2,maxBarThickness:70,showValues:'insideTop',labelColor:pal.dark?'#10142B':'#fff',labelFmt:pctFmt,order:2},
+    {type:'bar',label:'Average score',data:A.tests.map(t=>t.avgPct==null?null:Math.round(t.avgPct*100)),backgroundColor:pal.c[0],borderRadius:2,maxBarThickness:70,showValues:'insideTop',labelColor:pal.dark?'#15171C':'#fff',labelFmt:pctFmt,order:2},
     {type:'line',label:'Participation',data:A.tests.map(t=>Math.round(t.part*100)),borderColor:pal.c[3],backgroundColor:pal.c[3],borderWidth:2.5,pointRadius:pdf?5:5,pointHoverRadius:7,tension:0,showValues:'top',labelColor:pal.c[3],labelFmt:pctFmt,order:1}
   ]},options:baseOpts(pal,pdf)};
 }
@@ -920,7 +920,7 @@ function cfgBands(A,pal,pdf){
   const order=[...BANDS].reverse();
   return {type:'bar',data:{labels:A.tests.map(t=>t.label),datasets:order.map(b=>({
     label:b.label,data:A.tests.map(t=>t.bands[b.key]),backgroundColor:pal.b[b.key],maxBarThickness:70,
-    showValues:'inside',labelColor:(pal.dark||b.key==='good'||b.key==='avg')?'#151B2B':'#fff'}))},
+    showValues:'inside',labelColor:(pal.dark||b.key==='good'||b.key==='avg')?'#1C1F25':'#fff'}))},
     options:baseOpts(pal,pdf,{plugins:{legend:{position:'bottom',reverse:true,labels:{color:pal.ink,font:{family:pal.font,size:pdf?13:12},boxWidth:12,boxHeight:12,padding:14}}},
       scales:{x:{stacked:true},y:{stacked:true,min:0,max:undefined,ticks:{stepSize:undefined,callback:v=>v},title:{display:true,text:'Students who appeared',color:pal.muted,font:{family:pal.font,size:pdf?12:12}}}}})};
 }
@@ -1204,7 +1204,7 @@ function init(){
   $('#report').addEventListener('input',e=>{if(e.target.id==='q'){state.q=e.target.value;state.limit=25;renderStudents();}});
   const redraw=()=>{if(state.A&&state.A.kpi.attempts)drawCharts();};
   if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
-  new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','data-mode']});
 }
 init();
 </script>

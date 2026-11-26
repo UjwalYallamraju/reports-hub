@@ -1,30 +1,30 @@
 /* Sectional cut-off report: dark skin. The tool switches to data-theme="light" while it
    builds PDF charts, so every rule here is limited to the dark state. */
 :root:not([data-theme="light"]){
-  --bg:#0B1020; --card:#121A30; --ink:#E8ECF8; --mut:#98A3C2; --line:#232C48;
-  --pri:#5B83FF; --ok:#19C39C; --bad:#FF6B6B; --wn:#F2B254;
-  --okbg:rgba(25,195,156,.16); --badbg:rgba(255,107,107,.16); --wnbg:rgba(242,178,84,.16);
+  --bg:#15171C; --card:#1C1F25; --ink:#ECEAE4; --mut:#A3A7AE; --line:#2C3038;
+  --pri:#F08A4B; --dblue:#7FA6CF; --ok:#6DBE95; --bad:#E2716A; --wn:#D9A441;
+  --okbg:rgba(109,190,149,.16); --badbg:rgba(226,113,106,.16); --wnbg:rgba(217,164,65,.16);
 }
 :root:not([data-theme="light"]) h1,:root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) h3{font-family:Sora,Inter,system-ui,sans-serif}
-:root:not([data-theme="light"]) header{background:rgba(18,26,48,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+:root:not([data-theme="light"]) header{background:#1C1F25}
 :root:not([data-theme="light"]) header b{font-family:Sora,Inter,sans-serif}
 :root:not([data-theme="light"]) .home{border-color:var(--ct-line2);border-radius:10px}
 :root:not([data-theme="light"]) .home:hover{background:var(--ct-blue-soft);border-color:var(--ct-blue)}
-:root:not([data-theme="light"]) header nav{background:#0E1529;border-color:var(--ct-line2)}
-:root:not([data-theme="light"]) header nav button.on,:root:not([data-theme="light"]) .pb{background:linear-gradient(135deg,#4F7CFF,#3A5DE0);border-color:transparent;color:#fff;box-shadow:var(--ct-glow)}
-:root:not([data-theme="light"]) .pb.alt{background:transparent;color:var(--ct-blue-ink);border-color:rgba(79,124,255,.55);box-shadow:none}
+:root:not([data-theme="light"]) header nav{background:#1A1C21;border-color:var(--ct-line2)}
+:root:not([data-theme="light"]) header nav button.on,:root:not([data-theme="light"]) .pb{background:#F08A4B;border-color:transparent;color:#15171C;box-shadow:none}
+:root:not([data-theme="light"]) .pb.alt{background:transparent;color:var(--ct-blue-ink);border-color:rgba(240,138,75,.55);box-shadow:none}
 :root:not([data-theme="light"]) .pb.alt:hover{background:var(--ct-blue-soft)}
-:root:not([data-theme="light"]) .card{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),var(--card);border-radius:16px;box-shadow:0 18px 50px -30px rgba(0,0,0,.8)}
-:root:not([data-theme="light"]) .kp.ok{background:linear-gradient(180deg,rgba(25,195,156,.08),transparent),var(--card)}
-:root:not([data-theme="light"]) .kp.bad{background:linear-gradient(180deg,rgba(255,107,107,.08),transparent),var(--card)}
-:root:not([data-theme="light"]) .kp.wn{background:linear-gradient(180deg,rgba(242,178,84,.08),transparent),var(--card)}
+:root:not([data-theme="light"]) .card{background:var(--card);border-radius:12px;box-shadow:none}
+:root:not([data-theme="light"]) .kp.ok{background:var(--card)}
+:root:not([data-theme="light"]) .kp.bad{background:var(--card)}
+:root:not([data-theme="light"]) .kp.wn{background:var(--card)}
 :root:not([data-theme="light"]) .kp .v{font-family:Sora,Inter,sans-serif}
-:root:not([data-theme="light"]) .dz{background:rgba(18,26,48,.6);border-color:#3A4A7A;border-radius:18px;transition:background .2s,border-color .2s,box-shadow .3s}
-:root:not([data-theme="light"]) .dz:hover{background:var(--ct-blue-soft);box-shadow:var(--ct-glow)}
+:root:not([data-theme="light"]) .dz{background:rgba(28,31,37,.6);border-color:#3A3F48;border-radius:12px;transition:background .2s,border-color .2s,box-shadow .3s}
+:root:not([data-theme="light"]) .dz:hover{background:var(--ct-blue-soft);box-shadow:none}
 :root:not([data-theme="light"]) input,:root:not([data-theme="light"]) select{background:var(--ct-field);border-color:var(--ct-line2)}
-:root:not([data-theme="light"]) input:focus,:root:not([data-theme="light"]) select:focus{border-color:var(--ct-blue);box-shadow:0 0 0 3px rgba(79,124,255,.25);outline:none}
-:root:not([data-theme="light"]) th{background:#18203A}
-:root:not([data-theme="light"]) tr.dr:hover td,:root:not([data-theme="light"]) .in,:root:not([data-theme="light"]) .dt>td{background:rgba(79,124,255,.07)}
-:root:not([data-theme="light"]) .na{background:#1E2746}
-:root:not([data-theme="light"]) .bt{border-color:rgba(91,131,255,.6);color:var(--ct-blue-ink)}
-:root:not([data-theme="light"]) .rh{border-left-color:var(--ct-blue)}
+:root:not([data-theme="light"]) input:focus,:root:not([data-theme="light"]) select:focus{border-color:var(--ct-blue);box-shadow:0 0 0 3px rgba(240,138,75,.25);outline:none}
+:root:not([data-theme="light"]) th{background:#202329}
+:root:not([data-theme="light"]) tr.dr:hover td,:root:not([data-theme="light"]) .in,:root:not([data-theme="light"]) .dt>td{background:rgba(255,255,255,.03)}
+:root:not([data-theme="light"]) .na{background:#262A31}
+:root:not([data-theme="light"]) .bt{border-color:rgba(240,138,75,.55);color:var(--ct-blue-ink)}
+:root:not([data-theme="light"]) .rh{border-left-color:#ECEAE4}

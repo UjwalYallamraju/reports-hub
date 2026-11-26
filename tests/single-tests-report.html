@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Single test report · CodeTantra Reports</title>
 <meta name="description" content="Upload the Attempted and Not Attempted exports for one CodeTantra test to see pass rates and score bands by group, and download PDFs.">
-<meta name="theme-color" content="#0B1020">
+<meta name="theme-color" content="#F7F5F0">
 <link rel="icon" type="image/png" sizes="32x32" href="../shared/brand/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="../shared/brand/favicon-64.png">
 <link rel="apple-touch-icon" href="../shared/brand/apple-touch-icon.png">
@@ -14,36 +14,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#1A1F2B; --ink2:#5B6475; --muted:#8A93A6; --paper:#FAFBFC; --card:#FFFFFF; --line:#E4E7EC;
-  --pass:#12A87B; --pass2:#6CCB9F; --amber:#E8A33D; --fail:#E0524F; --accent:#3366FF; --accent-ink:#FFFFFF;
+  --ink:#1C1F26; --ink2:#5E6470; --muted:#686D76; --paper:#F7F5F0; --card:#FFFFFF; --line:#E3E0D8;
+  --pass:#2E7D5B; --pass2:#7FB59A; --amber:#B7791F; --fail:#B3261E; --accent:#C2410C; --data:#2F5D8A; --accent-ink:#FFFFFF;
   --radius:10px;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{font-family:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit;color:inherit}
-:focus-visible{outline:3px solid #99B3FF;outline-offset:2px}
+:focus-visible{outline:3px solid #EBC3A8;outline-offset:2px}
 .top{background:var(--card);color:var(--ink);border-bottom:1px solid var(--line);padding:14px 28px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .brand{font-weight:700;font-size:18px;letter-spacing:.2px}
 .top-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .home{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--line);border-radius:6px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
-.home:hover{background:#EBF0FF;border-color:var(--accent)}
-.tag{color:#5B6475;font-size:13px}
+.home:hover{background:#FBEDE4;border-color:var(--accent)}
+.tag{color:#5E6470;font-size:13px}
 main{max-width:1240px;margin:0 auto;padding:28px}
 
 /* landing */
 .landing{max-width:760px;margin:40px auto 0}
 .landing h1{font-size:34px;line-height:1.15;margin:0 0 12px;font-weight:700;letter-spacing:-.4px}
 .landing p.sub{color:var(--ink2);margin:0 0 26px;font-size:16px;max-width:60ch}
-.drop{display:flex;flex-direction:column;gap:6px;align-items:flex-start;justify-content:center;border:2px dashed #B8C7F0;border-radius:14px;background:#fff;padding:44px 36px;cursor:pointer;transition:background .15s,border-color .15s}
-.drop:hover,.drop.over{background:#EBF0FF;border-color:var(--accent)}
+.drop{display:flex;flex-direction:column;gap:6px;align-items:flex-start;justify-content:center;border:2px dashed #EBC3A8;border-radius:14px;background:#fff;padding:44px 36px;cursor:pointer;transition:background .15s,border-color .15s}
+.drop:hover,.drop.over{background:#FBEDE4;border-color:var(--accent)}
 .drop strong{font-size:20px}
 .drop span{color:var(--ink2)}
 .drop input{position:absolute;opacity:0;width:1px;height:1px}
-.drop:focus-within{outline:3px solid #99B3FF;outline-offset:2px}
+.drop:focus-within{outline:3px solid #EBC3A8;outline-offset:2px}
 .needs{margin:22px 0 0;padding:0;list-style:none;display:grid;gap:8px;color:var(--ink2);font-size:14px}
 .needs b{color:var(--ink)}
-.err{margin-top:16px;color:#B3302D;background:#FDEDEC;border:1px solid #F5C2C0;border-radius:8px;padding:10px 14px;display:none}
+.err{margin-top:16px;color:#9E2A23;background:#F6E3E1;border:1px solid #E8BDB9;border-radius:8px;padding:10px 14px;display:none}
 .err.show{display:block}
 
 /* dashboard layout */
@@ -58,9 +58,9 @@ aside{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;min-width:0}
 .linkbtn:hover{text-decoration:underline}
 .add-file{display:block;position:relative;font-size:13px;color:var(--accent);font-weight:600;cursor:pointer;margin-top:4px}
 .add-file input{position:absolute;opacity:0;width:1px;height:1px}
-.add-file:focus-within{outline:3px solid #99B3FF;outline-offset:2px}
+.add-file:focus-within{outline:3px solid #EBC3A8;outline-offset:2px}
 label.f{display:block;font-size:13px;color:var(--ink2);margin-bottom:10px;font-weight:500}
-label.f input[type=text],label.f input[type=number],label.f input[type=date],label.f select,.field{display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid #D5DAE1;border-radius:8px;background:#fff;font-size:14px}
+label.f input[type=text],label.f input[type=number],label.f input[type=date],label.f select,.field{display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid #D6D2C8;border-radius:8px;background:#fff;font-size:14px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .chk{display:flex;gap:9px;align-items:flex-start;font-size:14px;margin-bottom:9px;cursor:pointer}
 .chk input{margin-top:4px;accent-color:var(--accent)}
@@ -68,7 +68,7 @@ label.f input[type=text],label.f input[type=number],label.f input[type=date],lab
 .btn{display:block;width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer;text-align:center}
 .btn:hover{filter:brightness(1.08)}
 .btn.alt{background:#fff;color:var(--accent)}
-.btn.alt:hover{background:#EBF0FF;filter:none}
+.btn.alt:hover{background:#FBEDE4;filter:none}
 .btn[disabled]{opacity:.6;cursor:progress}
 .stack{display:grid;gap:10px}
 .hint{font-size:12.5px;color:var(--muted);margin:2px 0 0}
@@ -89,27 +89,27 @@ label.f input[type=text],label.f input[type=number],label.f input[type=date],lab
 .hero svg{width:100%;height:auto;display:block}
 .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin-top:6px}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-.bandbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:16px 0 8px;background:#EEF0F3}
+.bandbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:16px 0 8px;background:#F1EEE7}
 .bandbar div{height:100%}
 .sec{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px}
 ul.insights{margin:8px 0 0;padding:0 0 0 20px;display:grid;gap:8px;max-width:78ch}
 .tablewrap{overflow-x:auto;margin-top:10px}
 table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{padding:8px 10px;text-align:right;border-bottom:1px solid #EEF0F3;white-space:nowrap}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid #F1EEE7;white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
 th.l,td.l{text-align:left}
-th{font-weight:600;color:var(--ink2);font-size:13px;background:#F7F8FA;position:sticky;top:0}
+th{font-weight:600;color:var(--ink2);font-size:13px;background:#F1EEE7;position:sticky;top:0}
 th button{background:none;border:0;font-weight:600;color:inherit;cursor:pointer;padding:0}
 th button:hover{color:var(--accent)}
-tr:hover td{background:#F7F8FA}
-.mini{display:inline-block;width:70px;height:7px;border-radius:4px;background:#EEF0F3;vertical-align:middle;margin-left:8px;overflow:hidden}
-.mini i{display:block;height:100%;background:var(--accent)}
+tr:hover td{background:#F1EEE7}
+.mini{display:inline-block;width:70px;height:7px;border-radius:4px;background:#F1EEE7;vertical-align:middle;margin-left:8px;overflow:hidden}
+.mini i{display:block;height:100%;background:var(--data)}
 .pill{display:inline-block;padding:1px 8px;border-radius:5px;font-size:12px;font-weight:600}
-.pill.p{background:#E3F6EF;color:#0F936C}.pill.f{background:#FCE4E3;color:#C23B38}.pill.n{background:#EEF0F3;color:#5B6475}
+.pill.p{background:#E4EFE8;color:#2E7D5B}.pill.f{background:#F6E3E1;color:#9E2A23}.pill.n{background:#F1EEE7;color:#5E6470}
 .filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin:10px 0 4px}
 .more{margin-top:12px;text-align:center}
 .more .btn{display:inline-block;width:auto;padding:8px 18px}
-.warnnote{font-size:13px;color:#7A5A00;background:#FFF6DC;border:1px solid #F0DDA0;border-radius:8px;padding:8px 12px}
+.warnnote{font-size:13px;color:#7A5410;background:#F7EEDC;border:1px solid #E5D2A6;border-radius:8px;padding:8px 12px}
 
 .gchart{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;margin-top:6px}
 .gchart h3{font-size:15px;margin:0 0 2px}
@@ -420,10 +420,10 @@ async function handleFiles(fileList) {
 function bandDefs(max, pass) {
   const ex = Math.ceil(max * 0.9), gd = Math.max(Math.ceil(max * 0.75), pass);
   return [
-    {key: 'ex', label: `Excellent (${ex}-${max})`, test: s => s >= ex, color: '#0F936C'},
-    {key: 'gd', label: `Good (${gd}-${ex - 1})`, test: s => s >= gd && s < ex, color: '#6CCB9F'},
-    {key: 'ok', label: `Satisfactory (${pass}-${Math.max(gd - 1, pass)})`, test: s => s >= pass && s < gd, color: '#E8A33D'},
-    {key: 'lo', label: `Below pass (0-${Math.max(0, Math.ceil(pass) - 1)})`, test: s => s < pass, color: '#E0524F'}
+    {key: 'ex', label: `Excellent (${ex}-${max})`, test: s => s >= ex, color: '#2E7D5B'},
+    {key: 'gd', label: `Good (${gd}-${ex - 1})`, test: s => s >= gd && s < ex, color: '#7FB59A'},
+    {key: 'ok', label: `Satisfactory (${pass}-${Math.max(gd - 1, pass)})`, test: s => s >= pass && s < gd, color: '#B7791F'},
+    {key: 'lo', label: `Below pass (0-${Math.max(0, Math.ceil(pass) - 1)})`, test: s => s < pass, color: '#B3261E'}
   ];
 }
 function makeBins(scores, max) {
@@ -533,7 +533,7 @@ function groupBarsSVG(rows, max, ref, fill, label) {
     const y = top + i * rh, w = Math.max(r.value > 0 ? 2 : 0, barW * Math.min(1, r.value / max));
     const lab = r.label.length > 18 ? r.label.slice(0, 17) + '…' : r.label;
     g += `<g><title>${esc(r.label)}: ${esc(r.title)}</title><text x="${labW}" y="${y + 17}" text-anchor="end" font-size="12.5" fill="var(--ink)">${esc(lab)}</text>`
-      + `<rect x="${barX}" y="${y + 5}" width="${barW}" height="16" rx="4" fill="#EEF0F3"/>`
+      + `<rect x="${barX}" y="${y + 5}" width="${barW}" height="16" rx="4" fill="#F1EEE7"/>`
       + `<rect x="${barX}" y="${y + 5}" width="${w.toFixed(1)}" height="16" rx="4" fill="${fill}"/>`
       + `<text x="${barX + barW + 6}" y="${y + 17}" font-size="12.5" font-weight="600" fill="var(--ink)">${esc(r.text)}</text></g>`;
   });
@@ -555,7 +555,7 @@ function groupChartsHTML(A) {
     ? `<div><h3>Attempted % by group</h3><p class="cap">Share of registered students who attempted. Dashed line is the overall ${pct(s.part)}.</p>${groupBarsSVG(attRows, 100, {value: s.part, label: 'All ' + pct(s.part)}, 'var(--pass)', 'Attempted percentage by group')}</div>`
     : `<div><h3>Attempted % by group</h3><p class="hint">Add the Not Attempted file to see the attempted percentage for each group.</p></div>`;
   return `<div class="sec"><h2>Group-wise comparison</h2><div class="gchart">
-    <div><h3>Average marks % by group</h3><p class="cap">Average score as a percentage of ${num(max)} marks. Dashed line is the overall ${pct(s.avgPct)}.</p>${groupBarsSVG(avgRows, 100, {value: s.avgPct, label: 'All ' + pct(s.avgPct)}, 'var(--accent)', 'Average marks percentage by group')}</div>
+    <div><h3>Average marks % by group</h3><p class="cap">Average score as a percentage of ${num(max)} marks. Dashed line is the overall ${pct(s.avgPct)}.</p>${groupBarsSVG(avgRows, 100, {value: s.avgPct, label: 'All ' + pct(s.avgPct)}, 'var(--data)', 'Average marks percentage by group')}</div>
     ${right}</div></div>`;
 }
 function stackedBandsSVG(rows) {
@@ -568,7 +568,7 @@ function stackedBandsSVG(rows) {
     r.segs.forEach(sg => {
       const w = barW * sg.frac; if (w <= 0) return;
       g += `<rect x="${x.toFixed(1)}" y="${y + 4}" width="${w.toFixed(1)}" height="18" fill="${sg.color}"/>`;
-      if (w >= 28) g += `<text x="${(x + w / 2).toFixed(1)}" y="${y + 17}" text-anchor="middle" font-size="11" font-weight="600" fill="${sg.key === 'ok' ? '#1A1F2B' : '#FFFFFF'}">${Math.round(sg.frac * 100)}%</text>`;
+      if (w >= 28) g += `<text x="${(x + w / 2).toFixed(1)}" y="${y + 17}" text-anchor="middle" font-size="11" font-weight="600" fill="${sg.key === 'ok' ? '#1C1F26' : '#FFFFFF'}">${Math.round(sg.frac * 100)}%</text>`;
       x += w;
     });
     g += '</g>';
@@ -599,7 +599,7 @@ function groupQualityHTML(A) {
   const bandRows = gs.map(g => ({label: g.label, title: g.st.bands.map(b => `${b.label}: ${b.count}`).join(', '), segs: g.st.bands.map(b => ({key: b.key, color: b.color, frac: b.count / g.st.n}))}));
   const legend = `<div class="legend">${s.bands.map(b => `<span><i style="background:${b.color}"></i>${esc(b.label)}</span>`).join('')}</div>`;
   return `<div class="sec"><h2>Pass rate and score bands by group</h2><div class="gchart">
-    <div><h3>Pass rate % by group</h3><p class="cap">Share of attempted students at or above the pass mark. Dashed line is the overall ${pct(s.passRate)}.</p>${groupBarsSVG(passRows, 100, {value: s.passRate, label: 'All ' + pct(s.passRate)}, '#3366FF', 'Pass rate percentage by group')}</div>
+    <div><h3>Pass rate % by group</h3><p class="cap">Share of attempted students at or above the pass mark. Dashed line is the overall ${pct(s.passRate)}.</p>${groupBarsSVG(passRows, 100, {value: s.passRate, label: 'All ' + pct(s.passRate)}, 'var(--data)', 'Pass rate percentage by group')}</div>
     <div><h3>Score bands by group</h3><p class="cap">How each group's attempted students split across the score bands, ordered by pass rate.</p>${stackedBandsSVG(bandRows)}${legend}</div>
   </div></div>`;
 }
@@ -763,7 +763,7 @@ const {PDFDocument, StandardFonts, rgb} = PDFLib;
 const PW = 595.28, PH = 841.89, PM = 40, CW = PW - PM * 2;
 const hex = h => { h = h.replace('#', ''); return rgb(parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255); };
 const clean = s => String(s ?? '').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\u2265/g, '>=').replace(/\u2026/g, '...').replace(/[\r\n\t]+/g, ' ').replace(/[^\x20-\x7E\u00A0-\u00FF]/g, '?');
-const C = {navy: '#1A1F2B', ink: '#1A1F2B', grey: '#5B6478', line: '#E4E7EC', light: '#F7F8FA', pass: '#12A87B', fail: '#E0524F', amber: '#E8A33D', accent: '#3366FF', soft: '#C9D6FF'};
+const C = {navy: '#1C1F26', ink: '#1C1F26', grey: '#5E6470', line: '#E3E0D8', light: '#F1EEE7', pass: '#2E7D5B', fail: '#B3261E', amber: '#B7791F', accent: '#2F5D8A', soft: '#D6D2C8'};
 
 class Report {
   static async create(runTitle, footerLeft) {
@@ -947,13 +947,13 @@ class Report {
     rows.forEach((row, i) => {
       if (this.y - rh < PM + 18) { this.newPage(); drawHead(); }
       const y = this.y - rh, st = o.style ? o.style(origRows[i], i) : {};
-      if (st.fill) this.rect(PM, y, total, rh, st.fill); else if (i % 2) this.rect(PM, y, total, rh, '#F7F8FA');
+      if (st.fill) this.rect(PM, y, total, rh, st.fill); else if (i % 2) this.rect(PM, y, total, rh, '#F1EEE7');
       cols.forEach((c, j) => {
         const pad = 5, cell = row[j], cs = (st.cells && st.cells[j - off]) || {};
         const font = (st.bold || cs.bold) ? this.b : this.f, color = cs.color || st.color || C.ink;
         if (c.bar) {
           const bx = xs[j] + pad, bwid = c.w - pad * 2 - 34;
-          this.rect(bx, y + 5, bwid, 5, '#EEF0F3'); this.rect(bx, y + 5, bwid * Math.max(0, Math.min(1, cell.frac)), 5, c.color || C.accent);
+          this.rect(bx, y + 5, bwid, 5, '#F1EEE7'); this.rect(bx, y + 5, bwid * Math.max(0, Math.min(1, cell.frac)), 5, c.color || C.accent);
           this.text(cell.text, xs[j] + c.w - pad, y + (rh - fs) / 2 + 1.5, {size: fs, font, color, align: 'right'});
         } else {
           const t = this.fit(String(cell ?? ''), fs, font, c.w - pad * 2);
@@ -1030,7 +1030,7 @@ async function buildPdf(groupKey) {
       const tot = ['', 'All groups']; if (A.hasNA) tot.push(String(s.registered)); tot.push(String(s.n));
       if (A.hasNA) { tot.push(String(s.notAtt)); tot.push({text: pct(s.part), frac: s.part / 100}); }
       tot.push(num(s.avg), pct(s.passRate), String(s.full), String(s.below)); rows.push(tot);
-      R.table(cols, rows, {style: (row, i) => i === rows.length - 1 ? {bold: true, fill: '#EBF0FF'} : {}});
+      R.table(cols, rows, {style: (row, i) => i === rows.length - 1 ? {bold: true, fill: '#F1EEE7'} : {}});
       R.heading('Average marks % by group', `Bars show average marks as a percentage of ${num(max)}.`, 120);
       R.hbars(ranked.filter(x => x.st.n).map(x => ({label: x.label, value: x.st.avgPct, text: pct(x.st.avgPct)})), 100, {value: s.avgPct, label: `Dashed line: all-groups average (${pct(s.avgPct)})`});
       if (A.hasNA) {
@@ -1039,7 +1039,7 @@ async function buildPdf(groupKey) {
       }
       const gq = [...A.groups].filter(x => x.st.n).sort((a, b) => b.st.passRate - a.st.passRate || cmpNat(a.label, b.label));
       R.heading('Pass rate % by group', `Share of attempted students at or above the pass mark of ${num(pass)}.`, 120);
-      R.hbars(gq.map(x => ({label: x.label, value: x.st.passRate, text: pct(x.st.passRate)})), 100, {value: s.passRate, label: `Dashed line: overall pass rate (${pct(s.passRate)})`}, '#3366FF');
+      R.hbars(gq.map(x => ({label: x.label, value: x.st.passRate, text: pct(x.st.passRate)})), 100, {value: s.passRate, label: `Dashed line: overall pass rate (${pct(s.passRate)})`}, '#2F5D8A');
       R.heading('Score bands by group', 'Share of each group\'s attempted students in each score band, ordered by pass rate.', 130);
       R.stackedBars(gq.map(x => ({label: x.label, segs: x.st.bands.map(b => ({key: b.key, color: b.color, frac: b.count / x.st.n}))})), s.bands);
     }

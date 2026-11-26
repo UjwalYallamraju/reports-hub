@@ -1,22 +1,10 @@
-/* CodeTantra Reports: quiet background and small chart animations, shared by every page.
-   - tool pages: a slow, soft colour background behind the page
+/* CodeTantra Reports: small chart animations, shared by every page.
    - mini charts ([data-fx-viz]) draw themselves once when they scroll into view
    Nothing follows the pointer, and nothing moves with reduced motion. */
 (function () {
   'use strict';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var A = window.anime;
-  var root = document.documentElement;
-  var isTool = !!document.querySelector('script[src*="skin/motion.js"]');
-
-  /* ---------- tool pages: soft background behind everything ---------- */
-  if (isTool) {
-    var au = document.createElement('div');
-    au.className = 'fx-aurora'; au.setAttribute('aria-hidden', 'true');
-    au.innerHTML = '<i></i><i></i><i></i>';
-    document.body.insertBefore(au, document.body.firstChild);
-    root.classList.add('fx-tool');
-  }
 
   /* ---------- mini charts that play when they scroll into view ---------- */
   var vizzes = [].slice.call(document.querySelectorAll('[data-fx-viz]'));

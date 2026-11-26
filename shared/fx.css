@@ -1,23 +1,2 @@
-/* CodeTantra Reports: styles for shared/fx.js (every page, both modes). */
-
-/* tool pages: a slow, soft colour background behind the page */
-.fx-aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-.fx-aurora i{position:absolute;border-radius:50%;opacity:.34;will-change:transform}  /* soft radial gradients: no blur filter, cheap to animate */
-.fx-aurora i:nth-child(1){width:60vmax;height:60vmax;left:-20vmax;top:-28vmax;background:radial-gradient(circle,rgba(43,75,214,.9) 0%,rgba(43,75,214,.35) 35%,transparent 68%);animation:fxD1 28s ease-in-out infinite alternate}
-.fx-aurora i:nth-child(2){width:50vmax;height:50vmax;right:-22vmax;top:18vmax;background:radial-gradient(circle,rgba(180,82,15,.9) 0%,rgba(180,82,15,.3) 35%,transparent 66%);opacity:.22;animation:fxD2 34s ease-in-out infinite alternate}
-.fx-aurora i:nth-child(3){width:56vmax;height:56vmax;left:18vmax;bottom:-36vmax;background:radial-gradient(circle,rgba(14,143,116,.9) 0%,rgba(14,143,116,.3) 35%,transparent 68%);opacity:.26;animation:fxD3 30s ease-in-out infinite alternate}
-@keyframes fxD1{to{transform:translate(14vmax,10vmax) scale(1.1)}}
-@keyframes fxD2{to{transform:translate(-12vmax,-10vmax) scale(.9)}}
-@keyframes fxD3{to{transform:translate(-10vmax,-12vmax) scale(1.08)}}
-[data-mode="light"] .fx-aurora i{opacity:.55}
-[data-mode="light"] .fx-aurora i:nth-child(1){background:radial-gradient(circle,#C9D7FF,transparent 65%)}
-[data-mode="light"] .fx-aurora i:nth-child(2){background:radial-gradient(circle,#FFE0BD,transparent 62%)}
-[data-mode="light"] .fx-aurora i:nth-child(3){background:radial-gradient(circle,#C6EEE1,transparent 65%)}
-/* let the aurora show through: page background moves to <html> */
-.fx-tool body{background:transparent!important}
-.fx-tool:not([data-mode="light"]){background:#0B1020!important}
-.fx-tool[data-mode="light"]{background:#F6F8FC!important}
-.fx-tool .cip-shell{background:transparent!important}
-
-@media (prefers-reduced-motion:reduce){.fx-aurora i{animation:none}}
-@media print{.fx-aurora{display:none!important}}
+/* CodeTantra Reports: styles for shared/fx.js. The mini charts need no extra styles;
+   this file stays so every page can keep one link for shared effects. */

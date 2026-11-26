@@ -182,12 +182,12 @@
     {
       var css = document.createElement('style');
       css.textContent =
-        '.ct-sample{display:flex;justify-content:center;align-items:center;gap:8px;margin:12px 0 0;font:500 13.5px/1.4 Inter,system-ui,sans-serif;color:#98A3C2}' +
-        '.ct-sample button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:8px;font-weight:600;color:#FFC94D;background:rgba(242,140,40,.12);box-shadow:inset 0 0 0 1px rgba(242,140,40,.38);transition:background .2s,transform .2s}' +
-        '.ct-sample button:hover{background:rgba(242,140,40,.2);transform:translateY(-1px)}' +
-        '.ct-sample button:focus-visible{outline:2px solid #FFC94D;outline-offset:2px}' +
+        '.ct-sample{display:flex;justify-content:center;align-items:center;gap:8px;margin:12px 0 0;font:500 13.5px/1.4 Inter,system-ui,sans-serif;color:#A3A7AE}' +
+        '.ct-sample button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:8px;font-weight:600;color:#ECEAE4;background:#23262D;box-shadow:inset 0 0 0 1px #3A3F48;transition:background .2s}' +
+        '.ct-sample button:hover{background:#2C3038}' +
+        '.ct-sample button:focus-visible{outline:2px solid #F08A4B;outline-offset:2px}' +
         '.ct-sample svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
-        '[data-mode="light"] .ct-sample{color:#5B6475}[data-mode="light"] .ct-sample button{color:#B45F06;background:#FFF4E6;box-shadow:inset 0 0 0 1px #F5C98A}' +
+        '[data-mode="light"] .ct-sample{color:#5E6470}[data-mode="light"] .ct-sample button{color:#1C1F26;background:#FFFFFF;box-shadow:inset 0 0 0 1px #D6D2C8}[data-mode="light"] .ct-sample button:hover{background:#F1EEE7}[data-mode="light"] .ct-sample button:focus-visible{outline-color:#C2410C}' +
         '@media print{.ct-sample{display:none!important}}';
       document.head.appendChild(css);
       var addBtn = function () {

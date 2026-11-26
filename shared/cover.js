@@ -205,8 +205,8 @@
   }
 
   /* ===================== drawing (shared by the PDF and the preview) ===================== */
-  var C = {ink: '#1A1F2B', ink2: '#3A4254', mut: '#5B6475', dim: '#8A93A6', line: '#E4E7EC', soft: '#F6F8FC', blue: '#3366FF', green: '#12A87B', red: '#E0524F', amber: '#E8A33D', navy: '#0B1020'};
-  var KPI_COL = [C.blue, C.green, C.red, C.amber];
+  // report paper: ink on warm paper, quiet data colours (same as the site and the reports)
+  var C = {ink: '#1C1F26', ink2: '#3A3E47', mut: '#5E6470', dim: '#73787F', line: '#E3E0D8', soft: '#F7F5F0', blue: '#2F5D8A', green: '#2E7D5B', red: '#B3261E', amber: '#B7791F'};
   // WinAnsi only (standard PDF fonts): swap anything else for a close character or drop it
   function clean(s) {
     return String(s == null ? '' : s).replace(/[‐-‒]/g, '-').replace(/\s*—\s*/g, ', ').replace(/[≥]/g, '>=').replace(/[≤]/g, '<=').replace(/→/g, '->')
@@ -228,10 +228,6 @@
     return lines;
   }
   function fit(P, s, size, bold, maxW) { s = clean(s); while (s.length > 1 && P.width(s, size, bold) > maxW) s = s.slice(0, -1); return s; }
-  function mix(a, b, t) {
-    var pa = [1, 3, 5].map(function (i) { return parseInt(a.substr(i, 2), 16); }), pb = [1, 3, 5].map(function (i) { return parseInt(b.substr(i, 2), 16); });
-    return '#' + pa.map(function (v, i) { return ('0' + Math.round(v + (pb[i] - v) * t).toString(16)).slice(-2); }).join('');
-  }
 
   // P = painter: rect(x,y,w,h,{fill,stroke,r,lw}), text(s,x,y,size,bold,color,align), width(s,size,bold), image(key,x,y,w,h), ring(cx,cy,r,lw,pct,color,track), circle(cx,cy,r,fill)
   // (x, y) from the top-left, in points; y of text is the baseline.
@@ -256,12 +252,9 @@
     var ctw = P.width('CodeTantra Reports', 8.6, true);
     P.text('CodeTantra Reports', R, y0 + 23, 8.6, true, C.mut, 'right');
     if (P.has('sun')) P.image('sun', R - ctw - 24, y0 + 9, 19, 19);
-    // gradient rule
-    var ry = y0 + 54, segs = 60;
-    for (var i = 0; i < segs; i++) {
-      var t = i / (segs - 1), col = t < 0.6 ? mix(C.blue, C.green, t / 0.6) : mix(C.green, '#F28C28', (t - 0.6) / 0.4);
-      P.rect(M + (R - M) * i / segs, ry, (R - M) / segs + 1.5, 3, {fill: col});
-    }
+    // a plain ink rule under the letterhead
+    var ry = y0 + 54;
+    P.rect(M, ry, R - M, 1.5, {fill: C.ink});
     // title block (left column in landscape)
     var colR = land ? M + (R - M) * 0.56 : R, cy = ry + (land ? 42 : 56) + e * 0.3;
     var logoW = 0;
@@ -269,7 +262,7 @@
       var cl = P.size('companyLogo'), cs = Math.min(110 / cl.w, 54 / cl.h); logoW = cl.w * cs + 18;
       P.image('companyLogo', colR - cl.w * cs, cy - 8, cl.w * cs, cl.h * cs);
     }
-    P.text(fit(P, String(c.kicker || '').toUpperCase(), 9.5, true, colR - M - logoW), M, cy, 9.5, true, C.blue);
+    P.text(fit(P, String(c.kicker || '').toUpperCase(), 9.5, true, colR - M - logoW), M, cy, 9.5, true, C.ink2);
     var tSize = 32, tl = wrap(P, c.title, tSize, true, colR - M - logoW, 0);
     if (tl.length > 2) { tSize = 25; tl = wrap(P, c.title, tSize, true, colR - M - logoW, 2); }
     var ty = cy + 10 + tSize;
@@ -284,7 +277,7 @@
     if (hasRing) {
       P.ring(rx + ringR, hy + hh / 2, ringR, 10, Math.max(0, Math.min(100, c.ring)), C.green, C.line);
       var rp = (Math.round(c.ring * 10) / 10) + '%';
-      P.text(rp, rx + ringR, hy + hh / 2 + 7, rp.length > 5 ? 17 : 21, true, '#0F936C', 'center');
+      P.text(rp, rx + ringR, hy + hh / 2 + 7, rp.length > 5 ? 17 : 21, true, C.green, 'center');
       if (c.ringLabel) P.text(c.ringLabel, rx + ringR, hy + hh / 2 + 21, 7.5, false, C.dim, 'center');
     }
     var bx = hasRing ? rx + ringR * 2 + 22 : rx, bw = M + hw - 18 - bx;
@@ -299,8 +292,7 @@
     var ks = c.kpis, kx, ky, kw, kh = 66, gap = 9;
     function tile(k, i, x, y, w) {
       P.rect(x, y, w, kh, {fill: '#FFFFFF', stroke: C.line, r: 10});
-      P.rect(x + 0.5, y + 0.5, w - 1, 3, {fill: KPI_COL[i % 4], r: 1.5});
-      P.text(fit(P, k.label, 8.5, false, w - 22), x + 12, y + 20, 8.5, false, C.mut);
+            P.text(fit(P, k.label, 8.5, false, w - 22), x + 12, y + 20, 8.5, false, C.mut);
       P.text(fit(P, k.value, 19, true, w - 22), x + 12, y + 43, 19, true, C.ink);
       if (k.sub) P.text(fit(P, k.sub, 7.8, false, w - 22), x + 12, y + 57, 7.8, false, C.dim);
     }
@@ -318,11 +310,11 @@
     var gx = land ? colR + 26 : M, gw = R - gx, items = [c.g0, c.g1, c.g2].filter(function (s) { return clean(s).trim(); });
     if (items.length) {
       P.text('AT A GLANCE', gx, gy, 9, true, C.dim);
-      var yy = gy + 18, dots = [C.red, C.green, C.blue];
+      var yy = gy + 18;
       items.forEach(function (s, i) {
         var ls = wrap(P, s, 10.3, false, gw - 16, land ? 3 : 3);
-        P.circle(gx + 3.5, yy - 3.4, 3, dots[i % 3]);
-        ls.forEach(function (l, k) { P.text(l, gx + 14, yy + k * 13.5, 10.3, false, '#2A3142'); });
+        P.circle(gx + 3.5, yy - 3.4, 2.5, C.mut);
+        ls.forEach(function (l, k) { P.text(l, gx + 14, yy + k * 13.5, 10.3, false, C.ink2); });
         yy += ls.length * 13.5 + 7 + e * 0.03;
       });
     }
@@ -336,11 +328,11 @@
       P.text(x[0], M + i * cw, my + 20, 7.6, false, C.dim);
       P.text(fit(P, x[1], 10, true, cw - 12), M + i * cw, my + 35, 10, true, C.ink);
     });
-    P.rect(0, fy, W, 34, {fill: C.navy});
-    P.text('CodeTantra Reports', M, fy + 21, 8.2, true, '#E8ECF8');
+    P.rect(0, fy, W, 34, {fill: C.ink});
+    P.text('CodeTantra Reports', M, fy + 21, 8.2, true, '#F7F5F0');
     var cw2 = P.width('CodeTantra Reports', 8.2, true);
-    P.text(' · ' + TOOL_NAME, M + cw2, fy + 21, 8.2, false, '#98A3C2');
-    P.text('Cover', R, fy + 21, 8.2, false, '#98A3C2', 'right');
+    P.text(' · ' + TOOL_NAME, M + cw2, fy + 21, 8.2, false, '#A3A7AE');
+    P.text('Cover', R, fy + 21, 8.2, false, '#A3A7AE', 'right');
     return contentBottom;
   }
 
@@ -488,37 +480,37 @@
   /* ===================== the "Cover page" drawer ===================== */
   var css = document.createElement('style');
   css.textContent =
-    '.ct-cover-btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border-radius:10px;margin-left:auto;' +
-      'font:600 13px/1 Inter,system-ui,sans-serif;color:#FFC94D;background:rgba(242,140,40,.12);box-shadow:inset 0 0 0 1px rgba(242,140,40,.4);white-space:nowrap;transition:background .2s}' +
-    '.ct-cover-btn:hover{background:rgba(242,140,40,.2)}.ct-cover-btn:focus-visible{outline:2px solid #FFC94D;outline-offset:2px}.ct-cover-btn[hidden]{display:none}' +
+    '.ct-cover-btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border-radius:8px;margin-left:auto;' +
+      'font:600 13px/1 Inter,system-ui,sans-serif;color:#ECEAE4;background:#23262D;box-shadow:inset 0 0 0 1px #3A3F48;white-space:nowrap;transition:background .2s}' +
+    '.ct-cover-btn:hover{background:#2C3038}.ct-cover-btn:focus-visible{outline:2px solid #F08A4B;outline-offset:2px}.ct-cover-btn[hidden]{display:none}' +
     '.ct-cover-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
-    '.ct-cover-btn i{font-style:normal;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.08);color:#98A3C2}' +
-    '[data-mode="light"] .ct-cover-btn{color:#B45F06;background:#FFF4E6;box-shadow:inset 0 0 0 1px #F5C98A}[data-mode="light"] .ct-cover-btn i{background:#fff;color:#5B6475}' +
+    '.ct-cover-btn i{font-style:normal;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.08);color:#A3A7AE}' +
+    '[data-mode="light"] .ct-cover-btn{color:#1C1F26;background:#FFFFFF;box-shadow:inset 0 0 0 1px #D6D2C8}[data-mode="light"] .ct-cover-btn:hover{background:#F1EEE7}[data-mode="light"] .ct-cover-btn i{background:#fff;color:#5E6470}' +
     '.ccd{position:fixed;inset:0;z-index:10060;display:none;font:400 14px/1.45 Inter,system-ui,sans-serif}.ccd.on{display:block}' +
     '.ccd-bg{position:absolute;inset:0;background:rgba(5,8,18,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}' +
-    '.ccd-p{position:absolute;top:0;right:0;bottom:0;width:min(520px,100%);display:flex;flex-direction:column;background:#10172C;color:#E8ECF8;border-left:1px solid #2E3A5E;box-shadow:-30px 0 80px -30px rgba(0,0,0,.8)}' +
-    '.ccd-h{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #232C48}.ccd-h b{flex:1;font:600 16px/1.2 Sora,Inter,sans-serif}' +
-    '.ccd-x{all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;border-radius:9px;color:#98A3C2;font-size:22px}.ccd-x:hover{background:rgba(255,255,255,.06);color:#fff}' +
+    '.ccd-p{position:absolute;top:0;right:0;bottom:0;width:min(520px,100%);display:flex;flex-direction:column;background:#1C1F25;color:#ECEAE4;border-left:1px solid #3A3F48;box-shadow:-30px 0 80px -30px rgba(0,0,0,.8)}' +
+    '.ccd-h{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #2C3038}.ccd-h b{flex:1;font:600 16px/1.2 Sora,Inter,sans-serif}' +
+    '.ccd-x{all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;border-radius:9px;color:#A3A7AE;font-size:22px}.ccd-x:hover{background:rgba(255,255,255,.06);color:#fff}' +
     '.ccd-s{flex:1;overflow:auto;padding:16px 18px 24px}' +
     '.ccd-prev{display:block;width:100%;border-radius:10px;background:#fff;box-shadow:0 16px 40px -20px rgba(0,0,0,.8);margin-bottom:6px}' +
-    '.ccd-note{font-size:12px;color:#6B7596;margin:0 0 14px}' +
-    '.ccd-on{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid #232C48;margin-bottom:16px;font-weight:600}' +
-    '.ccd-on input{width:18px;height:18px;accent-color:#F28C28}' +
-    '.ccd fieldset{border:0;margin:0 0 16px;padding:0}.ccd legend{font:600 11.5px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8FA9FF;margin-bottom:10px}' +
-    '.ccd label{display:block;font-size:12.5px;color:#98A3C2;margin:0 0 10px}' +
-    '.ccd input[type=text],.ccd textarea{display:block;width:100%;box-sizing:border-box;margin-top:5px;padding:8px 10px;border-radius:9px;border:1px solid #2E3A5E;background:#0E1529;color:#E8ECF8;font:400 13.5px/1.4 Inter,system-ui,sans-serif;resize:vertical}' +
-    '.ccd input[type=text]:focus,.ccd textarea:focus{outline:2px solid #4F7CFF;outline-offset:0;border-color:transparent}' +
+    '.ccd-note{font-size:12px;color:#878C94;margin:0 0 14px}' +
+    '.ccd-on{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid #2C3038;margin-bottom:16px;font-weight:600}' +
+    '.ccd-on input{width:18px;height:18px;accent-color:#F08A4B}' +
+    '.ccd fieldset{border:0;margin:0 0 16px;padding:0}.ccd legend{font:600 11.5px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A3A7AE;margin-bottom:10px}' +
+    '.ccd label{display:block;font-size:12.5px;color:#A3A7AE;margin:0 0 10px}' +
+    '.ccd input[type=text],.ccd textarea{display:block;width:100%;box-sizing:border-box;margin-top:5px;padding:8px 10px;border-radius:9px;border:1px solid #3A3F48;background:#1A1C21;color:#ECEAE4;font:400 13.5px/1.4 Inter,system-ui,sans-serif;resize:vertical}' +
+    '.ccd input[type=text]:focus,.ccd textarea:focus{outline:2px solid #F08A4B;outline-offset:0;border-color:transparent}' +
     '.ccd .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}' +
     '.ccd .logo{display:flex;align-items:center;gap:10px;margin:5px 0 10px}.ccd .logo img{max-width:90px;max-height:44px;border-radius:6px;background:#fff;padding:3px}' +
-    '.ccd .logo button,.ccd-f button{all:unset;cursor:pointer;font:600 12.5px/1 Inter,sans-serif;padding:8px 11px;border-radius:9px;border:1px solid #2E3A5E;color:#C9D1E8}' +
+    '.ccd .logo button,.ccd-f button{all:unset;cursor:pointer;font:600 12.5px/1 Inter,sans-serif;padding:8px 11px;border-radius:9px;border:1px solid #3A3F48;color:#ECEAE4}' +
     '.ccd .logo button:hover,.ccd-f button:hover{background:rgba(255,255,255,.06)}' +
-    '.ccd-f{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:12px 18px;border-top:1px solid #232C48}' +
-    '.ccd-f .go{background:linear-gradient(135deg,#FFB547,#F28C28);color:#1A1004;border:0}' +
-    '[data-mode="light"] .ccd-bg{background:rgba(26,31,43,.3)}[data-mode="light"] .ccd-p{background:#fff;color:#1A1F2B;border-left-color:#E4E7EC}' +
-    '[data-mode="light"] .ccd-h,[data-mode="light"] .ccd-f{border-color:#EEF0F4}[data-mode="light"] .ccd label{color:#5B6475}' +
-    '[data-mode="light"] .ccd input[type=text],[data-mode="light"] .ccd textarea{background:#F7F8FB;border-color:#E4E7EC;color:#1A1F2B}' +
-    '[data-mode="light"] .ccd legend{color:#2952D9}[data-mode="light"] .ccd-on{background:#F7F8FB;border-color:#E4E7EC}' +
-    '[data-mode="light"] .ccd .logo button,[data-mode="light"] .ccd-f button{border-color:#E4E7EC;color:#3A4254}[data-mode="light"] .ccd-prev{box-shadow:0 10px 30px -16px rgba(26,31,43,.5);outline:1px solid #E4E7EC}' +
+    '.ccd-f{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:12px 18px;border-top:1px solid #2C3038}' +
+    '.ccd-f .go{background:#F08A4B;color:#15171C;border:0}[data-mode="light"] .ccd-f .go{background:#C2410C;color:#FFFFFF}' +
+    '[data-mode="light"] .ccd-bg{background:rgba(28,31,38,.3)}[data-mode="light"] .ccd-p{background:#fff;color:#1C1F26;border-left-color:#E3E0D8}' +
+    '[data-mode="light"] .ccd-h,[data-mode="light"] .ccd-f{border-color:#F1EEE7}[data-mode="light"] .ccd label{color:#5E6470}' +
+    '[data-mode="light"] .ccd input[type=text],[data-mode="light"] .ccd textarea{background:#F1EEE7;border-color:#E3E0D8;color:#1C1F26}' +
+    '[data-mode="light"] .ccd legend{color:#5E6470}[data-mode="light"] .ccd input[type=text]:focus,[data-mode="light"] .ccd textarea:focus{outline-color:#C2410C}[data-mode="light"] .ccd-on input{accent-color:#C2410C}[data-mode="light"] .ccd-on{background:#F1EEE7;border-color:#E3E0D8}' +
+    '[data-mode="light"] .ccd .logo button,[data-mode="light"] .ccd-f button{border-color:#E3E0D8;color:#1C1F26}[data-mode="light"] .ccd-prev{box-shadow:0 10px 30px -16px rgba(28,31,38,.5);outline:1px solid #E3E0D8}' +
     '@media print{.ct-cover-btn,.ccd{display:none!important}}';
   document.head.appendChild(css);
 

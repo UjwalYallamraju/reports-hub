@@ -1,47 +1,47 @@
 /* Single test report: dark skin. */
 :root{
-  --ink:#E8ECF8; --ink2:#98A3C2; --muted:#7D88AA; --paper:#0B1020; --card:#121A30; --line:#232C48;
-  --pass:#19C39C; --pass2:#6CCB9F; --amber:#F2B254; --fail:#FF6B6B; --accent:#4F7CFF; --accent-ink:#FFFFFF;
+  --ink:#ECEAE4; --ink2:#A3A7AE; --muted:#878C94; --paper:#15171C; --card:#1C1F25; --line:#2C3038;
+  --pass:#6DBE95; --pass2:#4C8F6E; --amber:#D9A441; --fail:#E2716A; --accent:#F08A4B; --data:#7FA6CF; --accent-ink:#15171C;
   --radius:14px;
 }
-.top{background:rgba(18,26,48,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top{background:#1C1F25;border-bottom:1px solid var(--line)}
 .brand{font-family:Sora,Inter,sans-serif}
 .home{border-color:var(--ct-line2);border-radius:10px}
 .home:hover{background:var(--ct-blue-soft);border-color:var(--ct-blue)}
 .tag{color:var(--ct-muted)}
 
-.landing h1{font-size:clamp(30px,4vw,44px);background:linear-gradient(100deg,#E8ECF8 30%,#8FA9FF 70%,#5FE0BF);-webkit-background-clip:text;background-clip:text;color:transparent}
-.drop{background:rgba(18,26,48,.6);border-color:#3A4A7A;border-radius:18px;transition:background .2s,border-color .2s,box-shadow .3s}
-.drop:hover,.drop.over{background:var(--ct-blue-soft);border-color:var(--ct-blue);box-shadow:var(--ct-glow)}
-.err{color:var(--ct-red-ink);background:var(--ct-red-soft);border-color:rgba(255,107,107,.4)}
+.landing h1{font-size:clamp(30px,4vw,44px);background:none;color:#ECEAE4}
+.drop{background:rgba(28,31,37,.6);border-color:#3A3F48;border-radius:12px;transition:background .2s,border-color .2s,box-shadow .3s}
+.drop:hover,.drop.over{background:var(--ct-blue-soft);border-color:var(--ct-blue);box-shadow:none}
+.err{color:var(--ct-red-ink);background:var(--ct-red-soft);border-color:rgba(226,113,106,.4)}
 
-.panel,.hero,.sec,.kpi{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),var(--card);box-shadow:0 18px 50px -30px rgba(0,0,0,.8)}
+.panel,.hero,.sec,.kpi{background:var(--card);box-shadow:none}
 .panel h2{font-family:Sora,Inter,sans-serif}
 .file-row{background:var(--ct-field);border-color:var(--line)}
 .linkbtn,.add-file{color:var(--ct-blue-ink)}
 label.f input[type=text],label.f input[type=number],label.f input[type=date],label.f select,.field{background:var(--ct-field);border-color:var(--ct-line2);color:var(--ct-ink)}
-label.f input:focus,label.f select:focus,.field:focus{border-color:var(--ct-blue);box-shadow:0 0 0 3px rgba(79,124,255,.25);outline:none}
-.btn{border-radius:11px;background:linear-gradient(135deg,#4F7CFF,#3A5DE0);border-color:transparent;box-shadow:var(--ct-glow);transition:transform .2s ease,filter .2s ease}
+label.f input:focus,label.f select:focus,.field:focus{border-color:var(--ct-blue);box-shadow:0 0 0 3px rgba(240,138,75,.25);outline:none}
+.btn{border-radius:8px;background:#F08A4B;border-color:transparent;box-shadow:none;transition:transform .2s ease,filter .2s ease}
 .btn:hover{transform:translateY(-1px)}
-.btn.alt{background:transparent;color:var(--ct-blue-ink);border:1px solid rgba(79,124,255,.55);box-shadow:none}
+.btn.alt{background:transparent;color:var(--ct-blue-ink);border:1px solid rgba(240,138,75,.55);box-shadow:none}
 .btn.alt:hover{background:var(--ct-blue-soft)}
 
 .titleblock h1{font-size:30px}
-.kpi{border-left-width:3px;border-left-color:var(--ct-blue)}
+.kpi{border-left-width:3px;border-left-color:#ECEAE4}
 .kpi.good{border-left-color:var(--ct-mint)}.kpi.bad{border-left-color:var(--ct-red)}.kpi.warn{border-left-color:var(--ct-amber)}
 .kpi .v{font-family:Sora,Inter,sans-serif}
-.bandbar{background:#1B2440}
+.bandbar{background:#23262D}
 
 th,td{border-bottom-color:var(--line)}
-th{background:#18203A;color:var(--ct-muted)}
+th{background:#202329;color:var(--ct-muted)}
 th button:hover{color:var(--ct-blue-ink)}
-tr:hover td{background:rgba(79,124,255,.07)}
-.mini{background:#1E2746}
+tr:hover td{background:rgba(255,255,255,.03)}
+.mini{background:#262A31}
 .pill.p{background:var(--ct-mint-soft);color:var(--ct-mint-ink)}
 .pill.f{background:var(--ct-red-soft);color:var(--ct-red-ink)}
-.pill.n{background:#1E2746;color:var(--ct-muted)}
-.warnnote{color:#FFD38A;background:var(--ct-amber-soft);border-color:rgba(242,178,84,.4)}
+.pill.n{background:#262A31;color:var(--ct-muted)}
+.warnnote{color:#E8C27A;background:var(--ct-amber-soft);border-color:rgba(217,164,65,.4)}
 
 /* charts drawn in SVG by the tool: track and label colours */
-svg rect[fill="#EEF0F3"]{fill:#1E2746}
-svg text[fill="#1A1F2B"]{fill:#0B1020}
+svg rect[fill="#F1EEE7"]{fill:#262A31}
+svg text[fill="#1C1F26"]{fill:#15171C}

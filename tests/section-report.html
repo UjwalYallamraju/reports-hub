@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Section-wise test analysis · CodeTantra Reports</title>
 <meta name="description" content="Section scores, sectional cut-offs and mock-to-mock comparison for one CodeTantra test, with a full PDF and one PDF per group.">
-<meta name="theme-color" content="#0B1020">
+<meta name="theme-color" content="#F7F5F0">
 <link rel="icon" type="image/png" sizes="32x32" href="../shared/brand/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="../shared/brand/favicon-64.png">
 <link rel="apple-touch-icon" href="../shared/brand/apple-touch-icon.png">
@@ -14,24 +14,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#FAFBFC; --panel:#FFFFFF; --ink:#1A1F2B; --muted:#5B6475; --line:#E4E7EC; --soft:#F5F7F9;
-  --brand:#3366FF; --brand-soft:#B8C7F0; --pass:#0F936C; --fail:#E0524F; --focus:#3366FF; --onbrand:#fff;
-  --b1:#0F936C; --b2:#6CCB9F; --b3:#E8A33D; --b4:#F08A5D; --b5:#E0524F;
+  --bg:#F7F5F0; --panel:#FFFFFF; --ink:#1C1F26; --muted:#5E6470; --line:#E3E0D8; --soft:#F1EEE7;
+  --brand:#C2410C; --data:#2F5D8A; --brand-soft:#D6D2C8; --pass:#2E7D5B; --fail:#B3261E; --focus:#C2410C; --onbrand:#fff;
+  --b1:#2E7D5B; --b2:#7FB59A; --b3:#B7791F; --b4:#A65A2E; --b5:#B3261E;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0D141D; --panel:#151F2C; --ink:#E6ECF3; --muted:#94A3B5; --line:#263344; --soft:#1A2636;
-    --brand:#8AA8FF; --brand-soft:#33465F; --pass:#3CC3A3; --fail:#F0805F; --focus:#7AA7FF; --onbrand:#0D141D;
-    --b1:#3CC3A3; --b2:#77C2A8; --b3:#E8A33D; --b4:#EE9460; --b5:#F0805F;
-  }
-}
 :root[data-theme="dark"]{
   --bg:#0D141D; --panel:#151F2C; --ink:#E6ECF3; --muted:#94A3B5; --line:#263344; --soft:#1A2636;
   --brand:#8AA8FF; --brand-soft:#33465F; --pass:#3CC3A3; --fail:#F0805F; --focus:#7AA7FF; --onbrand:#0D141D;
-  --b1:#3CC3A3; --b2:#77C2A8; --b3:#E8A33D; --b4:#EE9460; --b5:#F0805F;
+  --b1:#3CC3A3; --b2:#77C2A8; --b3:#B7791F; --b4:#EE9460; --b5:#F0805F;
 }
 html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
 *,*::before,*::after{box-sizing:inherit}
@@ -45,7 +38,6 @@ button,input,select{font:inherit;color:inherit}
 .bar b{font-family:"Bricolage Grotesque",sans-serif;font-size:17px;font-weight:700}
 .btn{border:1px solid var(--brand);background:var(--brand);color:#fff;padding:9px 16px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap}
 :root[data-theme="dark"] .btn.primary{color:#0D141D}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#0D141D}}
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn:not(:disabled):hover{filter:brightness(1.08)}
@@ -79,7 +71,7 @@ label.f input,label.f select{background:var(--bg);border:1px solid var(--line);b
 .hint{font-size:12.5px;color:var(--muted)}
 .failc{color:var(--fail);font-weight:600}
 #grpSel{padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;min-width:200px;max-width:100%}
-.grp{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:20px 0 6px;padding:6px 10px;background:var(--soft);border-left:3px solid var(--brand);border-radius:4px}
+.grp{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:20px 0 6px;padding:6px 10px;background:var(--soft);border-left:3px solid var(--ink);border-radius:0}
 .grp:first-child,.cathead+.grp{margin-top:0}
 .grp b{font:700 15px "Bricolage Grotesque",sans-serif}
 .grp span{color:var(--muted);font-size:13px}
@@ -87,7 +79,7 @@ label.f input,label.f select{background:var(--bg);border:1px solid var(--line);b
 
 /* report */
 #report{display:none}
-.rhead{padding:8px 0 20px;border-bottom:2px solid var(--brand);margin-bottom:24px}
+.rhead{padding:8px 0 20px;border-bottom:2px solid var(--ink);margin-bottom:24px}
 .rhead h2{font-size:clamp(26px,4vw,36px);font-weight:700}
 .rhead p{margin:6px 0 0;color:var(--muted)}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -102,7 +94,7 @@ section.blk>h3{font-size:22px;margin-bottom:12px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
 ul.find{margin:0;padding:0;list-style:none;display:grid;gap:10px}
 ul.find li{padding-left:18px;position:relative}
-ul.find li::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--brand)}
+ul.find li::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--muted)}
 .two{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 .scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}
@@ -111,10 +103,10 @@ th:first-child,td:first-child,th.l,td.l{text-align:left}
 th{font-weight:600;color:var(--muted);font-size:13px;background:var(--soft)}
 tr:last-child td{border-bottom:0}
 .mini{display:inline-block;vertical-align:middle;width:70px;height:7px;background:var(--soft);border-radius:4px;margin-left:8px;overflow:hidden;border:1px solid var(--line)}
-.mini>i{display:block;height:100%;background:var(--brand)}
+.mini>i{display:block;height:100%;background:var(--data)}
 .hbar{display:grid;grid-template-columns:minmax(120px,190px) 1fr auto;gap:12px;align-items:center;padding:7px 0}
 .hbar .t{height:14px;background:var(--soft);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
-.hbar .t i{display:block;height:100%;background:var(--brand);border-radius:7px}
+.hbar .t i{display:block;height:100%;background:var(--data);border-radius:7px}
 .hbar .v{font-size:13.5px;color:var(--muted);min-width:130px;text-align:right}
 .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
 .tabs button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px}
@@ -353,10 +345,10 @@ function analyse(cutoff, sub, full){
   // performer categories
   const adv = state.data.adv, avgMin = state.data.avgMin;
   const defs = [
-    {label:'Advanced', col:'--b1', rgb:[15,147,108], range:`${fmt(adv)} marks and above`},
-    {label:'Good', col:'--b2', rgb:[108,203,159], range:`${fmt(cutoff)} to under ${fmt(adv)} marks`},
-    {label:'Average', col:'--b3', rgb:[232,163,61], range:`${fmt(avgMin)} to under ${fmt(cutoff)} marks`},
-    {label:'Needs focus', col:'--b5', rgb:[224,82,79], range:`under ${fmt(avgMin)} marks`}];
+    {label:'Advanced', col:'--b1', rgb:[46,125,91], range:`${fmt(adv)} marks and above`},
+    {label:'Good', col:'--b2', rgb:[127,181,154], range:`${fmt(cutoff)} to under ${fmt(adv)} marks`},
+    {label:'Average', col:'--b3', rgb:[183,121,31], range:`${fmt(avgMin)} to under ${fmt(cutoff)} marks`},
+    {label:'Needs focus', col:'--b5', rgb:[179,38,30], range:`under ${fmt(avgMin)} marks`}];
   defs.forEach(x => x.list = []);
   a.sorted.forEach(c => { defs[c.total >= adv ? 0 : c.total >= cutoff ? 1 : c.total >= avgMin ? 2 : 3].list.push(c); });
   a.bands = defs.map(x => ({...x, n:x.list.length, pct:pctOf(x.list.length, a.att)}));
@@ -587,7 +579,7 @@ function render(){
 }
 
 /* ---------- PDF ---------- */
-const NAVY=[51,102,255], INK=[26,31,43], MUTED=[91,100,117], LIGHT=[245,247,249], LINE=[228,231,236], PASS=[15,147,108], FAIL=[224,82,79];
+const NAVY=[28,31,38], DATA=[47,93,138], INK=[28,31,38], MUTED=[94,100,112], LIGHT=[241,238,231], LINE=[227,224,216], PASS=[46,125,91], FAIL=[179,38,30];
 const pt = s => String(s).replace(/[\u2013\u2014]/g,'-').replace(/\u2265/g,'>=').replace(/[^\x20-\x7E\u00A0-\u00FF]/g,'?');
 
 function buildPdf(a = state.a, group = null){
@@ -611,7 +603,7 @@ function buildPdf(a = state.a, group = null){
   doc.setFillColor(...NAVY); doc.rect(0,0,W,46,'F');
   doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(21); doc.text(pt(m.title), M, 20, {maxWidth:CW});
   doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.text(pt([m.test || state.fileName, group !== null ? 'Group: ' + grpLabel(group) : ''].filter(Boolean).join('   |   ')), M, 29, {maxWidth:CW});
-  doc.setFontSize(9.5); doc.setTextColor(201,214,255); doc.text(pt([m.org,m.date].filter(Boolean).join('   |   ')), M, 38, {maxWidth:CW});
+  doc.setFontSize(9.5); doc.setTextColor(214,210,200); doc.text(pt([m.org,m.date].filter(Boolean).join('   |   ')), M, 38, {maxWidth:CW});
   y = 56;
 
   // KPIs
@@ -663,7 +655,7 @@ function buildPdf(a = state.a, group = null){
   ensure(80);
   const cx0 = M+4, cw = CW-8, top = y+8, chH = 48, base = top+chH, bw = cw/10, mx = Math.max(...a.hist,1), cutPct = pctOf(a.cutoff,a.totalMax);
   a.hist.forEach((n,i)=>{ const hh = n/mx*chH, x = cx0 + i*bw + bw*.14;
-    doc.setFillColor(...(i*10>=cutPct ? PASS : [184,199,240])); if (hh>0) doc.roundedRect(x, base-hh, bw*.72, hh, .8, .8, 'F');
+    doc.setFillColor(...(i*10>=cutPct ? PASS : [214,210,200])); if (hh>0) doc.roundedRect(x, base-hh, bw*.72, hh, .8, .8, 'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...INK); doc.text(String(n), x+bw*.36, base-hh-1.5, {align:'center'});
     doc.setFont('helvetica','normal'); doc.setFontSize(6.8); doc.setTextColor(...MUTED); doc.text(`${fmt(i*10*a.totalMax/100)}-${fmt((i+1)*10*a.totalMax/100)}`, x+bw*.36, base+4.5, {align:'center'}); });
   doc.setDrawColor(...LINE); doc.setLineWidth(.3); doc.line(cx0, base, cx0+cw, base);
@@ -687,7 +679,7 @@ function buildPdf(a = state.a, group = null){
   ensure(a.sec.length*9 + 10);
   a.sec.forEach(s => { doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...INK); doc.text(pt(s.name), M, y+3.6, {maxWidth:50});
     doc.setFillColor(...LIGHT); doc.setDrawColor(...LINE); doc.setLineWidth(.2); doc.roundedRect(M+52, y, 78, 4.6, 1.2, 1.2, 'FD');
-    doc.setFillColor(...NAVY); if (s.avgPct>0) doc.roundedRect(M+52, y, Math.max(2,78*Math.min(100,s.avgPct)/100), 4.6, 1.2, 1.2, 'F');
+    doc.setFillColor(...DATA); if (s.avgPct>0) doc.roundedRect(M+52, y, Math.max(2,78*Math.min(100,s.avgPct)/100), 4.6, 1.2, 1.2, 'F');
     doc.setFontSize(8.5); doc.setTextColor(...MUTED); doc.text(`${fmt(s.avg)} / ${fmt(s.max)}  (${fp(s.avgPct)})`, M+CW, y+3.6, {align:'right'}); y += 9; });
   y += 2;
   const secPerfPdf = x => tbl({ head:[['Section','Max marks','Average','Scored above 0','Scored zero','Full marks']], body:x.sec.map(s=>[pt(s.name), fmt(s.max), fmt(s.avg), `${s.pos} (${fp(s.posPct)})`, s.zero, s.full]),

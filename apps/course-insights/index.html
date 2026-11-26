@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Course progress insights · CodeTantra Reports</title>
     <meta name="description" content="Course completion analytics for CodeTantra group-wise course exports, by section, with student lists and a PDF or HTML report.">
-    <meta name="theme-color" content="#0B1020">
+    <meta name="theme-color" content="#F7F5F0">
     <link rel="icon" type="image/png" sizes="32x32" href="../../shared/brand/favicon-32.png" vite-ignore>
     <link rel="icon" type="image/png" sizes="64x64" href="../../shared/brand/favicon-64.png" vite-ignore>
     <link rel="apple-touch-icon" href="../../shared/brand/apple-touch-icon.png" vite-ignore>
@@ -14,14 +14,12 @@
 <link rel="stylesheet" href="../../shared/fx.css" vite-ignore />
     <style>
       /* shell colours for App.jsx; light mode is html[data-mode="light"] (hub-nav.js) */
-      :root{--cip-bg:#0B1020;--cip-text:#E8ECF8;--cip-muted:#98A3C2;--cip-field:#0E1529;--cip-line:#2E3A5E;--cip-line2:#232C48;
-        --cip-panel:rgba(255,255,255,0.04);--cip-bar:rgba(18,26,48,0.55);--cip-card:rgba(18,26,48,0.7);
-        --cip-paper-shadow:0 30px 80px -30px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.06);
-        --cip-shell:radial-gradient(900px 600px at 8% -10%,rgba(43,75,214,0.28),transparent 60%),radial-gradient(800px 600px at 100% 110%,rgba(14,143,116,0.2),transparent 60%),#0B1020}
-      [data-mode="light"]{--cip-bg:#F6F8FC;--cip-text:#1A1F2B;--cip-muted:#5B6475;--cip-field:#FFFFFF;--cip-line:#D9DEE7;--cip-line2:#E4E7EC;
-        --cip-panel:#FFFFFF;--cip-bar:rgba(255,255,255,0.8);--cip-card:#FFFFFF;
-        --cip-paper-shadow:0 1px 2px rgba(26,31,43,0.05),0 18px 48px -24px rgba(26,31,43,0.3),0 0 0 1px #E4E7EC;
-        --cip-shell:radial-gradient(900px 600px at 8% -10%,rgba(191,208,255,0.55),transparent 60%),radial-gradient(800px 600px at 100% 110%,rgba(189,235,221,0.5),transparent 60%),#F6F8FC}
+      :root{--cip-bg:#15171C;--cip-text:#ECEAE4;--cip-muted:#A3A7AE;--cip-field:#1A1C21;--cip-line:#3A3F48;--cip-line2:#2C3038;
+        --cip-panel:#1C1F25;--cip-bar:#1C1F25;--cip-card:#1C1F25;--cip-paper-shadow:0 0 0 1px #2C3038;--cip-shell:#15171C;
+        --cip-action:#F08A4B;--cip-on-action:#15171C;--cip-icon:#6DBE95;--cip-danger:#EC8F89}
+      [data-mode="light"]{--cip-bg:#F7F5F0;--cip-text:#1C1F26;--cip-muted:#5E6470;--cip-field:#FFFFFF;--cip-line:#D6D2C8;--cip-line2:#E3E0D8;
+        --cip-panel:#FFFFFF;--cip-bar:#FFFFFF;--cip-card:#FFFFFF;--cip-paper-shadow:0 0 0 1px #E3E0D8;--cip-shell:#F7F5F0;
+        --cip-action:#C2410C;--cip-on-action:#FFFFFF;--cip-icon:#2E7D5B;--cip-danger:#B3261E}
       /* phones: wide report tables scroll sideways inside the report instead of widening the page */
       @media (max-width:640px){.cip-page{padding:22px 16px !important;overflow-x:auto}.cip-page .cip-table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}}
     </style>

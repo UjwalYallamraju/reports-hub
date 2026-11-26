@@ -1,36 +1,32 @@
-/* CodeTantra Reports: shared dark skin for the tool pages.
+/* CodeTantra Reports: shared dark (charcoal) skin for the tool pages, used in dark mode only.
    Loaded after each tool's own styles. Only colours, type, surfaces and motion change here;
    layouts, logic and the PDFs stay exactly as each tool builds them. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap');
 
 :root{
   color-scheme:dark;
-  --ct-bg:#0B1020; --ct-panel:#121A30; --ct-panel2:#172041; --ct-field:#0E1529;
-  --ct-line:#232C48; --ct-line2:#2E3A5E;
-  --ct-ink:#E8ECF8; --ct-muted:#98A3C2; --ct-dim:#6B7596;
-  --ct-blue:#4F7CFF; --ct-blue-ink:#8FA9FF; --ct-blue-soft:rgba(79,124,255,.15);
-  --ct-mint:#19C39C; --ct-mint-ink:#5FE0BF; --ct-mint-soft:rgba(25,195,156,.15);
-  --ct-amber:#F2B254; --ct-amber-soft:rgba(242,178,84,.15);
-  --ct-red:#FF6B6B; --ct-red-ink:#FF8E8E; --ct-red-soft:rgba(255,107,107,.15);
-  --ct-glow:0 0 0 1px rgba(79,124,255,.35),0 10px 34px -10px rgba(79,124,255,.55);
+  --ct-bg:#15171C; --ct-panel:#1C1F25; --ct-panel2:#23262D; --ct-field:#1A1C21;
+  --ct-line:#2C3038; --ct-line2:#3A3F48;
+  --ct-ink:#ECEAE4; --ct-muted:#A3A7AE; --ct-dim:#878C94;
+  --ct-blue:#F08A4B; --ct-blue-ink:#F08A4B; --ct-blue-soft:rgba(240,138,75,.15);
+  --ct-mint:#6DBE95; --ct-mint-ink:#6DBE95; --ct-mint-soft:rgba(109,190,149,.15);
+  --ct-amber:#D9A441; --ct-amber-soft:rgba(217,164,65,.15);
+  --ct-red:#E2716A; --ct-red-ink:#EC8F89; --ct-red-soft:rgba(226,113,106,.15);
+  --ct-glow:none;
 }
 
 html{background:var(--ct-bg)}
 body{
   font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif!important;
-  background:
-    radial-gradient(900px 600px at 8% -10%,rgba(43,75,214,.28),transparent 60%),
-    radial-gradient(800px 600px at 100% 110%,rgba(14,143,116,.20),transparent 60%),
-    var(--ct-bg)!important;
-  background-attachment:fixed!important;
+  background:var(--ct-bg)!important;
   color:var(--ct-ink);
 }
 h1,h2,h3{font-family:Sora,Inter,system-ui,sans-serif;letter-spacing:-.015em}
-::selection{background:rgba(79,124,255,.45);color:#fff}
+::selection{background:rgba(240,138,75,.35);color:#ECEAE4}
 :focus-visible{outline-color:var(--ct-blue-ink)!important}
-*{scrollbar-color:#2E3A5E transparent}
+*{scrollbar-color:#3A3F48 transparent}
 ::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-thumb{background:#2E3A5E;border-radius:99px;border:2px solid var(--ct-bg)}
+::-webkit-scrollbar-thumb{background:#3A3F48;border-radius:99px;border:2px solid var(--ct-bg)}
 ::-webkit-scrollbar-track{background:transparent}
 input,select,textarea{color-scheme:dark}
 input::placeholder,textarea::placeholder{color:var(--ct-dim)}

@@ -14,21 +14,23 @@ const DropIcon = () => (
 );
 
 // ---------- constants ----------
-const NAVY = "#1A1F2B";
-const NAVY_SOFT = "#3366FF";
+// "Report paper" palette, shared with the rest of the site: ink on paper, quiet data colours.
+// The burnt-orange action colour is only for things you can click (var(--cip-action)).
+const NAVY = "#1C1F26";
+const NAVY_SOFT = "#2F5D8A"; // data blue (the "good" band)
 const NAVY_DEEP = "#FFFFFF";
-const MIST = "#5B6475";
-const GOLD = "#0F936C";
-const GOLD_SOFT = "#12A87B";
-const PAPER = "#FAFBFC";
-const PAPER_LINE = "#E4E7EC";
-const INK = "#1A1F2B";
-const SLATE = "#5B6475";
-const GREEN = "#12A87B";
-const RUST = "#E0524F";
-// Amber marks "average" and warnings, kept separate from the mint brand colour.
-const AMBER = "#E8A33D";
-const AMBER_DEEP = "#B97A12";
+const MIST = "#5E6470";
+const GOLD = "#2E7D5B";
+const GOLD_SOFT = "var(--cip-icon)"; // icons and accents in the upload area (follows light / dark)
+const PAPER = "#FFFFFF";
+const PAPER_LINE = "#E3E0D8";
+const INK = "#1C1F26";
+const SLATE = "#5E6470";
+const GREEN = "#2E7D5B";
+const RUST = "#B3261E";
+// Amber marks "average" and warnings.
+const AMBER = "#B7791F";
+const AMBER_DEEP = "#8F5E12";
 
 // Dark app shell around the light report "paper" (the report and its PDF/HTML exports stay light).
 // Shell colours come from CSS variables (index.html) so the page follows light/dark mode.
@@ -254,7 +256,7 @@ function StatCard({ icon: Icon, label, value, sub, accent }) {
     <div style={{
       background: "#fff", border: `1px solid ${PAPER_LINE}`, borderRadius: 4,
       padding: "18px 20px", flex: "1 1 160px", minWidth: 160,
-      borderTop: `3px solid ${accent || GOLD}`,
+      borderTop: `3px solid ${accent || INK}`,
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, color: SLATE, fontSize: 12, letterSpacing: 0.3 }}>
         <Icon size={14} />
@@ -330,9 +332,9 @@ function BarRows({ rows, labelWidth = 200, flagThreshold }) {
               {r.label}
             </div>
             <div style={{
-              flex: 1, background: "#F1F3F6", borderRadius: 3, height: 18, position: "relative",
+              flex: 1, background: "#F1EEE7", borderRadius: 3, height: 18, position: "relative",
               overflow: "hidden",
-              backgroundImage: "linear-gradient(to right, transparent 24.6%, #E4E7EC 24.6%, #E4E7EC 25.2%, transparent 25.2%, transparent 49.6%, #E4E7EC 49.6%, #E4E7EC 50.2%, transparent 50.2%, transparent 74.6%, #E4E7EC 74.6%, #E4E7EC 75.2%, transparent 75.2%)",
+              backgroundImage: "linear-gradient(to right, transparent 24.6%, #E3E0D8 24.6%, #E3E0D8 25.2%, transparent 25.2%, transparent 49.6%, #E3E0D8 49.6%, #E3E0D8 50.2%, transparent 50.2%, transparent 74.6%, #E3E0D8 74.6%, #E3E0D8 75.2%, transparent 75.2%)",
               outline: flagged ? `1.5px solid ${RUST}` : "none",
               outlineOffset: 1,
             }}>
@@ -346,7 +348,7 @@ function BarRows({ rows, labelWidth = 200, flagThreshold }) {
                 {flagged && (
                   <span style={{
                     display: "inline-flex", alignItems: "center", gap: 3,
-                    background: "rgba(224,82,79,0.1)", border: `1px solid ${RUST}`, color: RUST,
+                    background: "rgba(179,38,30,0.08)", border: `1px solid ${RUST}`, color: RUST,
                     fontSize: 10.5, fontWeight: 600, padding: "2px 7px", borderRadius: 4,
                     whiteSpace: "nowrap",
                   }}>
@@ -380,7 +382,7 @@ function CountBars({ rows, labelWidth = 150 }) {
             <div style={{ fontWeight: 600 }}>{r.label}</div>
             {r.sub && <div style={{ fontSize: 10.5, color: SLATE }}>{r.sub}</div>}
           </div>
-          <div style={{ flex: 1, background: "#F1F3F6", borderRadius: 3, height: 24, overflow: "hidden" }}>
+          <div style={{ flex: 1, background: "#F1EEE7", borderRadius: 3, height: 24, overflow: "hidden" }}>
             <div style={{
               height: "100%", borderRadius: 3, background: r.color,
               width: r.value > 0 ? `${Math.max(1.5, (r.value / max) * 100)}%` : 0,
@@ -419,7 +421,7 @@ function StackedBandRows({ rows, bands, labelWidth = 130 }) {
           }}>
             {r.label}
           </div>
-          <div style={{ flex: 1, display: "flex", height: 26, borderRadius: 3, overflow: "hidden", background: "#F1F3F6" }}>
+          <div style={{ flex: 1, display: "flex", height: 26, borderRadius: 3, overflow: "hidden", background: "#F1EEE7" }}>
             {r.total > 0 && bands.map((b) => {
               const n = r.counts[b.key] || 0;
               if (!n) return null;
@@ -823,7 +825,7 @@ export default function CourseInsightsApp() {
     const escapedCollege = cleanCollege.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     const docTitle = cleanCollege ? `${escapedCollege} · Course Progress Report` : "Course Progress Report";
     const faviconHref = collegeLogo || "data:image/svg+xml," + encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="${NAVY}"/><circle cx="50" cy="50" r="24" fill="#F28C28"/></svg>`
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="${NAVY}"/><circle cx="50" cy="50" r="24" fill="#C2410C"/></svg>`
     );
     const doc = `<!DOCTYPE html>
 <html>
@@ -842,7 +844,7 @@ export default function CourseInsightsApp() {
   table.cip-table td { padding: 8px 10px; border-bottom: 1px solid ${PAPER_LINE}; }
   table.cip-table tr:last-child td { border-bottom: none; }
   .print-bar { position: sticky; top: 0; display: flex; justify-content: flex-end; padding: 10px 0 18px; background: ${PAPER}; z-index: 10; }
-  .print-btn { background: ${GOLD_SOFT}; color: ${NAVY}; font-weight: 600; font-size: 14px; border: none;
+  .print-btn { background: #C2410C; color: #FFFFFF; font-weight: 600; font-size: 14px; border: none;
     padding: 10px 20px; border-radius: 4px; cursor: pointer; font-family: 'Inter', sans-serif; }
   /* Let cards flow and pack naturally onto pages — only keep a single card from
      splitting across a page boundary. No forced page-before, so the print engine
@@ -991,7 +993,7 @@ export default function CourseInsightsApp() {
         @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap');
         * { box-sizing: border-box; }
         html, body { margin: 0; background: ${D_BG}; }
-        .cip-shell input::placeholder { color: #6B7596; }
+        .cip-shell input::placeholder { color: var(--cip-muted); }
         .cip-btn { cursor: pointer; border: none; font-family: inherit; }
         .cip-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         table.cip-table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -1025,7 +1027,7 @@ export default function CourseInsightsApp() {
 
       {/* ---------- Upload / control zone (no-print) ---------- */}
       <div className="no-print" style={{ background: "var(--cip-bar)", borderBottom: "1px solid var(--cip-line2)", backdropFilter: "blur(6px)" }}>
-        <div style={{ height: 3, background: `linear-gradient(90deg, transparent, ${GOLD_SOFT}, transparent)` }} />
+        <div style={{ height: 1, background: "var(--cip-line2)" }} />
         <div style={{ padding: "34px 32px 26px" }}>
           <div style={{ maxWidth: 1080, margin: "0 auto" }}>
 
@@ -1036,15 +1038,15 @@ export default function CourseInsightsApp() {
                   <div style={{
                     width: 46, height: 46, borderRadius: "50%", border: `1.5px solid ${GOLD_SOFT}`,
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                    background: "rgba(18,168,123,0.06)",
+                    background: "transparent",
                   }}>
-                    <GraduationCap size={20} color={GOLD_SOFT} />
+                    <GraduationCap size={20} color="currentColor" style={{ color: GOLD_SOFT }} />
                   </div>
                   <div>
                     <div style={{ fontFamily: "'Sora', 'Inter', sans-serif", fontSize: 25, fontWeight: 700, color: D_TEXT, lineHeight: 1.15 }}>
                       See how every section is progressing
                     </div>
-                    <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", fontSize: 13.5, color: GOLD_SOFT, marginTop: 3 }}>
+                    <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", fontSize: 13.5, color: D_MUTED, marginTop: 3 }}>
                       Compiled for your SPOC, section by section
                     </div>
                   </div>
@@ -1173,9 +1175,9 @@ export default function CourseInsightsApp() {
             </div>
 
             {fileErrors.length > 0 && (
-              <div style={{ marginTop: 16, background: "rgba(224,82,79,0.15)", border: `1px solid ${RUST}`, borderRadius: 4, padding: "10px 14px" }}>
+              <div style={{ marginTop: 16, background: "rgba(179,38,30,0.1)", border: `1px solid ${RUST}`, borderRadius: 4, padding: "10px 14px" }}>
                 {fileErrors.map((e, i) => (
-                  <div key={i} style={{ color: "#F9D0CF", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                  <div key={i} style={{ color: "var(--cip-danger)", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
                     <AlertTriangle size={13} style={{ marginTop: 2, flexShrink: 0 }} /> {e}
                   </div>
                 ))}
@@ -1191,10 +1193,10 @@ export default function CourseInsightsApp() {
                   return (
                     <span key={f.fileName} style={{
                       display: "inline-flex", alignItems: "center", gap: 6,
-                      background: D_PANEL, border: "1px solid rgba(18,168,123,0.28)",
+                      background: D_PANEL, border: `1px solid ${D_LINE}`,
                       color: D_TEXT, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
                     }}>
-                      <FileSpreadsheet size={12} color={GOLD_SOFT} />
+                      <FileSpreadsheet size={12} color="currentColor" style={{ color: GOLD_SOFT }} />
                       {f.fileName}{" "}
                       <span style={{ color: D_MUTED }}>
                         · {f.students.length} students{distinctGroups > 1 ? ` · ${distinctGroups} sections` : ""}
@@ -1210,10 +1212,10 @@ export default function CourseInsightsApp() {
                   return (
                     <span key={f.fileName} style={{
                       display: "inline-flex", alignItems: "center", gap: 6,
-                      background: D_PANEL, border: "1px solid rgba(18,168,123,0.28)",
+                      background: D_PANEL, border: `1px solid ${D_LINE}`,
                       color: D_TEXT, fontSize: 12, padding: "5px 6px 5px 10px", borderRadius: 3,
                     }}>
-                      <KeyRound size={12} color={GOLD_SOFT} />
+                      <KeyRound size={12} color="currentColor" style={{ color: GOLD_SOFT }} />
                       {f.fileName}{" "}
                       <span style={{ color: D_MUTED }}>
                         · {f.entries.length} no password{distinctGroups > 1 ? ` · ${distinctGroups} sections` : ""}
@@ -1276,13 +1278,13 @@ export default function CourseInsightsApp() {
                 </div>
                 <label style={{
                   color: D_TEXT, fontSize: 12.5, display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
-                  background: includeStudentData ? "rgba(18,168,123,0.14)" : D_PANEL,
-                  border: `1px solid ${includeStudentData ? GOLD_SOFT : D_LINE}`, borderRadius: 4, padding: "6px 10px",
+                  background: D_PANEL,
+                  border: `1px solid ${includeStudentData ? "var(--cip-action)" : D_LINE}`, borderRadius: 4, padding: "6px 10px",
                 }}>
                   <input
                     type="checkbox" checked={includeStudentData}
                     onChange={(e) => setIncludeStudentData(e.target.checked)}
-                    style={{ accentColor: GOLD_SOFT, width: 15, height: 15, cursor: "pointer" }}
+                    style={{ accentColor: "var(--cip-action)", width: 15, height: 15, cursor: "pointer" }}
                   />
                   Include student-level data in export
                   <span style={{ color: D_MUTED }}>({insights.totalEvaluable + insights.totalNotApplicable} students)</span>
@@ -1305,7 +1307,7 @@ export default function CourseInsightsApp() {
                     disabled={generatingPdf}
                     style={{
                       display: "inline-flex", alignItems: "center", gap: 8,
-                      background: GOLD, color: "#FFFFFF", fontWeight: 600, fontSize: 13.5,
+                      background: "var(--cip-action)", color: "var(--cip-on-action)", fontWeight: 600, fontSize: 13.5,
                       padding: "9px 18px", borderRadius: 4, border: "none",
                     }}
                   >
@@ -1318,7 +1320,7 @@ export default function CourseInsightsApp() {
                   </button>
                 </div>
                 {pdfError && (
-                  <div style={{ width: "100%", color: "#F9D0CF", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                  <div style={{ width: "100%", color: "var(--cip-danger)", fontSize: 12.5, display: "flex", gap: 6, alignItems: "flex-start" }}>
                     <AlertTriangle size={13} style={{ marginTop: 2, flexShrink: 0 }} /> {pdfError}
                   </div>
                 )}
@@ -1349,7 +1351,7 @@ export default function CourseInsightsApp() {
 
 
       {insights && (
-        <div ref={reportRef} className="cip-page" style={{ maxWidth: 1080, margin: "28px auto 0", padding: "32px 36px", background: PAPER, color: INK, borderRadius: 18, boxShadow: "var(--cip-paper-shadow)" }}>
+        <div ref={reportRef} className="cip-page" style={{ maxWidth: 1080, margin: "28px auto 0", padding: "32px 36px", background: PAPER, color: INK, borderRadius: 8, boxShadow: "var(--cip-paper-shadow)" }}>
 
           {/* report header */}
           <div data-pdf-block="true" style={{ display: "flex", alignItems: "center", gap: 16, borderBottom: `3px solid ${NAVY}`, paddingBottom: 14, marginBottom: 22 }}>
@@ -1361,7 +1363,7 @@ export default function CourseInsightsApp() {
             )}
             <div style={{ flex: 1, minWidth: 0 }}>
               {collegeName.trim() && (
-                <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 15, fontWeight: 600, color: GOLD, letterSpacing: 0.3, marginBottom: 4, textTransform: "uppercase" }}>
+                <div style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 15, fontWeight: 600, color: INK, letterSpacing: 0.3, marginBottom: 4, textTransform: "uppercase" }}>
                   {collegeName.trim()}
                 </div>
               )}
@@ -1491,13 +1493,13 @@ export default function CourseInsightsApp() {
                     <td>
                       <span style={{
                         display: "inline-block", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 12.5,
-                        color: NAVY_SOFT, background: "#EBF0FF", border: `1px solid #C9D6FF`, borderRadius: 4,
+                        color: INK, background: "#F1EEE7", border: `1px solid #E3E0D8`, borderRadius: 4,
                         padding: "2px 8px",
                       }}>
                         {r.label}
                       </span>
                     </td>
-                    <td style={{ color: r.started > 0 ? NAVY_SOFT : INK, fontWeight: 600 }}>{r.started}</td>
+                    <td style={{ color: INK, fontWeight: 600 }}>{r.started}</td>
                     <td style={{ color: r.notStarted > 0 ? RUST : INK, fontWeight: r.notStarted > 0 ? 600 : 400 }}>{r.notStarted}</td>
                     {insights.enrollmentTotals.notApplicable > 0 && (
                       <td style={{ color: r.notApplicable > 0 ? SLATE : INK, fontWeight: r.notApplicable > 0 ? 600 : 400 }}>{r.notApplicable}</td>
@@ -1656,7 +1658,7 @@ export default function CourseInsightsApp() {
               All {insights.totalStudents} students, grouped by average completion band
             </div>
             {!includeStudentData && (
-              <div className="no-print" style={{ fontSize: 12, color: GOLD, marginTop: 6 }}>
+              <div className="no-print" style={{ fontSize: 12, color: SLATE, marginTop: 6 }}>
                 Not included in the PDF / HTML export. Tick "Include student-level data in export" above to add it.
               </div>
             )}
@@ -1702,11 +1704,11 @@ export default function CourseInsightsApp() {
                         <div key={secLabel} style={{ marginBottom: 16 }}>
                           <div style={{
                             display: "flex", alignItems: "center", gap: 8, fontSize: 12.5,
-                            fontWeight: 600, color: NAVY_SOFT, margin: "4px 0 6px",
+                            fontWeight: 600, color: INK, margin: "4px 0 6px",
                           }}>
                             <span style={{
                               display: "inline-block", fontFamily: "'Source Serif 4', Georgia, serif",
-                              color: NAVY_SOFT, background: "#EBF0FF", border: "1px solid #C9D6FF",
+                              color: INK, background: "#F1EEE7", border: "1px solid #E3E0D8",
                               borderRadius: 4, padding: "2px 8px",
                             }}>
                               {secLabel}
@@ -1734,7 +1736,7 @@ export default function CourseInsightsApp() {
                                   <td style={{ fontSize: 12, color: SLATE }}>{i + 1}</td>
                                   <td style={{ fontSize: 12, color: SLATE }}>{s.id}</td>
                                   <td>{s.name}</td>
-                                  <td style={{ fontSize: 12, color: NAVY_SOFT, fontWeight: 600 }}>{s.sectionLabel}</td>
+                                  <td style={{ fontSize: 12, color: INK, fontWeight: 600 }}>{s.sectionLabel}</td>
                                   <td style={{ color: cat.color, fontWeight: 600 }}>{s.avg === null ? "-" : fmtPct(s.avg)}</td>
                                   {cat.key === "atRisk" && (
                                     <td style={{ fontSize: 12, color: SLATE }}>{s.notStartedCourses.join(", ") || "-"}</td>

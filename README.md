@@ -35,13 +35,23 @@ Works for any company's mock test. Type the company name on the page; it is used
 - **Try it with sample data:** every tool has a button under its upload box that loads the demo files in
   `shared/samples/` (made-up students, `example.edu` emails).
 - **Search (Ctrl+K or /):** jump to any page or tool, run the current page's download buttons, or switch light/dark.
-- **Light / dark mode:** the sun/moon button in the top bar. Remembered per browser; `?mode=light` previews it.
-  On tool pages the dark skin sheets (`shared/skin/*.css`) are switched off, so each tool's own light design shows.
+- **Light / dark mode:** light ("report paper") is the default; the sun/moon button in the top bar switches to
+  dark (charcoal). Remembered per browser; `?mode=dark` previews it. On tool pages the dark skin sheets
+  (`shared/skin/*.css`) are only switched on in dark mode; otherwise each tool's own paper design shows.
   PDFs are the same in both modes.
 - **Page transitions:** the top bar and sun stay put while pages slide (Chrome, Edge, Safari 18.2+).
 - **Wrong file?** Each tool peeks at the header row of a dropped file; if it is a different kind of export,
   a card names it and links to the tool that reads it (`shared/detect.js` + `shared/skin/motion.js`).
-- **Time of day:** the sun's colour follows the clock; `?tod=night` (morning, midday, evening) previews it.
+
+## Colours
+
+One palette across the site, the tools and the PDFs ("report paper"):
+
+- Paper `#F7F5F0`, cards `#FFFFFF`, lines `#E3E0D8`, ink `#1C1F26`, secondary text `#5E6470`.
+- Burnt orange `#C2410C` is only for things you can click (buttons, links, the active toggle).
+- Data: blue `#2F5D8A`; green `#2E7D5B` = pass, red `#B3261E` = fail, amber `#B7791F` = borderline.
+- Dark mode: charcoal `#15171C`, cards `#1C1F25`, ink `#ECEAE4`, action `#F08A4B` with dark text.
+- No gradients, glows or coloured backdrops; cards have a 1px border and no shadow.
 
 ## Folder layout
 
@@ -52,10 +62,11 @@ courses/insights/       Built Course Insights app (generated, do not edit by han
 tests/index.html        Tests landing page
 tests/*.html            Test report tools (plain HTML, edit directly)
 shared/hub-nav.js       Top bar shown on every page
-shared/hub.css          Styles for the home and landing pages (dark theme)
+shared/hub.css          Layout for the home and landing pages
+shared/paper.css        Colours for the home and landing pages, both modes (see "Colours" below)
 shared/hub.js           Landing-page chart and animations (anime.js)
 shared/vendor/          anime.js 4.5.0 (MIT), saved with the site
-shared/skin/            Dark skin for the tools: base.css + one file per tool, motion.js (entrance animation)
+shared/skin/            Dark (charcoal) skin for the tools: base.css + one file per tool, motion.js (entrance animation)
 shared/brand/           Logo and favicons
 apps/course-insights/   React source for Course Insights
 ```
